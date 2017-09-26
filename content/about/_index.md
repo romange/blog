@@ -7,7 +7,7 @@ menu = ""
 banner = ""
 images = []
 date = 2017-09-26T20:09:02+03:00
-draft = true
+draft = false
 +++
 
 My name is Roman Gershman, I work in [Ubimo](ubimo.com) as programmer and chief architect. I've developed there few key systems that are used intensively in Ubimo products. Some of those systems include Geo Server, heavily parallelized mapreduce framework, internal RPC framework,
