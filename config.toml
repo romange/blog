@@ -12,9 +12,9 @@ footnotereturnlinkcontents = "↩"
 theme = "hugo-icarus-theme"
 publishDir = "public"
 buildDrafts = false
+
 [permalinks]
     post = "/:year/:month/:day/:slug"
-
 
 [params]
     # Tell me who you are
@@ -56,6 +56,11 @@ buildDrafts = false
     before = false
     label  = "Tags"
     link   = "tags/"
+
+[[params.menu]]
+    before = false
+    label  = "About"
+    link   = "about/"
 
 
 # Enter a link for the follow button on the left
