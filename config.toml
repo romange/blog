@@ -50,7 +50,7 @@ buildDrafts = false
 [[params.menu]]
     before = true
     label  = "Home"
-    link   = "/"
+    link   = "/blog"
 
 [[params.menu]]
     before = false
