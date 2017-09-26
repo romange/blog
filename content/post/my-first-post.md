@@ -15,4 +15,5 @@ Hi it's my first attemp at blogging. I've chosen [Hugo](https://gohugo.io/) with
 This blog is going to be published vi my [github repository](https://github.com/romange/blog).
 Stay tuned!
 
+<!--more-->
 

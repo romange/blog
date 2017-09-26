@@ -17,7 +17,12 @@
       <pubDate>Tue, 26 Sep 2017 16:16:40 +0300</pubDate>
       
       <guid>https://romange.github.io/blog/2017/09/26/my-first-post/</guid>
-      <description>Hi it&amp;rsquo;s my first attemp at blogging. I&amp;rsquo;ve chosen Hugo with Icarus theme for the content generation. This blog is going to be published vi my github repository. Stay tuned!</description>
+      <description>&lt;p&gt;Hi it&amp;rsquo;s my first attemp at blogging. I&amp;rsquo;ve chosen &lt;a href=&#34;https://gohugo.io/&#34;&gt;Hugo&lt;/a&gt; with
+&lt;a href=&#34;https://github.com/digitalcraftsman/hugo-icarus-theme&#34;&gt;Icarus theme&lt;/a&gt; for the content generation.
+This blog is going to be published vi my &lt;a href=&#34;https://github.com/romange/blog&#34;&gt;github repository&lt;/a&gt;.
+Stay tuned!&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
   </channel>
