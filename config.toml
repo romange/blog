@@ -1,6 +1,6 @@
 baseurl = "https://romange.github.io/blog"
 languageCode = "en-us"
-title = "Bits about programming"
+title = "Это неправильные пчелы"
 
 # Enable comments by entering your Disqus shortname
 disqusShortname = "romange"
@@ -21,14 +21,14 @@ buildDrafts = false
     author = "Roman Gershman"
     bio = "Programmer"
     location = "Tel Aviv"
-    site_description = ""
-    copyright  = ""
+    site_description = "These bees are wrong"
+    copyright  = "Roman Gershman"
     avatar = "css/images/avatar.png"
 
     # Enter your email address to display your Gravatar icon in the profile. If not set the theme
     # will fallback to the avatar.
     gravatar = "romange@gmail.com"
-    logo = "css/images/logo.png"
+    logo = "css/images/7.png"
     disable_mathjax = true # set to true to disable MathJax
 
     # define which types of pages should be shown. By default the type with the most regular pages
@@ -57,10 +57,6 @@ buildDrafts = false
     label  = "Tags"
     link   = "tags/"
 
-[[params.menu]]
-    before = false
-    label  = "Categories"
-    link   = "categories/"
 
 # Enter a link for the follow button on the left
 [params.profile]

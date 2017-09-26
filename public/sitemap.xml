@@ -8,12 +8,6 @@
   </url>
   
   <url>
-    <loc>https://romange.github.io/blog/</loc>
-    <lastmod>2017-09-26T16:16:40+03:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>https://romange.github.io/blog/tags/blogging/</loc>
     <lastmod>2017-09-26T16:16:40+03:00</lastmod>
     <priority>0</priority>
@@ -32,6 +26,12 @@
   
   <url>
     <loc>https://romange.github.io/blog/tags/</loc>
+    <lastmod>2017-09-26T16:16:40+03:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://romange.github.io/blog/</loc>
     <lastmod>2017-09-26T16:16:40+03:00</lastmod>
     <priority>0</priority>
   </url>

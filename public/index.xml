@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Bits about programming</title>
+    <title>Это неправильные пчелы</title>
     <link>https://romange.github.io/blog/</link>
-    <description>Recent content on Bits about programming</description>
+    <description>Recent content on Это неправильные пчелы</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <copyright>Roman Gershman</copyright>
     <lastBuildDate>Tue, 26 Sep 2017 16:16:40 +0300</lastBuildDate>
     
 	<atom:link href="https://romange.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
