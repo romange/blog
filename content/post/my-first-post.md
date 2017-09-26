@@ -7,7 +7,7 @@ menu = ""
 banner = ""
 images = []
 date = 2017-09-26T16:16:40+03:00
-draft = true
+draft = false
 +++
 
 Hi it's my first attemp at blogging. I've chosen [Hugo](https://gohugo.io/) with
