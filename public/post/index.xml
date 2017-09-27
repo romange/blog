@@ -7,10 +7,24 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Roman Gershman</copyright>
-    <lastBuildDate>Tue, 26 Sep 2017 16:16:40 +0300</lastBuildDate>
+    <lastBuildDate>Tue, 26 Sep 2017 22:46:30 +0300</lastBuildDate>
     
 	<atom:link href="https://romange.github.io/blog/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>How to serialize integers into memory</title>
+      <link>https://romange.github.io/blog/2017/09/26/how-to-serialize-integers-into-memory/</link>
+      <pubDate>Tue, 26 Sep 2017 22:46:30 +0300</pubDate>
+      
+      <guid>https://romange.github.io/blog/2017/09/26/how-to-serialize-integers-into-memory/</guid>
+      <description>&lt;p&gt;Here is the analysis of a recent bug happenned to me recently which caused me to think that
+the compiler has a bug (or that &lt;a href=&#34;https://www.youtube.com/watch?v=PIuE5J9dfAo&#34;&gt;&amp;ldquo;These are wrong bees&amp;rdquo;&lt;/a&gt;).
+Consider the code below. We copy 64 integers into a properly allocated destination buffer and yet,
+if compiled with &lt;code&gt;-O3&lt;/code&gt; switch this code crahes with segfault!.&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>My first post</title>

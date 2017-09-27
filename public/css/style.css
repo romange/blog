@@ -1843,8 +1843,11 @@ ol.toc {
   }
 }
 #recent-post li {
-  padding: 10px 0 10px 94px;
+  padding: 10px 0 10px 0;
+  display: flex;
+  word-break: break-word;
 }
+
 #recent-post li:before,
 #recent-post li:after {
   content: "";
@@ -1858,8 +1861,6 @@ ol.toc {
 }
 #recent-post li .item-thumbnail {
   opacity: 1;
-  float: left;
-  margin-left: -94px;
   -webkit-transition: all 0.2s ease;
   -moz-transition: all 0.2s ease;
   -ms-transition: all 0.2s ease;
@@ -1867,6 +1868,7 @@ ol.toc {
 }
 #recent-post li .item-thumbnail .thumbnail {
   width: 80px;
+  margin-right: 10px;
   height: 80px;
   display: block;
   position: relative;

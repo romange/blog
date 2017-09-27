@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Это неправильные пчелы</title>
-    <link>https://romange.github.io/blog/</link>
-    <description>Recent content on Это неправильные пчелы</description>
+    <title>C&#43;&#43; on Это неправильные пчелы</title>
+    <link>https://romange.github.io/blog/tags/c&#43;&#43;/</link>
+    <description>Recent content in C&#43;&#43; on Это неправильные пчелы</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Roman Gershman</copyright>
     <lastBuildDate>Tue, 26 Sep 2017 22:46:30 +0300</lastBuildDate>
     
-	<atom:link href="https://romange.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://romange.github.io/blog/tags/c++/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -22,20 +22,6 @@
 the compiler has a bug (or that &lt;a href=&#34;https://www.youtube.com/watch?v=PIuE5J9dfAo&#34;&gt;&amp;ldquo;These are wrong bees&amp;rdquo;&lt;/a&gt;).
 Consider the code below. We copy 64 integers into a properly allocated destination buffer and yet,
 if compiled with &lt;code&gt;-O3&lt;/code&gt; switch this code crahes with segfault!.&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>My first post</title>
-      <link>https://romange.github.io/blog/2017/09/26/my-first-post/</link>
-      <pubDate>Tue, 26 Sep 2017 16:16:40 +0300</pubDate>
-      
-      <guid>https://romange.github.io/blog/2017/09/26/my-first-post/</guid>
-      <description>&lt;p&gt;Hi it&amp;rsquo;s my first attemp at blogging. I&amp;rsquo;ve chosen &lt;a href=&#34;https://gohugo.io/&#34;&gt;Hugo&lt;/a&gt; with
-&lt;a href=&#34;https://github.com/digitalcraftsman/hugo-icarus-theme&#34;&gt;Icarus theme&lt;/a&gt; for the content generation.
-This blog is going to be published vi my &lt;a href=&#34;https://github.com/romange/blog&#34;&gt;github repository&lt;/a&gt;.
-Stay tuned!&lt;/p&gt;
 
 &lt;p&gt;&lt;/p&gt;</description>
     </item>
