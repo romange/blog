@@ -1,6 +1,4 @@
-//g++  5.4.0
-
-// Compile with:
+// Compile with (g++-5):
 // g++ -std=c++11 -O3 && a.out
 #include <memory>
 #include <cstdint>

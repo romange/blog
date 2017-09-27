@@ -1,0 +1,6 @@
+{{ $srcfile := (index .Params 0 | default "main.cpp") }}
+{{ $srcpath := (printf "content/src/%s"  $srcfile) }}
+
+<pre><code class="{{ delimit (last 1 (split $srcfile ".")) " " }}">
+{{readFile $srcpath }}
+</code></pre>
