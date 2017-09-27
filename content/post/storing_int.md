@@ -11,7 +11,7 @@ draft = true
 +++
 
 Here is the analysis of a recent bug happenned to me recently which caused me to think that
-the compiler has a bug (or that "These are wrong bees").
+the compiler has a bug (or that ["These are wrong bees"](https://www.youtube.com/watch?v=PIuE5J9dfAo)).
 Consider the code below. We copy 64 integers into a properly allocated destination buffer and yet,
 if compiled with `-O3` switch this code crahes with segfault!.
 
