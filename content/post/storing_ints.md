@@ -1,13 +1,11 @@
 +++
-title = "How to serialize integers into memory."
+title = "How to serialize integers into memory"
 tags = ["c++", "code generation", "programming"]
 categories = []
 description = ""
-menu = ""
-# banner = "https://www.gravatar.com/avatar/4a203a48eb1cdb1b8c47d008f0c139c9?s=100&d=identicon"
 images = []
 date = 2017-09-26T22:46:30+03:00
-draft = true
+draft = false
 +++
 
 Here is the analysis of a recent bug happenned to me recently which caused me to think that
@@ -22,7 +20,7 @@ if compiled with `-O3` switch this code crahes with segfault!.
 
 
 You can see it yourself by running it with [g++ on x64 architecture](http://rextester.com/FJSB11478).
-A quick session with gdb shows that it fails on the instruction [`movaps`](http://www.felixcloutier.com/x86/MOVAPS.html). g++ is smart enough and bold enough to perform vectorized
+A quick session with gdb shows that it fails on the instruction [`movaps`](http://www.felixcloutier.com/x86/MOVAPS.html). g++ is smart enough to perform vectorized
 optimization and copy 2 64 bit integers at once. Unfortunaltely `movaps` requires that its destination memory operand would be 16 byte aligned but `SerializeTo` can not possibly know
 whether `dest` is aligned or not. To my surprise g++ does not generate any preamble code that handles possible unalignment issues the way I would expect him to, nor it decides to fallback to instructions that handle unligned words. Is g++ in his rights?
 
@@ -35,7 +33,12 @@ Many google projects, for example, have the [following macro](https://github.com
 The name of the macro eloquently shows that it's meant for storing integer into possibly unaligned address. There are millions other appearences of `reinterpret_cast` in github and I estimate that vast part of them do not follow strict aliasing rules.
 
 So how do we copy an integer into specific memory address? We could, of course copy it byte by byte
-but that's slow.
+but that's slow. The only acceptable solution I know of is to use `memcpy(dest, src, sizeof(uint64))`. In optimized mode, the compiler recognizes `memcpy` and replaces it with specific CPU instructions according to the target architecture. In case of uint64_t on x64 it translates to a single `mov` instruction. While it maybe suboptimal (it's still possible to use vectorized instructions) it's nethertheless correct.
+
+I think it's a bit sad that currently C++ language does not have a dedicated tool in the language that explicitly allows storing a computer word in memory and instead we need to rely on
+an external function but that's state of matters at this moment.
+
+If you know any other standard way of performing this task correctly please tell me.
 
 
 
