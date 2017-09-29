@@ -85,6 +85,7 @@ shared_ptr provides built-in atomicity guarantees when incrementing/decrementing
 Therefore we must use special functions `atomic_exchange` and `atomic_load` that provide atomicity guarantees for whole shared_ptr object. In other words we must use the atomic transaction when swapping shared_ptr. `atomic_load` is just for synchronizing the read with this transaction.
 
 Unfortunately the approach above has 2 problems:
+
 1. gcc 4.8 does not support `atomic_exchange` for shared_ptr. Even though the code builds it won't be atomic.
 2. In versions where `atomic_exchange` is implemented for shared_ptr it's usually done with a global lock shared by potentially several instances of shared_ptr. In other words `atomic_exchange`has suboptimal performance.
 
