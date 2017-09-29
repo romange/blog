@@ -51,7 +51,7 @@
 
 
 <meta itemprop="dateModified" content="2017-09-29T15:46:55&#43;03:00" />
-<meta itemprop="wordCount" content="1184">
+<meta itemprop="wordCount" content="1191">
 
 
 
@@ -270,7 +270,7 @@
             <i class="fa fa-calendar"></i>
             <time datetime="2017-09-29 15:46:55 &#43;0300 IDT" itemprop="datePublished">Sep 29nd 2017</time>
             &middot;
-            1184
+            1191
             words
             &middot;
             6
@@ -336,7 +336,7 @@ index.UpdateFromFile(file_name);
 
 <h3 id="managing-a-pointer-to-immutable-index">managing a pointer to immutable index.</h3>
 
-<p>If we allow eventual consistency and our memory capacity can hold 2 indices at the same time we can solve the problem by adding a level of indirection and having a pointer to our always immutable index.
+<p>If we allow eventual consistency and our memory capacity can hold 2 indices at the same time we can solve the problem by adding a level of indirection: instead of changing the data structure, we will swap a pointer to our always immutable index.
 The naive solution could looks like this:</p>
 
 <pre><code class="language-cpp">

@@ -39,7 +39,7 @@ index.UpdateFromFile(file_name);
 
 ### managing a pointer to immutable index.
 
-If we allow eventual consistency and our memory capacity can hold 2 indices at the same time we can solve the problem by adding a level of indirection and having a pointer to our always immutable index.
+If we allow eventual consistency and our memory capacity can hold 2 indices at the same time we can solve the problem by adding a level of indirection: instead of changing the data structure, we will swap a pointer to our always immutable index.
 The naive solution could looks like this:
 
 ```cpp
