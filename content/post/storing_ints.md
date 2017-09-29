@@ -8,10 +8,8 @@ date = 2017-09-26T22:46:30+03:00
 draft = false
 +++
 
-Here is the analysis of a recent bug that happenned to me. My initial reaction was that
-the compiler had a bug (or that ["These are wrong bees"](https://www.youtube.com/watch?v=PIuE5J9dfAo)).
-Consider the code below. We copy 64 integers into a properly allocated destination buffer and yet,
-if compiled with `-O3` switch this code crahes with segfault!.
+Here is the analysis of a recent bug I've stumbled upon. My initial reaction was that
+the problem is in the compiler (or that ["These are wrong bees"](https://www.youtube.com/watch?v=PIuE5J9dfAo)). Consider the code below. We copy 64 integers into a properly allocated destination buffer and yet, if compiled with `-O3` switch this code crashes with segfault!.
 
 <!--more-->
 

@@ -21,10 +21,8 @@
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro' rel='stylesheet' type='text/css'>
     <meta property="og:title" content="How to serialize integers into memory" />
-<meta property="og:description" content="Here is the analysis of a recent bug that happenned to me. My initial reaction was that
-the compiler had a bug (or that &ldquo;These are wrong bees&rdquo;).
-Consider the code below. We copy 64 integers into a properly allocated destination buffer and yet,
-if compiled with -O3 switch this code crahes with segfault!.
+<meta property="og:description" content="Here is the analysis of a recent bug I&rsquo;ve stumbled upon. My initial reaction was that
+the problem is in the compiler (or that &ldquo;These are wrong bees&rdquo;). Consider the code below. We copy 64 integers into a properly allocated destination buffer and yet, if compiled with -O3 switch this code crashes with segfault!.
 
 " />
 <meta property="og:type" content="article" />
@@ -48,10 +46,8 @@ if compiled with -O3 switch this code crahes with segfault!.
     
     
 <meta itemprop="name" content="How to serialize integers into memory">
-<meta itemprop="description" content="Here is the analysis of a recent bug that happenned to me. My initial reaction was that
-the compiler had a bug (or that &ldquo;These are wrong bees&rdquo;).
-Consider the code below. We copy 64 integers into a properly allocated destination buffer and yet,
-if compiled with -O3 switch this code crahes with segfault!.
+<meta itemprop="description" content="Here is the analysis of a recent bug I&rsquo;ve stumbled upon. My initial reaction was that
+the problem is in the compiler (or that &ldquo;These are wrong bees&rdquo;). Consider the code below. We copy 64 integers into a properly allocated destination buffer and yet, if compiled with -O3 switch this code crashes with segfault!.
 
 ">
 
@@ -64,10 +60,8 @@ if compiled with -O3 switch this code crahes with segfault!.
 <meta itemprop="keywords" content="c&#43;&#43;,code generation,programming," />
 
     <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="How to serialize integers into memory"/>
-<meta name="twitter:description" content="Here is the analysis of a recent bug that happenned to me. My initial reaction was that
-the compiler had a bug (or that &ldquo;These are wrong bees&rdquo;).
-Consider the code below. We copy 64 integers into a properly allocated destination buffer and yet,
-if compiled with -O3 switch this code crahes with segfault!.
+<meta name="twitter:description" content="Here is the analysis of a recent bug I&rsquo;ve stumbled upon. My initial reaction was that
+the problem is in the compiler (or that &ldquo;These are wrong bees&rdquo;). Consider the code below. We copy 64 integers into a properly allocated destination buffer and yet, if compiled with -O3 switch this code crashes with segfault!.
 
 "/>
 
@@ -316,10 +310,8 @@ if compiled with -O3 switch this code crahes with segfault!.
 </header>
 
         <div class="article-entry" itemprop="articleBody">
-            <p>Here is the analysis of a recent bug that happenned to me. My initial reaction was that
-the compiler had a bug (or that <a href="https://www.youtube.com/watch?v=PIuE5J9dfAo">&ldquo;These are wrong bees&rdquo;</a>).
-Consider the code below. We copy 64 integers into a properly allocated destination buffer and yet,
-if compiled with <code>-O3</code> switch this code crahes with segfault!.</p>
+            <p>Here is the analysis of a recent bug I&rsquo;ve stumbled upon. My initial reaction was that
+the problem is in the compiler (or that <a href="https://www.youtube.com/watch?v=PIuE5J9dfAo">&ldquo;These are wrong bees&rdquo;</a>). Consider the code below. We copy 64 integers into a properly allocated destination buffer and yet, if compiled with <code>-O3</code> switch this code crashes with segfault!.</p>
 
 <p></p>
 
