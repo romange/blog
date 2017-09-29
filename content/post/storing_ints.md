@@ -9,7 +9,7 @@ draft = false
 +++
 
 Here is the analysis of a recent bug I've stumbled upon. My initial reaction was that
-the problem is in the compiler (or that ["These are wrong bees"](https://www.youtube.com/watch?v=PIuE5J9dfAo)). Consider the code below. We copy 64 integers into a properly allocated destination buffer and yet, if compiled with `-O3` switch this code crashes with segfault!.
+the problem is in the compiler (or that ["These are wrong bees"](https://www.youtube.com/watch?v=PIuE5J9dfAo)). Consider the code below. We copy 64 integers into a properly allocated destination buffer and yet, if compiled with `-O3` switch this code crashes with segfault!
 
 <!--more-->
 
