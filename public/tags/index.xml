@@ -2,67 +2,67 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Это неправильные пчелы</title>
-    <link>https://www.romange.com/tags/</link>
+    <link>http://www.romange.com/tags/</link>
     <description>Recent content in Tags on Это неправильные пчелы</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Roman Gershman</copyright>
     <lastBuildDate>Fri, 29 Sep 2017 15:46:55 +0300</lastBuildDate>
     
-	<atom:link href="https://www.romange.com/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://www.romange.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Backend</title>
-      <link>https://www.romange.com/tags/backend/</link>
+      <link>http://www.romange.com/tags/backend/</link>
       <pubDate>Fri, 29 Sep 2017 15:46:55 +0300</pubDate>
       
-      <guid>https://www.romange.com/tags/backend/</guid>
+      <guid>http://www.romange.com/tags/backend/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Blogging</title>
-      <link>https://www.romange.com/tags/blogging/</link>
+      <link>http://www.romange.com/tags/blogging/</link>
       <pubDate>Tue, 26 Sep 2017 16:16:40 +0300</pubDate>
       
-      <guid>https://www.romange.com/tags/blogging/</guid>
+      <guid>http://www.romange.com/tags/blogging/</guid>
       <description></description>
     </item>
     
     <item>
       <title>C&#43;&#43;</title>
-      <link>https://www.romange.com/tags/c&#43;&#43;/</link>
+      <link>http://www.romange.com/tags/c&#43;&#43;/</link>
       <pubDate>Fri, 29 Sep 2017 15:46:55 +0300</pubDate>
       
-      <guid>https://www.romange.com/tags/c&#43;&#43;/</guid>
+      <guid>http://www.romange.com/tags/c&#43;&#43;/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Code Generation</title>
-      <link>https://www.romange.com/tags/code-generation/</link>
+      <link>http://www.romange.com/tags/code-generation/</link>
       <pubDate>Tue, 26 Sep 2017 22:46:30 +0300</pubDate>
       
-      <guid>https://www.romange.com/tags/code-generation/</guid>
+      <guid>http://www.romange.com/tags/code-generation/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Concurrency</title>
-      <link>https://www.romange.com/tags/concurrency/</link>
+      <link>http://www.romange.com/tags/concurrency/</link>
       <pubDate>Fri, 29 Sep 2017 15:46:55 +0300</pubDate>
       
-      <guid>https://www.romange.com/tags/concurrency/</guid>
+      <guid>http://www.romange.com/tags/concurrency/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Programming</title>
-      <link>https://www.romange.com/tags/programming/</link>
+      <link>http://www.romange.com/tags/programming/</link>
       <pubDate>Tue, 26 Sep 2017 22:46:30 +0300</pubDate>
       
-      <guid>https://www.romange.com/tags/programming/</guid>
+      <guid>http://www.romange.com/tags/programming/</guid>
       <description></description>
     </item>
     

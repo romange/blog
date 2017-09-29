@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Concurrency on Это неправильные пчелы</title>
-    <link>https://www.romange.com/tags/concurrency/</link>
+    <link>http://www.romange.com/tags/concurrency/</link>
     <description>Recent content in Concurrency on Это неправильные пчелы</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Roman Gershman</copyright>
     <lastBuildDate>Fri, 29 Sep 2017 15:46:55 +0300</lastBuildDate>
     
-	<atom:link href="https://www.romange.com/tags/concurrency/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://www.romange.com/tags/concurrency/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Reloading data structures under high throughput</title>
-      <link>https://www.romange.com/2017/09/29/reloading-data-structures-under-high-throughput/</link>
+      <link>http://www.romange.com/2017/09/29/reloading-data-structures-under-high-throughput/</link>
       <pubDate>Fri, 29 Sep 2017 15:46:55 +0300</pubDate>
       
-      <guid>https://www.romange.com/2017/09/29/reloading-data-structures-under-high-throughput/</guid>
+      <guid>http://www.romange.com/2017/09/29/reloading-data-structures-under-high-throughput/</guid>
       <description>&lt;p&gt;Suppose you have a multi-threaded server that serves tens of thousands read queries per second. Those queries use a shared data-structure or index that is mostly immutable during the server run with the exception of periodic index reloads.  How do you implement data reloads in that server while keeping it live and kicking in production?&lt;/p&gt;
 
 &lt;p&gt;&lt;/p&gt;</description>
