@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
-    <title>About me &middot; Это неправильные пчелы</title>
+    <title>Reloading data structures under high throughput &middot; Это неправильные пчелы</title>
     <meta name="generator" content="Hugo 0.29" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -10,10 +10,7 @@
       <meta name="description" content="These bees are wrong">
     
     
-      <link href="https://romange.github.io/blog/about/index.xml" rel="alternate" type="application/rss+xml" title="Это неправильные пчелы" />
-      <link href="https://romange.github.io/blog/about/index.xml" rel="feed" type="application/rss+xml" title="Это неправильные пчелы" />
-    
-    <link rel="canonical" href="https://romange.github.io/blog/about/"/>
+    <link rel="canonical" href="https://romange.github.io/blog/2017/09/29/reloading-data-structures-under-high-throughput/"/>
     <link rel="icon" href="https://romange.github.io/blog/favicon.ico">
     <link rel="apple-touch-icon" href="https://romange.github.io/blog/apple-touch-icon.png"/>
     <link rel="stylesheet" href="https://romange.github.io/blog/css/style.css">
@@ -23,14 +20,18 @@
     
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro' rel='stylesheet' type='text/css'>
-    <meta property="og:title" content="About me" />
-<meta property="og:description" content="" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://romange.github.io/blog/about/" />
+    <meta property="og:title" content="Reloading data structures under high throughput" />
+<meta property="og:description" content="Suppose you have a multi-threaded server that serves tens of thousands read queries per second. Those queries use a shared data-structure or index that is mostly immutable during the server run with the exception of periodic index reloads.  How do you implement data reloads in that server while keeping it live and kicking in production?
+
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://romange.github.io/blog/2017/09/29/reloading-data-structures-under-high-throughput/" />
 
 
 
-<meta property="og:updated_time" content="2017-09-26T20:09:02&#43;03:00"/>
+<meta property="article:published_time" content="2017-09-29T15:46:55&#43;03:00"/>
+<meta property="article:modified_time" content="2017-09-29T15:46:55&#43;03:00"/>
+
 
 
 
@@ -43,12 +44,23 @@
 
     
     
-<meta itemprop="name" content="About me">
-<meta itemprop="description" content="">
+<meta itemprop="name" content="Reloading data structures under high throughput">
+<meta itemprop="description" content="Suppose you have a multi-threaded server that serves tens of thousands read queries per second. Those queries use a shared data-structure or index that is mostly immutable during the server run with the exception of periodic index reloads.  How do you implement data reloads in that server while keeping it live and kicking in production?
+
+">
 
 
-    <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="About me"/>
-<meta name="twitter:description" content=""/>
+<meta itemprop="dateModified" content="2017-09-29T15:46:55&#43;03:00" />
+<meta itemprop="wordCount" content="1184">
+
+
+
+<meta itemprop="keywords" content="c&#43;&#43;,concurrency,backend," />
+
+    <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Reloading data structures under high throughput"/>
+<meta name="twitter:description" content="Suppose you have a multi-threaded server that serves tens of thousands read queries per second. Those queries use a shared data-structure or index that is mostly immutable during the server run with the exception of periodic index reloads.  How do you implement data reloads in that server while keeping it live and kicking in production?
+
+"/>
 
     
 
@@ -253,17 +265,14 @@
     
 
     
-    
-    
-    
-        <article id="page-undefined" class="article article-type-page" itemscope="" itemprop="blogPost">
+    <article id="page-undefined" class="article article-type-page" itemscope="" itemprop="blogPost">
     <div class="article-inner">
         
 
         <header class="article-header">
-    <a href="https://romange.github.io/blog/about/">
+    <a href="https://romange.github.io/blog/2017/09/29/reloading-data-structures-under-high-throughput/">
     <h1 class="article-title" itemprop="name">
-        About me
+        Reloading data structures under high throughput
     </h1>
     </a>
     <div class="article-meta">
@@ -271,12 +280,12 @@
         
         <div class="article-date">
             <i class="fa fa-calendar"></i>
-            <time datetime="2017-09-26 20:09:02 &#43;0300 IDT" itemprop="datePublished">Sep 26nd 2017</time>
+            <time datetime="2017-09-29 15:46:55 &#43;0300 IDT" itemprop="datePublished">Sep 29nd 2017</time>
             &middot;
-            108
+            1184
             words
             &middot;
-            1
+            6
             minute read
         </div>
         
@@ -288,26 +297,182 @@
         
             
             
+            <div class="article-category">
+                <i class="fa fa-tags"></i>
+                
+                
+                <a class="article-category-link" href="https://romange.github.io/blog/tags/c&#43;&#43;">c&#43;&#43;</a>
+                &middot;
+                
+                
+                <a class="article-category-link" href="https://romange.github.io/blog/tags/concurrency">concurrency</a>
+                &middot;
+                
+                
+                <a class="article-category-link" href="https://romange.github.io/blog/tags/backend">backend</a>
+                
+                
+            </div>
+            
         
     </div>
 </header>
 
         <div class="article-entry" itemprop="articleBody">
-            <p>My name is Roman Gershman, I work in <a href="ubimo.com">Ubimo</a> as software engineer and chief architect. I&rsquo;ve developed at Ubimo few key systems that are used intensively in Ubimo products. Some of those systems include Geo Server, heavily parallelized mapreduce framework, internal RPC framework,
-extensible file formats that are used by engineering department and more. My passion is developing efficient algorithms and backend systems. Before Ubimo I&rsquo;ve been working at Google for 7 years.</p>
-
-<p>I&rsquo;ve been coding for the last 25 years. Lately I feel that learning new stuff comes at the expense
-of forgetting the old things. Hopefully this blog will help me to overcome these problems :)</p>
+            <p>Suppose you have a multi-threaded server that serves tens of thousands read queries per second. Those queries use a shared data-structure or index that is mostly immutable during the server run with the exception of periodic index reloads.  How do you implement data reloads in that server while keeping it live and kicking in production?</p>
 
 <p></p>
+
+<p>Obviously, if your data structure is thread-safe and allows mutations while correctly serving reads
+then the problem solved. However, it often happens that either the data structure is not thread-safe or its safety guarantees do now allow seamless reads during relatively slow reloads.</p>
+
+<p>Lets examine possible solutions to this problem:</p>
+
+<h3 id="shared-mutex">Shared mutex</h3>
+
+<p>First, we can not use exclusive mutex to lock the index due to possibly huge contention in the read path: each query thread will require read access to our index and with the exclusive mutex it will stall all other threads until it finishes reading from the index.
+<code>shared_mutex</code> will solve this problem, however the reload operation will still need to lock the index exclusively (see below). During that period the read path will be blocked and we came back to the original problem - having seamless reads during reloads.</p>
+
+<pre><code class="language-cpp">
+// Query Thread
+std::shared_lock&lt;std::shared_mutex&gt; lock(mutex_);   // will block on Reload!
+auto res = index_.Query(arg);
+
+.....................
+
+// Reload thread.
+std::unique_lock&lt;std::shared_mutex&gt; lock(mutex_);
+index.UpdateFromFile(file_name);
+
+</code></pre>
+
+<h3 id="managing-a-pointer-to-immutable-index">managing a pointer to immutable index.</h3>
+
+<p>If we allow eventual consistency and our memory capacity can hold 2 indices at the same time we can solve the problem by adding a level of indirection and having a pointer to our always immutable index.
+The naive solution could looks like this:</p>
+
+<pre><code class="language-cpp">
+std::atomic&lt;Index*&gt; index_ptr_;
+
+// Query Thread
+Index* index = index_ptr_-&gt;load();
+auto res = index-&gt;Query(arg);   // index can be invalid here.
+................
+
+// Reload thread.
+Index* new_index = new Index(); // At this point we have 2 indices in RAM
+new_index-&gt;UpdateFromFile(file_name);
+
+new_index = atomic_exchange(&amp;index_ptr_, new_index);  // Swap the pointers.
+
+delete new_index;   // delete the previous index object.
+</code></pre>
+
+<p>The problem with this solution, of course, is the dangling pointer during the read path.
+When the ownership over the pointer is managed by reload thread, we can not know when the read threads finish accessing it and it can be safely deleted. This is a classic example where shared_ptr will come to rescue:</p>
+
+<pre><code class="language-cpp">
+shared_ptr&lt;Index&gt; index_ptr_;
+
+// Query Thread
+shared_ptr&lt;Index&gt; local_copy = atomic_load(&amp;index_ptr_);
+auto res = local_copy-&gt;Query(arg);
+...................
+
+// Reload thread.
+std::shared_ptr&lt;Index&gt; new_index = make_shared&lt;Index&gt;(); // Create another index object.
+new_index-&gt;UpdateFromFile(file_name);
+
+auto prev = atomic_exchange(&amp;index_ptr_, new_index);  // Swap the pointers.
+prev.reset();  // or just goes out of scope. In any case we reduce reference count
+               // to the old Index.
+</code></pre>
+
+<p>shared_ptr provides built-in atomicity guarantees when incrementing/decrementing its reference count but not when the contents of shared_ptr are fully replaced with the new object instance.
+Therefore we must use special functions <code>atomic_exchange</code> and <code>atomic_load</code> that provide atomicity guarantees for whole shared_ptr object. In other words we must use the atomic transaction when swapping shared_ptr. <code>atomic_load</code> is just for synchronizing the read with this transaction.</p>
+
+<p>Unfortunately the approach above has 2 problems:
+1. gcc 4.8 does not support <code>atomic_exchange</code> for shared_ptr. Even though the code builds it won&rsquo;t be atomic.
+2. In versions where <code>atomic_exchange</code> is implemented for shared_ptr it&rsquo;s usually done with a global lock shared by potentially several instances of shared_ptr. In other words <code>atomic_exchange</code>has suboptimal performance.</p>
+
+<p>Experimental library of C++ has <code>std::experimental::atomic_shared_ptr</code> which is designed to overcome the latter issue but it&rsquo;s not in the standard yet. So for now I suggest to use a shared lock which can protect shared_ptr. It might be better to use a cheap spinlock here because we just need to provide atomicity for writing into few memory cells.</p>
+
+<p>I suggest to use an excellent <a href="https://github.com/facebook/folly/blob/master/folly/RWSpinLock.h">Folly&rsquo;s RWSpinLock</a>. Lately they added <a href="https://github.com/facebook/folly/blob/master/folly/SharedMutex.h">SharedMutex</a> lock but I&rsquo;ve not tried it yet.
+So the final version (with RWSpinLock) might look like this:</p>
+
+<pre><code class="language-cpp">RWSpinLock index_lock_;
+shared_ptr&lt;Index&gt; index_ptr_;
+
+// Query Thread
+index_lock_.lock_shared();
+shared_ptr&lt;Index&gt; local_copy = index_ptr_;
+index_lock_.unlock_shared();
+
+auto res = local_copy-&gt;Query(arg);
+..................
+
+// Reload thread.
+std::shared_ptr&lt;Index&gt; new_index = make_shared&lt;Index&gt;(); // Create another index object.
+new_index-&gt;UpdateFromFile(file_name);
+
+index_lock_.lock();
+index_ptr_.swap(new_index);
+index_lock_.unlock();
+
+new_index.reset();  // or just goes out of scope. In any case we reduce reference count
+                    // to the old Index.
+</code></pre>
+
+<p>Please note that it&rsquo;s important to limit locked sections only to pointer changes. Anything else should be outside of lock to reduce the contention. This is why I do not use lock guards in the section above - I want to mark locking explicitly in most straighforward manner. I&rsquo;ve seen lots of cases where lock guards were used and it caused huge contention after very innocent code changes were applied later.</p>
+
+<p>It is guaranteed that the read thread protects the lifespan of the index via the local_copy object it holds and it&rsquo;s enough to use shared lock when creating <code>local_copy</code> because we do not change the internal contents of <code>index_ptr_</code> - just increase the reference count which is atomic.</p>
+
+<h3 id="quiescent-state-based-reclamation">Quiescent State-Based Reclamation</h3>
+
+<p>Jeff Preshing in his <a href="http://preshing.com/20160726/using-quiescent-states-to-reclaim-memory/">blog post</a> tackles similar problem but he solves resource deletion issue by using GC method called <em>quiescent state-based reclamation</em> (QSBR). Yeah, I needed to look up word <em>quiescent</em> in the dictionary as well. It means &ldquo;in state of inactivity or dormancy&rdquo;. Basically QSBR postpones resource deletion to a time when all the possible threads finished their tasks. Then nothing references the stale resource and it&rsquo;s safe to delete it.</p>
+
+<p>QSBR requires thread cooperation at framework level, i.e. each thread needs to register itself with QSBR manager, and notify it every time it runs a task or finishes it. This way QSBR manager can know when the process has quiescent states and no user-level tasks are running. During this state it runs all the piled deletion callbacks from the last period. The sketch code with this solution will look similar to our first naive version:</p>
+
+<pre><code class="language-cpp">
+std::atomic&lt;Index*&gt; index_ptr_;
+
+// Query Thread
+// Called by framework:
+QSBR()-&gt;StartTask();
+///
+
+// This load can return either new instance or the old one. Both are fine.
+Index* index = index_ptr_-&gt;load();
+auto res = index-&gt;Query(arg);
+...
+// Called by framework:
+QSBR()-&gt;EndTask();   // marks end of user-level task for this thread.
+.....
+
+///////////////////////////////////////
+// Reload thread.
+Index* new_index = new Index(); // At this point we have 2 indices in RAM
+new_index-&gt;UpdateFromFile(file_name);
+
+new_index = atomic_exchange(&amp;index_ptr_, new_index);  // Swap the pointers.
+
+// Schedules the previous instance for deletion.
+// This is the main change. We do not delete the index now but ask to run it
+// when it's safe.
+QSBR()-&gt;Schedule([new_index] { delete new_index;});
+</code></pre>
+
+<p>The advantage of this approach is that we do not need to worry about ownership issues. Once we build the solution at the framework level it will always help us with freewing resources asynchronously in a safe manner. In Jeff&rsquo;s example his QSBR algorithm breaks timeline into discrete intervals. All the threads that run tasks during specific interval register themselves with it before running user-level tasks and unregister afterwards. Once all the threads has been unregistered, that interval can be <code>cleaned</code> from all the pending callbacks. Another pro</p>
+
+<p>I do not know any other methods for providing responsive reads during data reloads. If you know any - please write in comments.</p>
         </div>
         <footer class="article-footer">
-    <a data-url="https://romange.github.io/blog/about/" data-id="a69934980f795699f7cc4d8a50a604b2" class="article-share-link">
+    <a data-url="https://romange.github.io/blog/2017/09/29/reloading-data-structures-under-high-throughput/" data-id="88f7f46386a436887c0e105d375a6913" class="article-share-link">
         <i class="fa fa-share"></i>
         Share
     </a>
     
-    <a href="https://romange.github.io/blog/about/#disqus_thread" class="article-comment-link">
+    <a href="https://romange.github.io/blog/2017/09/29/reloading-data-structures-under-high-throughput/#disqus_thread" class="article-comment-link">
         Comments
     </a>
     
@@ -381,6 +546,19 @@ of forgetting the old things. Hopefully this blog will help me to overcome these
     </div>
 
     
+<nav id="article-nav">
+    
+    <a href="https://romange.github.io/blog/2017/09/26/how-to-serialize-integers-into-memory/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">
+          Older
+      </strong>
+      <div class="article-nav-title">How to serialize integers into memory</div>
+    </a>
+    
+
+    
+</nav>
+
 
 </article>
 
@@ -410,7 +588,6 @@ of forgetting the old things. Hopefully this blog will help me to overcome these
     </div>
 </section>
 
-    
 
     </section>
 

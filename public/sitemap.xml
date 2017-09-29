@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://romange.github.io/blog/2017/09/29/reloading-data-structures-under-high-throughput/</loc>
+    <lastmod>2017-09-29T15:46:55+03:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://romange.github.io/blog/2017/09/26/how-to-serialize-integers-into-memory/</loc>
     <lastmod>2017-09-26T22:46:30+03:00</lastmod>
   </url>
@@ -18,6 +23,12 @@
   </url>
   
   <url>
+    <loc>https://romange.github.io/blog/tags/backend/</loc>
+    <lastmod>2017-09-29T15:46:55+03:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://romange.github.io/blog/tags/blogging/</loc>
     <lastmod>2017-09-26T16:16:40+03:00</lastmod>
     <priority>0</priority>
@@ -25,7 +36,7 @@
   
   <url>
     <loc>https://romange.github.io/blog/tags/c&#43;&#43;/</loc>
-    <lastmod>2017-09-26T22:46:30+03:00</lastmod>
+    <lastmod>2017-09-29T15:46:55+03:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -41,8 +52,14 @@
   </url>
   
   <url>
+    <loc>https://romange.github.io/blog/tags/concurrency/</loc>
+    <lastmod>2017-09-29T15:46:55+03:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://romange.github.io/blog/post/</loc>
-    <lastmod>2017-09-26T22:46:30+03:00</lastmod>
+    <lastmod>2017-09-29T15:46:55+03:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -54,13 +71,13 @@
   
   <url>
     <loc>https://romange.github.io/blog/tags/</loc>
-    <lastmod>2017-09-26T16:16:40+03:00</lastmod>
+    <lastmod>2017-09-29T15:46:55+03:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://romange.github.io/blog/</loc>
-    <lastmod>2017-09-26T22:46:30+03:00</lastmod>
+    <lastmod>2017-09-29T15:46:55+03:00</lastmod>
     <priority>0</priority>
   </url>
   

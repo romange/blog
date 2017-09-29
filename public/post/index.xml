@@ -7,10 +7,21 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Roman Gershman</copyright>
-    <lastBuildDate>Tue, 26 Sep 2017 22:46:30 +0300</lastBuildDate>
+    <lastBuildDate>Fri, 29 Sep 2017 15:46:55 +0300</lastBuildDate>
     
 	<atom:link href="https://romange.github.io/blog/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Reloading data structures under high throughput</title>
+      <link>https://romange.github.io/blog/2017/09/29/reloading-data-structures-under-high-throughput/</link>
+      <pubDate>Fri, 29 Sep 2017 15:46:55 +0300</pubDate>
+      
+      <guid>https://romange.github.io/blog/2017/09/29/reloading-data-structures-under-high-throughput/</guid>
+      <description>&lt;p&gt;Suppose you have a multi-threaded server that serves tens of thousands read queries per second. Those queries use a shared data-structure or index that is mostly immutable during the server run with the exception of periodic index reloads.  How do you implement data reloads in that server while keeping it live and kicking in production?&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>How to serialize integers into memory</title>

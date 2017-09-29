@@ -1,13 +1,13 @@
 +++
-title = "Reloading data structures under high throughput reads"
-tags = []
+title = "Reloading data structures under high throughput"
+tags = ["c++", "concurrency", "backend"]
 categories = []
 description = ""
 menu = ""
 banner = ""
 images = []
-date = 2017-09-29T00:46:55+03:00
-draft = true
+date = 2017-09-29T15:46:55+03:00
+draft = false
 +++
 
 Suppose you have a multi-threaded server that serves tens of thousands read queries per second. Those queries use a shared data-structure or index that is mostly immutable during the server run with the exception of periodic index reloads.  How do you implement data reloads in that server while keeping it live and kicking in production?
@@ -15,14 +15,13 @@ Suppose you have a multi-threaded server that serves tens of thousands read quer
 <!--more-->
 
 Obviously, if your data structure is thread-safe and allows mutations while correctly serving reads
-then the problem solved. However it often happens that either the data structure is not thread-safe or its safety guarantees do now allow seamless reads during relatively slow reloads.
-
+then the problem solved. However, it often happens that either the data structure is not thread-safe or its safety guarantees do now allow seamless reads during relatively slow reloads.
 
 Lets examine possible solutions to this problem:
 
 ### Shared mutex
 First, we can not use exclusive mutex to lock the index due to possibly huge contention in the read path: each query thread will require read access to our index and with the exclusive mutex it will stall all other threads until it finishes reading from the index.
-`shared_mutex` will solve this problem, however the reload operation will still need to lock the index exclusively (see below). During that period the read path will be blocked and we came back to the original problem we are trying to solve - having seamless reads during reloads.
+`shared_mutex` will solve this problem, however the reload operation will still need to lock the index exclusively (see below). During that period the read path will be blocked and we came back to the original problem - having seamless reads during reloads.
 
 ```cpp
 
@@ -40,7 +39,7 @@ index.UpdateFromFile(file_name);
 
 ### managing a pointer to immutable index.
 
-If we can allow eventually consistent transaction guarantees and our memory capacity can hold 2 indices at the same time we can solve the problem by adding a level of indirection and having a pointer to our always immutable index.
+If we allow eventual consistency and our memory capacity can hold 2 indices at the same time we can solve the problem by adding a level of indirection and having a pointer to our always immutable index.
 The naive solution could looks like this:
 
 ```cpp
@@ -49,7 +48,7 @@ std::atomic<Index*> index_ptr_;
 
 // Query Thread
 Index* index = index_ptr_->load();
-auto res = index->Query(arg);
+auto res = index->Query(arg);   // index can be invalid here.
 ................
 
 // Reload thread.
@@ -118,9 +117,9 @@ new_index.reset();  // or just goes out of scope. In any case we reduce referenc
                     // to the old Index.
 ```
 
-Please note that it's important to limit locked sections only to pointer changes. Anything else should be outside of lock to reduce the contention. This is why I do not use lock guards in the section above - I want to mark locking explicitly in most straighforward manner. I've seen lots of cases where lock guards were used and it caused huge contention after some very innocent code changes were applied.
+Please note that it's important to limit locked sections only to pointer changes. Anything else should be outside of lock to reduce the contention. This is why I do not use lock guards in the section above - I want to mark locking explicitly in most straighforward manner. I've seen lots of cases where lock guards were used and it caused huge contention after very innocent code changes were applied later.
 
-It is guaranteed that read thread controls the ownership of the object via the local_copy object it holds and it's enough to use shared lock when creating `local_copy` because we do not change the internal contents of `index_ptr_` - just increase the reference count which is atomic.
+It is guaranteed that the read thread protects the lifespan of the index via the local_copy object it holds and it's enough to use shared lock when creating `local_copy` because we do not change the internal contents of `index_ptr_` - just increase the reference count which is atomic.
 
 
 ### Quiescent State-Based Reclamation
@@ -154,12 +153,12 @@ new_index->UpdateFromFile(file_name);
 new_index = atomic_exchange(&index_ptr_, new_index);  // Swap the pointers.
 
 // Schedules the previous instance for deletion.
-// This is the main change. We do not do it now but merely ask to run it
-// when it's safe
+// This is the main change. We do not delete the index now but ask to run it
+// when it's safe.
 QSBR()->Schedule([new_index] { delete new_index;});
 ```
 
-The advantage of this approach is that we do not need to worry about ownership issues. Once we build the solution at the framework level it will always help us with freewing resources asynchronously in a safe manner. In Jeff's example his QSBR algorithm breaks timeline into discrete intervals. All the threads that run tasks during specific interval register themselves with it before running user-level tasks and unregister afterwards. Once all the threads has been unregistered, that interval can be `cleaned` from all the pending callbacks.
+The advantage of this approach is that we do not need to worry about ownership issues. Once we build the solution at the framework level it will always help us with freewing resources asynchronously in a safe manner. In Jeff's example his QSBR algorithm breaks timeline into discrete intervals. All the threads that run tasks during specific interval register themselves with it before running user-level tasks and unregister afterwards. Once all the threads has been unregistered, that interval can be `cleaned` from all the pending callbacks. Another pro
 
 
 I do not know any other methods for providing responsive reads during data reloads. If you know any - please write in comments.
