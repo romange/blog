@@ -159,7 +159,9 @@ new_index = atomic_exchange(&index_ptr_, new_index);  // Swap the pointers.
 QSBR()->Schedule([new_index] { delete new_index;});
 ```
 
-The advantage of this approach is that we do not need to worry about ownership issues. Once we build the solution at the framework level it will always help us with freewing resources asynchronously in a safe manner. In Jeff's example his QSBR algorithm breaks timeline into discrete intervals. All the threads that run tasks during specific interval register themselves with it before running user-level tasks and unregister afterwards. Once all the threads has been unregistered, that interval can be `cleaned` from all the pending callbacks. Another pro
+The advantage of this approach is that we do not need to worry about ownership issues. Once we build the solution at the framework level it will always help us with freewing resources asynchronously in a safe manner. Another advantage is that it's faster. We do not need to lock anything per resource, instead the framework provides unified lockless approach for similar problems.
+
+In Jeff's example his QSBR implementation breaks timeline into discrete intervals. All the threads that run tasks during specific interval register themselves before running user-level tasks and unregister afterwards. Once all the threads have been unregistered for a interval, it can be `cleaned` by running its pending GC callbacks.
 
 
 I do not know any other methods for providing responsive reads during data reloads. If you know any - please write in comments.

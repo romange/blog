@@ -51,7 +51,7 @@
 
 
 <meta itemprop="dateModified" content="2017-09-29T15:46:55&#43;03:00" />
-<meta itemprop="wordCount" content="1189">
+<meta itemprop="wordCount" content="1213">
 
 
 
@@ -270,7 +270,7 @@
             <i class="fa fa-calendar"></i>
             <time datetime="2017-09-29 15:46:55 &#43;0300 IDT" itemprop="datePublished">Sep 29nd 2017</time>
             &middot;
-            1189
+            1213
             words
             &middot;
             6
@@ -453,7 +453,9 @@ new_index = atomic_exchange(&amp;index_ptr_, new_index);  // Swap the pointers.
 QSBR()-&gt;Schedule([new_index] { delete new_index;});
 </code></pre>
 
-<p>The advantage of this approach is that we do not need to worry about ownership issues. Once we build the solution at the framework level it will always help us with freewing resources asynchronously in a safe manner. In Jeff&rsquo;s example his QSBR algorithm breaks timeline into discrete intervals. All the threads that run tasks during specific interval register themselves with it before running user-level tasks and unregister afterwards. Once all the threads has been unregistered, that interval can be <code>cleaned</code> from all the pending callbacks. Another pro</p>
+<p>The advantage of this approach is that we do not need to worry about ownership issues. Once we build the solution at the framework level it will always help us with freewing resources asynchronously in a safe manner. Another advantage is that it&rsquo;s faster. We do not need to lock anything per resource, instead the framework provides unified lockless approach for similar problems.</p>
+
+<p>In Jeff&rsquo;s example his QSBR implementation breaks timeline into discrete intervals. All the threads that run tasks during specific interval register themselves before running user-level tasks and unregister afterwards. Once all the threads have been unregistered for a interval, it can be <code>cleaned</code> by running its pending GC callbacks.</p>
 
 <p>I do not know any other methods for providing responsive reads during data reloads. If you know any - please write in comments.</p>
         </div>
