@@ -21,7 +21,7 @@ Lets examine possible solutions to this problem:
 
 ### Shared mutex
 First, we can not use exclusive mutex to lock the index due to possibly huge contention in the read path: each query thread will require read access to our index and with the exclusive mutex it will stall all other threads until it finishes reading from the index.
-`shared_mutex` will solve this problem, however the reload operation will still need to lock the index exclusively (see below). During that period the read path will be blocked and we came back to the original problem - having seamless reads during reloads.
+`shared_mutex` will solve this problem, however the reload operation will still need to lock the index exclusively (see below). During that period the read path will be blocked and we came back to the original problem - having stalled reads during reloads.
 
 ```cpp
 

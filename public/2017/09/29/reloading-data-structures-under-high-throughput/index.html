@@ -319,7 +319,7 @@ then the problem solved. However, it often happens that either the data structur
 <h3 id="shared-mutex">Shared mutex</h3>
 
 <p>First, we can not use exclusive mutex to lock the index due to possibly huge contention in the read path: each query thread will require read access to our index and with the exclusive mutex it will stall all other threads until it finishes reading from the index.
-<code>shared_mutex</code> will solve this problem, however the reload operation will still need to lock the index exclusively (see below). During that period the read path will be blocked and we came back to the original problem - having seamless reads during reloads.</p>
+<code>shared_mutex</code> will solve this problem, however the reload operation will still need to lock the index exclusively (see below). During that period the read path will be blocked and we came back to the original problem - having stalled reads during reloads.</p>
 
 <pre><code class="language-cpp">
 // Query Thread

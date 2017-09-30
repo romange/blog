@@ -19,7 +19,7 @@
       
       <guid>http://www.romange.com/2017/09/26/how-to-serialize-integers-into-memory/</guid>
       <description>&lt;p&gt;Here is the analysis of a recent bug I&amp;rsquo;ve stumbled upon. My initial reaction was that
-the problem is in the compiler (or that &lt;a href=&#34;https://www.youtube.com/watch?v=PIuE5J9dfAo&#34;&gt;&amp;ldquo;These are wrong bees&amp;rdquo;&lt;/a&gt;). Consider the code below. We copy 64 integers into a properly allocated destination buffer and yet, if compiled with &lt;code&gt;-O3&lt;/code&gt; switch this code crashes with segfault!.&lt;/p&gt;
+the problem is in the compiler (or that &lt;a href=&#34;https://www.youtube.com/watch?v=PIuE5J9dfAo&#34;&gt;&amp;ldquo;These are wrong bees&amp;rdquo;&lt;/a&gt;). Consider the code below. We copy 64 integers into a properly allocated destination buffer and yet, if compiled with &lt;code&gt;-O3&lt;/code&gt; switch this code crashes with segfault!&lt;/p&gt;
 
 &lt;p&gt;&lt;/p&gt;</description>
     </item>
