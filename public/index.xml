@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Roman Gershman</copyright>
-    <lastBuildDate>Fri, 29 Sep 2017 15:46:55 +0300</lastBuildDate>
+    <lastBuildDate>Thu, 02 Nov 2017 13:37:51 +0200</lastBuildDate>
     
 	<atom:link href="http://www.romange.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Implementing cheap and precise clock</title>
+      <link>http://www.romange.com/2017/11/02/implementing-cheap-and-precise-clock/</link>
+      <pubDate>Thu, 02 Nov 2017 13:37:51 +0200</pubDate>
+      
+      <guid>http://www.romange.com/2017/11/02/implementing-cheap-and-precise-clock/</guid>
+      <description>&lt;p&gt;The posix API for querying high-precision hardware clocks is &lt;code&gt;clock_gettime&lt;/code&gt;. If one second precision is fine then &lt;code&gt;time(nullptr)&lt;/code&gt; is your friend. Unfortunately, using precice clocks takes its price - they are more expensive CPU-wise.&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>Reloading data structures under high throughput</title>

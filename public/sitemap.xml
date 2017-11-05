@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://www.romange.com/2017/11/02/implementing-cheap-and-precise-clock/</loc>
+    <lastmod>2017-11-02T13:37:51+02:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://www.romange.com/2017/09/29/reloading-data-structures-under-high-throughput/</loc>
     <lastmod>2017-09-29T15:46:55+03:00</lastmod>
   </url>
@@ -36,7 +41,7 @@
   
   <url>
     <loc>http://www.romange.com/tags/c&#43;&#43;/</loc>
-    <lastmod>2017-09-29T15:46:55+03:00</lastmod>
+    <lastmod>2017-11-02T13:37:51+02:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -58,8 +63,20 @@
   </url>
   
   <url>
+    <loc>http://www.romange.com/tags/linux/</loc>
+    <lastmod>2017-11-02T13:37:51+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.romange.com/tags/posix/</loc>
+    <lastmod>2017-11-02T13:37:51+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>http://www.romange.com/post/</loc>
-    <lastmod>2017-09-29T15:46:55+03:00</lastmod>
+    <lastmod>2017-11-02T13:37:51+02:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -77,7 +94,7 @@
   
   <url>
     <loc>http://www.romange.com/</loc>
-    <lastmod>2017-09-29T15:46:55+03:00</lastmod>
+    <lastmod>2017-11-02T13:37:51+02:00</lastmod>
     <priority>0</priority>
   </url>
   

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
-    <title>About me &middot; Это неправильные пчелы</title>
+    <title>Implementing cheap and precise clock &middot; Это неправильные пчелы</title>
     <meta name="generator" content="Hugo 0.30.2" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -10,10 +10,7 @@
       <meta name="description" content="These bees are wrong">
     
     
-      <link href="http://www.romange.com/about/index.xml" rel="alternate" type="application/rss+xml" title="Это неправильные пчелы" />
-      <link href="http://www.romange.com/about/index.xml" rel="feed" type="application/rss+xml" title="Это неправильные пчелы" />
-    
-    <link rel="canonical" href="http://www.romange.com/about/"/>
+    <link rel="canonical" href="http://www.romange.com/2017/11/02/implementing-cheap-and-precise-clock/"/>
     <link rel="icon" href="http://www.romange.com/favicon.ico">
     <link rel="apple-touch-icon" href="http://www.romange.com/apple-touch-icon.png"/>
     <link rel="stylesheet" href="http://www.romange.com/css/style.css">
@@ -23,14 +20,17 @@
     
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro' rel='stylesheet' type='text/css'>
-    <meta property="og:title" content="About me" />
-<meta property="og:description" content="" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="http://www.romange.com/about/" />
+    <meta property="og:title" content="Implementing cheap and precise clock" />
+<meta property="og:description" content="The posix API for querying high-precision hardware clocks is clock_gettime. If one second precision is fine then time(nullptr) is your friend. Unfortunately, using precice clocks takes its price - they are more expensive CPU-wise." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://www.romange.com/2017/11/02/implementing-cheap-and-precise-clock/" />
 
 
 
-<meta property="og:updated_time" content="2017-09-26T20:09:02&#43;03:00"/>
+<meta property="article:published_time" content="2017-11-02T13:37:51&#43;02:00"/>
+
+<meta property="article:modified_time" content="2017-11-02T13:37:51&#43;02:00"/>
+
 
 
 
@@ -43,12 +43,20 @@
 
     
     
-<meta itemprop="name" content="About me">
-<meta itemprop="description" content="">
+<meta itemprop="name" content="Implementing cheap and precise clock">
+<meta itemprop="description" content="The posix API for querying high-precision hardware clocks is clock_gettime. If one second precision is fine then time(nullptr) is your friend. Unfortunately, using precice clocks takes its price - they are more expensive CPU-wise.">
 
 
-    <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="About me"/>
-<meta name="twitter:description" content=""/>
+<meta itemprop="datePublished" content="2017-11-02T13:37:51&#43;02:00" />
+<meta itemprop="dateModified" content="2017-11-02T13:37:51&#43;02:00" />
+<meta itemprop="wordCount" content="649">
+
+
+
+<meta itemprop="keywords" content="c&#43;&#43;,linux,posix," />
+
+    <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Implementing cheap and precise clock"/>
+<meta name="twitter:description" content="The posix API for querying high-precision hardware clocks is clock_gettime. If one second precision is fine then time(nullptr) is your friend. Unfortunately, using precice clocks takes its price - they are more expensive CPU-wise."/>
 
     
 
@@ -241,17 +249,14 @@
     
 
     
-    
-    
-    
-        <article id="page-undefined" class="article article-type-page" itemscope="" itemprop="blogPost">
+    <article id="page-undefined" class="article article-type-page" itemscope="" itemprop="blogPost">
     <div class="article-inner">
         
 
         <header class="article-header">
-    <a href="http://www.romange.com/about/">
+    <a href="http://www.romange.com/2017/11/02/implementing-cheap-and-precise-clock/">
     <h1 class="article-title" itemprop="name">
-        About me
+        Implementing cheap and precise clock
     </h1>
     </a>
     <div class="article-meta">
@@ -259,12 +264,12 @@
         
         <div class="article-date">
             <i class="fa fa-calendar"></i>
-            <time datetime="2017-09-26 20:09:02 &#43;0300 IDT" itemprop="datePublished">Sep 26nd 2017</time>
+            <time datetime="2017-11-02 13:37:51 &#43;0200 IST" itemprop="datePublished">Nov 2nd 2017</time>
             &middot;
-            108
+            649
             words
             &middot;
-            1
+            4
             minute read
         </div>
         
@@ -276,26 +281,140 @@
         
             
             
+            <div class="article-category">
+                <i class="fa fa-tags"></i>
+                
+                
+                <a class="article-category-link" href="http://www.romange.com/tags/c&#43;&#43;">c&#43;&#43;</a>
+                &middot;
+                
+                
+                <a class="article-category-link" href="http://www.romange.com/tags/linux">linux</a>
+                &middot;
+                
+                
+                <a class="article-category-link" href="http://www.romange.com/tags/posix">posix</a>
+                
+                
+            </div>
+            
         
     </div>
 </header>
 
         <div class="article-entry" itemprop="articleBody">
-            <p>My name is Roman Gershman, I work in <a href="ubimo.com">Ubimo</a> as software engineer and chief architect. I&rsquo;ve developed at Ubimo few key systems that are used intensively in Ubimo products. Some of those systems include Geo Server, heavily parallelized mapreduce framework, internal RPC framework,
-extensible file formats that are used by engineering department and more. My passion is developing efficient algorithms and backend systems. Before Ubimo I&rsquo;ve been working at Google for 7 years.</p>
+            <p>The posix API for querying high-precision hardware clocks is <code>clock_gettime</code>. If one second precision is fine then <code>time(nullptr)</code> is your friend. Unfortunately, using precice clocks takes its price - they are more expensive CPU-wise.</p>
 
-<p>I&rsquo;ve been coding for the last 25 years. Lately I feel that learning new stuff comes at the expense
-of forgetting the old things. Hopefully this blog will help me to overcome these problems :)</p>
+<p>
+How expensive? On my machine precise versions like <code>CLOCK_MONOTONIC</code> and <code>CLOCK_REALTIME</code> are 9 times more expensive than <code>time(nullptr)</code> and 4 times more expensive than their <code>COARSE</code> counterparts. <code>COARSE</code> clocks are probably enough as long as you do not need precision better than 10ms.</p>
 
-<p></p>
+<p>For a high throughput process that requires sub-ms precision and might call <code>clock_gettime</code> hundreds of thousands times per second (for measuring the latency of its incoming requests for example), this function can appear high on CPU profiler radar. Below I provide a solution for a very cheap clock with precision of 0.1ms.</p>
+
+<p>The idea is to cache the clock value inside a process variable and to update it with the required precision. The goal is to make update thread as light as possible and very precise.
+The simple solution will be (I omit checking error states for brevity):</p>
+
+<pre><code class="language-cpp">static std::atomic&lt;int64_t&gt; timer_count_micros;
+
+constexpr uint32_t kNumMicrosPerSecond = 1000000;
+
+static void SleepMicros(uint32_t micros) {
+  struct timespec sleep_time;
+  sleep_time.tv_sec = micros / kNumMicrosPerSecond;
+  sleep_time.tv_nsec = (micros % kNumMicrosPerSecond) * 1000;
+
+  // To protect against signals.
+  while (nanosleep(&amp;sleep_time, &amp;sleep_time) != 0 &amp;&amp; errno == EINTR) {}
+}
+
+static void* UpdateTimerCounter(void* arg) {
+  timespec ts;
+
+  int64_t sleep_micros = reinterpret_cast&lt;int64_t&gt;(arg);
+  while (IsEnabled()) {
+    clock_gettime(CLOCK_REALTIME, &amp;ts);
+    timer_count_micros.store(ts.tv_sec * kNumMicrosPerSecond + ts.tv_nsec / 1000)
+
+    SleepMicros(sleep_micros);
+  }
+
+  return nullptr;
+}
+
+pthread_t InitCacheClock(uint32_t precision_micros) {
+  pthread_t result;
+
+  timespec ts;
+  clock_gettime(CLOCK_REALTIME, &amp;ts);
+  timer_count_micros.store(ts.tv_sec * kNumMicrosPerSecond + ts.tv_nsec / 1000)
+
+  pthread_create(&amp;result, nullptr, UpdateTimerCounter,
+                 reinterpret_cast&lt;void*&gt;(precision_micros / 2));
+  return result;
+}
+
+</code></pre>
+
+<p>In short, <code>UpdateMsCounter</code> thread synchronizes our process timer variable with latest clock
+value. Then it just sleeps and frees the CPU for other tasks. The CPU cost will be linear to our desired precision: lower <code>precision_micros</code> is - more iterations our thread will perform.</p>
+
+<p>Unfortunately this implementation has low precision because of the <code>nanosleep</code> function: it does not guarantee that the thread will be awaken exactly after <code>sleep_micros</code>. In fact, it can take few milliseconds or even more until thread scheduler will context switch to our thread. Another minor disadvantage of this approach that we have 2 system calls per iteration which is a bit costly.</p>
+
+<h3 id="using-timer-file-descriptors">Using timer file descriptors</h3>
+
+<p>Timer file descriptors (in <code>&lt;sys/timerfd.h&gt;</code> are linux-specific timers that allow measuring time via file descriptor interface. The advantage of this approach that we can have a thread that does not sleep but still blocks on read and unblocks with desired precision.</p>
+
+<pre><code class="language-cpp">
+constexpr uint64_t kPrecisionMicros = 50;
+static std::atomic_int timer_fd = ATOMIC_VAR_INIT(-1);
+
+static void* UpdateTimerCounter(void* arg) {
+  int fd;
+  uint64_t missed;
+
+  // I use `timer_fd` as both cancel signal and container for timer descriptor.
+  while ((fd = timer_fd.load(std::memory_order_relaxed)) &gt; 0) {
+
+    // `read` blocks according to timer configuration of `fd`.
+    int ret = read(fd, &amp;missed, sizeof missed);
+    DCHECK_EQ(8, ret); // it
+    timer_count_micros.fetch_add(missed * kPrecisionMicros, std::memory_order_release);
+  }
+  return nullptr;
+}
+
+pthread_t InitCacheClock() {
+  /* Set up a periodic timer with cycle = kPrecisionMicros */
+  timer_fd = timerfd_create(CLOCK_REALTIME, TFD_CLOEXEC);
+  struct itimerspec its;
+
+  its.it_value.tv_sec = 0;
+  its.it_value.tv_nsec = kPrecisionMicros * 1000;
+
+  // Setup periodic timer of the same interval.
+  its.it_interval = its.it_value;
+
+  timerfd_settime(timer_fd, 0 /* its is RELATIVE */, &amp;its, NULL);
+
+
+  timespec ts;
+  clock_gettime(CLOCK_REALTIME, &amp;ts);
+  timer_count_micros.store(ts.tv_sec * kNumMicrosPerSecond + ts.tv_nsec / 1000)
+
+  pthread_create(&amp;result, nullptr, UpdateTimerCounter, nullptr);
+  return result;
+}
+</code></pre>
+
+<p>Usually <code>missed</code> variable will hold 1 but if a single iteration was delayed than it will contain values larger than 1. Thus the thread loop is self-adjusting to the clock. The thread does not take much CPU (for sane kPrecisionMicros values), uses a single <code>read</code> system call and provides a good alternative for sub-millisecond precision measurements. As I said earlier, the only disadvantage I found with this approach is that it&rsquo;s linux specific.
+Please tell me what you think about it or if you thought of better ways to measure clocks.</p>
         </div>
         <footer class="article-footer">
-    <a data-url="http://www.romange.com/about/" data-id="a69934980f795699f7cc4d8a50a604b2" class="article-share-link">
+    <a data-url="http://www.romange.com/2017/11/02/implementing-cheap-and-precise-clock/" data-id="c14b7dd2e5be38d68b9cebc2e213a83a" class="article-share-link">
         <i class="fa fa-share"></i>
         Share
     </a>
     
-    <a href="http://www.romange.com/about/#disqus_thread" class="article-comment-link">
+    <a href="http://www.romange.com/2017/11/02/implementing-cheap-and-precise-clock/#disqus_thread" class="article-comment-link">
         Comments
     </a>
     
@@ -369,6 +488,19 @@ of forgetting the old things. Hopefully this blog will help me to overcome these
     </div>
 
     
+<nav id="article-nav">
+    
+    <a href="http://www.romange.com/2017/09/29/reloading-data-structures-under-high-throughput/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">
+          Older
+      </strong>
+      <div class="article-nav-title">Reloading data structures under high throughput</div>
+    </a>
+    
+
+    
+</nav>
+
 
 </article>
 
@@ -398,7 +530,6 @@ of forgetting the old things. Hopefully this blog will help me to overcome these
     </div>
 </section>
 
-    
 
     </section>
 
