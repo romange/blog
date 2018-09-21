@@ -2,7 +2,7 @@
 <html lang="en-us">
 <head>
     <title>Это неправильные пчелы</title>
-    <meta name="generator" content="Hugo 0.30.2" />
+    <meta name="generator" content="Hugo 0.40.1" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="author" content="Roman Gershman">
@@ -30,7 +30,7 @@
 
 
 
-<meta property="og:updated_time" content="2017-11-02T13:37:51&#43;02:00"/>
+<meta property="og:updated_time" content="2018-07-12T20:45:24&#43;03:00"/>
 
 
 
@@ -47,7 +47,8 @@
 <meta itemprop="description" content="">
 
 
-    <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Это неправильные пчелы"/>
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Это неправильные пчелы"/>
 <meta name="twitter:description" content=""/>
 
     
@@ -158,12 +159,12 @@
     </div>
     <div class="article-info profile-block">
       <div class="article-info-block">
-        4
+        5
         <span>Posts</span>
       </div>
       <div class="article-info-block">
         
-          8
+          10
         
         <span>
             Tags
@@ -249,6 +250,158 @@
         </a>
 
         <header class="article-header">
+    <a href="http://www.romange.com/2018/07/12/seastar---asynchronous-c---framework/">
+    <h1 class="article-title" itemprop="name">
+        Seastar - Asynchronous C&#43;&#43; framework
+    </h1>
+    </a>
+    <div class="article-meta">
+
+        
+        <div class="article-date">
+            <i class="fa fa-calendar"></i>
+            <time datetime="2018-07-12 20:45:24 &#43;0300 IDT" itemprop="datePublished">Jul 12nd 2018</time>
+            &middot;
+            0
+            words
+            &middot;
+            0
+            minute read
+        </div>
+        
+        
+            
+            
+        
+
+        
+            
+            
+            <div class="article-category">
+                <i class="fa fa-tags"></i>
+                
+                
+                <a class="article-category-link" href="http://www.romange.com/tags/concurrency">concurrency</a>
+                &middot;
+                
+                
+                <a class="article-category-link" href="http://www.romange.com/tags/asynchronous">asynchronous</a>
+                &middot;
+                
+                
+                <a class="article-category-link" href="http://www.romange.com/tags/seastar">seastar</a>
+                
+                
+            </div>
+            
+        
+    </div>
+</header>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>
+                <p>Lately there are many discussions in programming community in general and in c++ community in particular on how to write efficient asynchronous code. Many concepts like futures, continuations, coroutines are being discussed by c++ standard comittee but not much progress was made besides very minimal support of C++11 futures.</p>
+
+<p>On the other hand, many mainstream programming languages progressed quicker and adopted asynchronous models either into a core language or popularized it via standard libraries. For example, coroutines are used in Python (yield) and Lua.
+Continuations and futures are used extensively in Java. Golang and Erlang are using green threads.
+Callback based actor models are used in C and Javascript. Due to lack of official support for asynchronous programming in C++ the community introduced ad-hoc frameworks and libraries that allow writing asynchronous code in C++.</p>
+
+<p>I would like to share my opinion on what I think will be the best direction for asynchronous models in C++ by reviewing two prominents frameworks: <a href="http://seastar.io/">Seastar</a> and <a href="https://boost.org/doc/libs/1_67_0/libs/fiber/doc/html/index.html">Boost.Fiber</a>. This (opiniated) post reviews Seastar.</p>
+
+<p></p>
+            </p>
+            <p class="article-more-link">
+                <a href="http://www.romange.com/2018/07/12/seastar---asynchronous-c---framework/">
+                    Read more
+                </a>
+            </p>
+        </div>
+        <footer class="article-footer">
+    <a data-url="http://www.romange.com/2018/07/12/seastar---asynchronous-c---framework/" data-id="c898dc4bc2df3f11acc490a18d2cf803" class="article-share-link">
+        <i class="fa fa-share"></i>
+        Share
+    </a>
+    
+    <a href="http://www.romange.com/2018/07/12/seastar---asynchronous-c---framework/#disqus_thread" class="article-comment-link">
+        Comments
+    </a>
+    
+
+    <script>
+    (function ($) {
+        
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+    </script>
+</footer>
+
+    </div>
+</article>
+
+<article class="article article-type-post" itemscope="" itemprop="blogPost">
+    <div class="article-inner">
+        
+        </a>
+
+        <header class="article-header">
     <a href="http://www.romange.com/2017/11/02/implementing-cheap-and-precise-clock/">
     <h1 class="article-title" itemprop="name">
         Implementing cheap and precise clock
@@ -261,10 +414,10 @@
             <i class="fa fa-calendar"></i>
             <time datetime="2017-11-02 13:37:51 &#43;0200 IST" itemprop="datePublished">Nov 2nd 2017</time>
             &middot;
-            649
+            0
             words
             &middot;
-            4
+            0
             minute read
         </div>
         
@@ -405,10 +558,10 @@
             <i class="fa fa-calendar"></i>
             <time datetime="2017-09-29 15:46:55 &#43;0300 IDT" itemprop="datePublished">Sep 29nd 2017</time>
             &middot;
-            1213
+            0
             words
             &middot;
-            6
+            0
             minute read
         </div>
         
@@ -551,10 +704,10 @@
             <i class="fa fa-calendar"></i>
             <time datetime="2017-09-26 22:46:30 &#43;0300 IDT" itemprop="datePublished">Sep 26nd 2017</time>
             &middot;
-            508
+            0
             words
             &middot;
-            3
+            0
             minute read
         </div>
         
@@ -698,10 +851,10 @@ the problem is in the compiler (or that <a href="https://www.youtube.com/watch?v
             <i class="fa fa-calendar"></i>
             <time datetime="2017-09-26 16:16:40 &#43;0300 IDT" itemprop="datePublished">Sep 26nd 2017</time>
             &middot;
-            30
+            0
             words
             &middot;
-            1
+            0
             minute read
         </div>
         
@@ -846,6 +999,20 @@ Stay tuned!</p>
                     
                     
                     
+                    <p class="item-title"><a href="http://www.romange.com/2018/07/12/seastar---asynchronous-c---framework/" class="title">Seastar - Asynchronous C&#43;&#43; framework</a></p>
+                    <p class="item-date">
+                        <time datetime="2018-07-12 20:45:24 &#43;0300 IDT" itemprop="datePublished">Jul 12nd 2018</time>
+                    </p>
+                </div>
+            </li>
+            
+            <li>
+                
+
+                <div class="item-inner">
+                    
+                    
+                    
                     <p class="item-title"><a href="http://www.romange.com/2017/11/02/implementing-cheap-and-precise-clock/" class="title">Implementing cheap and precise clock</a></p>
                     <p class="item-date">
                         <time datetime="2017-11-02 13:37:51 &#43;0200 IST" itemprop="datePublished">Nov 2nd 2017</time>
@@ -918,6 +1085,14 @@ Stay tuned!</p>
             
             <li class="category-list-item">
                 
+                <a class="category-list-link" href="http://www.romange.com/tags/asynchronous">
+                    asynchronous
+                </a>
+                <span class="category-list-count">1</span>
+            </li>
+            
+            <li class="category-list-item">
+                
                 <a class="category-list-link" href="http://www.romange.com/tags/backend">
                     backend
                 </a>
@@ -953,7 +1128,7 @@ Stay tuned!</p>
                 <a class="category-list-link" href="http://www.romange.com/tags/concurrency">
                     concurrency
                 </a>
-                <span class="category-list-count">1</span>
+                <span class="category-list-count">2</span>
             </li>
             
             <li class="category-list-item">
@@ -980,6 +1155,14 @@ Stay tuned!</p>
                 <span class="category-list-count">1</span>
             </li>
             
+            <li class="category-list-item">
+                
+                <a class="category-list-link" href="http://www.romange.com/tags/seastar">
+                    seastar
+                </a>
+                <span class="category-list-count">1</span>
+            </li>
+            
         </ul>
     </div>
 </div>
@@ -995,6 +1178,9 @@ Stay tuned!</p>
         Tag cloud
     </h3>
     <div class="widget tagcloud">
+        
+        
+        <a href="http://www.romange.com/tags/asynchronous" style="font-size: 12px;">asynchronous</a>
         
         
         <a href="http://www.romange.com/tags/backend" style="font-size: 12px;">backend</a>
@@ -1020,6 +1206,9 @@ Stay tuned!</p>
         
         <a href="http://www.romange.com/tags/programming" style="font-size: 12px;">programming</a>
         
+        
+        <a href="http://www.romange.com/tags/seastar" style="font-size: 12px;">seastar</a>
+        
     </div>
 </div>
 
@@ -1037,7 +1226,7 @@ Stay tuned!</p>
 <footer id="footer">
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2017
+      &copy; 2018
       Roman Gershman
     </div>
   </div>

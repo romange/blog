@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Concurrency on Это неправильные пчелы</title>
-    <link>http://www.romange.com/tags/concurrency/</link>
-    <description>Recent content in Concurrency on Это неправильные пчелы</description>
+    <title>Seastar on Это неправильные пчелы</title>
+    <link>http://www.romange.com/tags/seastar/</link>
+    <description>Recent content in Seastar on Это неправильные пчелы</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 12 Jul 2018 20:45:24 +0300</lastBuildDate>
     
-	<atom:link href="http://www.romange.com/tags/concurrency/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://www.romange.com/tags/seastar/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -24,17 +24,6 @@ Continuations and futures are used extensively in Java. Golang and Erlang are us
 Callback based actor models are used in C and Javascript. Due to lack of official support for asynchronous programming in C++ the community introduced ad-hoc frameworks and libraries that allow writing asynchronous code in C++.&lt;/p&gt;
 
 &lt;p&gt;I would like to share my opinion on what I think will be the best direction for asynchronous models in C++ by reviewing two prominents frameworks: &lt;a href=&#34;http://seastar.io/&#34;&gt;Seastar&lt;/a&gt; and &lt;a href=&#34;https://boost.org/doc/libs/1_67_0/libs/fiber/doc/html/index.html&#34;&gt;Boost.Fiber&lt;/a&gt;. This (opiniated) post reviews Seastar.&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>Reloading data structures under high throughput</title>
-      <link>http://www.romange.com/2017/09/29/reloading-data-structures-under-high-throughput/</link>
-      <pubDate>Fri, 29 Sep 2017 15:46:55 +0300</pubDate>
-      
-      <guid>http://www.romange.com/2017/09/29/reloading-data-structures-under-high-throughput/</guid>
-      <description>&lt;p&gt;Suppose you have a multi-threaded server that serves tens of thousands read queries per second. Those queries use a shared data-structure or index that is mostly immutable during the server run with the exception of periodic index reloads.  How do you implement data reloads in that server while keeping it live and kicking in production?&lt;/p&gt;
 
 &lt;p&gt;&lt;/p&gt;</description>
     </item>
