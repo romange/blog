@@ -51,8 +51,8 @@ Right from the start it was hard for me to get used to the unique style of writi
 The problem is common to Java futures as well, not just to C++ or Seastar.
 
 Consider, for example, the following code taken from Seastar's wiki page.
-It start a listener loop on port 1234 that accepts server connections.
-For each accepted connection it writes a response into a socket and then closes it.
+It starts a listener loop on port 1234 that accepts server connections.
+For each accepted connection it writes a response into its socket and then closes it.
 
 ```cpp
 seastar::future<> service_loop() {
@@ -77,10 +77,10 @@ seastar::future<> service_loop() {
 }
 ```
 
-The code has a flow that is common to all continuation passing frameworks.
+The code has notable flow that is common to all continuation passing frameworks.
 It indents to right with each continuation or lambda. There are lots of lambda functions
 and it's very hard to see which block can access what variables.
-Every continuation or asynchronous function break the execution context and it's very hard
+Every continuation or asynchronous function breaks the execution context and it's very hard
 to reason about the flow of the program.
 
 Now consider `seastar::keep_doing`. It is a pre-built routine that accepts an (a)synchronous function
