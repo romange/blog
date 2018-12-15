@@ -175,7 +175,7 @@ I would like to share my opinion on what I think will be the best direction for 
     </div>
     <div class="article-info profile-block">
       <div class="article-info-block">
-        5
+        6
         <span>Posts</span>
       </div>
       <div class="article-info-block">
@@ -354,8 +354,8 @@ It has been used already in <a href="http://seastar.io/seastar-applications/">fe
 The problem is common to Java futures as well, not just to C++ or Seastar.</p>
 
 <p>Consider, for example, the following code taken from Seastar&rsquo;s wiki page.
-It start a listener loop on port 1234 that accepts server connections.
-For each accepted connection it writes a response into a socket and then closes it.</p>
+It starts a listener loop on port 1234 that accepts server connections.
+For each accepted connection it writes a response into its socket and then closes it.</p>
 
 <pre><code class="language-cpp">seastar::future&lt;&gt; service_loop() {
     seastar::listen_options lo;
@@ -379,10 +379,10 @@ For each accepted connection it writes a response into a socket and then closes 
 }
 </code></pre>
 
-<p>The code has a flow that is common to all continuation passing frameworks.
+<p>The code has notable flow that is common to all continuation passing frameworks.
 It indents to right with each continuation or lambda. There are lots of lambda functions
 and it&rsquo;s very hard to see which block can access what variables.
-Every continuation or asynchronous function break the execution context and it&rsquo;s very hard
+Every continuation or asynchronous function breaks the execution context and it&rsquo;s very hard
 to reason about the flow of the program.</p>
 
 <p>Now consider <code>seastar::keep_doing</code>. It is a pre-built routine that accepts an (a)synchronous function
@@ -562,6 +562,13 @@ framework and will explain how it solves asynchronous programming but retains th
     
 
     
+    <a href="http://www.romange.com/2018/11/25/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">
+          Newer
+      </strong>
+      <div class="article-nav-title"></div>
+    </a>
+    
 </nav>
 
 
@@ -605,6 +612,20 @@ framework and will explain how it solves asynchronous programming but retains th
     </h3>
     <div class="widget">
         <ul id="recent-post">
+            
+            <li>
+                
+
+                <div class="item-inner">
+                    
+                    
+                    
+                    <p class="item-title"><a href="http://www.romange.com/2018/11/25/" class="title"></a></p>
+                    <p class="item-date">
+                        <time datetime="2018-11-25 12:59:52 &#43;0300 &#43;0300" itemprop="datePublished">Nov 25nd 2018</time>
+                    </p>
+                </div>
+            </li>
             
             <li>
                 
@@ -658,20 +679,6 @@ framework and will explain how it solves asynchronous programming but retains th
                     <p class="item-title"><a href="http://www.romange.com/2017/09/26/how-to-serialize-integers-into-memory/" class="title">How to serialize integers into memory</a></p>
                     <p class="item-date">
                         <time datetime="2017-09-26 22:46:30 &#43;0300 IDT" itemprop="datePublished">Sep 26nd 2017</time>
-                    </p>
-                </div>
-            </li>
-            
-            <li>
-                
-
-                <div class="item-inner">
-                    
-                    
-                    
-                    <p class="item-title"><a href="http://www.romange.com/2017/09/26/my-first-post/" class="title">My first post</a></p>
-                    <p class="item-date">
-                        <time datetime="2017-09-26 16:16:40 &#43;0300 IDT" itemprop="datePublished">Sep 26nd 2017</time>
                     </p>
                 </div>
             </li>

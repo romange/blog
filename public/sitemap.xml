@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://www.romange.com/2018/11/25/</loc>
+    <lastmod>2018-11-25T12:59:52+03:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://www.romange.com/2018/07/12/seastar---asynchronous-c---framework/</loc>
     <lastmod>2018-07-12T20:45:24+03:00</lastmod>
   </url>
@@ -87,7 +92,7 @@
   
   <url>
     <loc>http://www.romange.com/post/</loc>
-    <lastmod>2018-07-12T20:45:24+03:00</lastmod>
+    <lastmod>2018-11-25T12:59:52+03:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -111,7 +116,7 @@
   
   <url>
     <loc>http://www.romange.com/</loc>
-    <lastmod>2018-07-12T20:45:24+03:00</lastmod>
+    <lastmod>2018-11-25T12:59:52+03:00</lastmod>
     <priority>0</priority>
   </url>
   

@@ -6,10 +6,22 @@
     <description>Recent content on Это неправильные пчелы</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 12 Jul 2018 20:45:24 +0300</lastBuildDate>
+    <lastBuildDate>Sun, 25 Nov 2018 12:59:52 +0300</lastBuildDate>
     
 	<atom:link href="http://www.romange.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title></title>
+      <link>http://www.romange.com/2018/11/25/</link>
+      <pubDate>Sun, 25 Nov 2018 12:59:52 +0300</pubDate>
+      
+      <guid>http://www.romange.com/2018/11/25/</guid>
+      <description>&lt;p&gt;In my &lt;a href=&#34;http://www.romange.com/2018/07/12/seastar---asynchronous-c---framework/&#34;&gt;post about Seastar&lt;/a&gt; we&amp;rsquo;ve covered continuations style
+asynchronous programming. My personal opinion is that this style is hard to work with in C++. In this post I would like to cover alternative, Fiber-based approach.&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>Seastar - Asynchronous C&#43;&#43; framework</title>

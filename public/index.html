@@ -27,7 +27,7 @@
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="http://www.romange.com/" />
-<meta property="og:updated_time" content="2018-07-12T20:45:24&#43;03:00"/>
+<meta property="og:updated_time" content="2018-11-25T12:59:52&#43;03:00"/>
     
     
 <meta itemprop="name" content="Это неправильные пчелы">
@@ -146,7 +146,7 @@
     </div>
     <div class="article-info profile-block">
       <div class="article-info-block">
-        5
+        6
         <span>Posts</span>
       </div>
       <div class="article-info-block">
@@ -230,6 +230,136 @@
 
     
     
+
+<article class="article article-type-post" itemscope="" itemprop="blogPost">
+    <div class="article-inner">
+        
+        </a>
+
+        <header class="article-header">
+    <a href="http://www.romange.com/2018/11/25/">
+    <h1 class="article-title" itemprop="name">
+        
+    </h1>
+    </a>
+    <div class="article-meta">
+
+        
+        <div class="article-date">
+            <i class="fa fa-calendar"></i>
+            <time datetime="2018-11-25 12:59:52 &#43;0300 &#43;0300" itemprop="datePublished">Nov 25nd 2018</time>
+            &middot;
+            1298
+            words
+            &middot;
+            7
+            minute read
+        </div>
+        
+        
+            
+            
+        
+
+        
+            
+            
+        
+    </div>
+</header>
+
+        <div class="article-entry" itemprop="articleBody">
+            <p>
+                <p>In my <a href="http://www.romange.com/2018/07/12/seastar---asynchronous-c---framework/">post about Seastar</a> we&rsquo;ve covered continuations style
+asynchronous programming. My personal opinion is that this style is hard to work with in C++. In this post I would like to cover alternative, Fiber-based approach.</p>
+
+<p></p>
+            </p>
+            <p class="article-more-link">
+                <a href="http://www.romange.com/2018/11/25/">
+                    Read more
+                </a>
+            </p>
+        </div>
+        <footer class="article-footer">
+    <a data-url="http://www.romange.com/2018/11/25/" data-id="de0d26847baf8ad3b62477f37972b02c" class="article-share-link">
+        <i class="fa fa-share"></i>
+        Share
+    </a>
+    
+    <a href="http://www.romange.com/2018/11/25/#disqus_thread" class="article-comment-link">
+        Comments
+    </a>
+    
+
+    <script>
+    (function ($) {
+        
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+    </script>
+</footer>
+
+    </div>
+</article>
 
 <article class="article article-type-post" itemscope="" itemprop="blogPost">
     <div class="article-inner">
@@ -986,6 +1116,20 @@ Stay tuned!</p>
                     
                     
                     
+                    <p class="item-title"><a href="http://www.romange.com/2018/11/25/" class="title"></a></p>
+                    <p class="item-date">
+                        <time datetime="2018-11-25 12:59:52 &#43;0300 &#43;0300" itemprop="datePublished">Nov 25nd 2018</time>
+                    </p>
+                </div>
+            </li>
+            
+            <li>
+                
+
+                <div class="item-inner">
+                    
+                    
+                    
                     <p class="item-title"><a href="http://www.romange.com/2018/07/12/seastar---asynchronous-c---framework/" class="title">Seastar - Asynchronous C&#43;&#43; framework</a></p>
                     <p class="item-date">
                         <time datetime="2018-07-12 20:45:24 &#43;0300 IDT" itemprop="datePublished">Jul 12nd 2018</time>
@@ -1031,20 +1175,6 @@ Stay tuned!</p>
                     <p class="item-title"><a href="http://www.romange.com/2017/09/26/how-to-serialize-integers-into-memory/" class="title">How to serialize integers into memory</a></p>
                     <p class="item-date">
                         <time datetime="2017-09-26 22:46:30 &#43;0300 IDT" itemprop="datePublished">Sep 26nd 2017</time>
-                    </p>
-                </div>
-            </li>
-            
-            <li>
-                
-
-                <div class="item-inner">
-                    
-                    
-                    
-                    <p class="item-title"><a href="http://www.romange.com/2017/09/26/my-first-post/" class="title">My first post</a></p>
-                    <p class="item-date">
-                        <time datetime="2017-09-26 16:16:40 &#43;0300 IDT" itemprop="datePublished">Sep 26nd 2017</time>
                     </p>
                 </div>
             </li>
