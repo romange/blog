@@ -6,21 +6,20 @@
     <description>Recent content on Это неправильные пчелы</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 25 Nov 2018 12:59:52 +0300</lastBuildDate>
+    <lastBuildDate>Sat, 15 Dec 2018 11:59:52 +0300</lastBuildDate>
     
 	<atom:link href="http://www.romange.com/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title></title>
-      <link>http://www.romange.com/2018/11/25/</link>
-      <pubDate>Sun, 25 Nov 2018 12:59:52 +0300</pubDate>
+      <title>Introduction to fibers in c&#43;&#43;</title>
+      <link>http://www.romange.com/2018/12/15/introduction-to-fibers-in-c--/</link>
+      <pubDate>Sat, 15 Dec 2018 11:59:52 +0300</pubDate>
       
-      <guid>http://www.romange.com/2018/11/25/</guid>
-      <description>&lt;p&gt;In my &lt;a href=&#34;http://www.romange.com/2018/07/12/seastar---asynchronous-c---framework/&#34;&gt;post about Seastar&lt;/a&gt; we&amp;rsquo;ve covered continuations style
-asynchronous programming. My personal opinion is that this style is hard to work with in C++. In this post I would like to cover alternative, Fiber-based approach.&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+      <guid>http://www.romange.com/2018/12/15/introduction-to-fibers-in-c--/</guid>
+      <description>In my post about Seastar we&amp;rsquo;ve covered continuations style asynchronous programming. My personal opinion is that this style is hard to work with in C++. In this post I would like to cover alternative, Fiber-based approach. In this post I will use Boost.Fibers library in all my examples.
+Fibers, or green threads, or cooperative threads are similar to regular threads but with few important distinctions:
+ Fibers can not switch between system threads and they are usually pinned to a specific thread.</description>
     </item>
     
     <item>

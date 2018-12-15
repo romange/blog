@@ -3,8 +3,8 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>http://www.romange.com/2018/11/25/</loc>
-    <lastmod>2018-11-25T12:59:52+03:00</lastmod>
+    <loc>http://www.romange.com/2018/12/15/introduction-to-fibers-in-c--/</loc>
+    <lastmod>2018-12-15T11:59:52+03:00</lastmod>
   </url>
   
   <url>
@@ -39,7 +39,7 @@
   
   <url>
     <loc>http://www.romange.com/tags/asynchronous/</loc>
-    <lastmod>2018-07-12T20:45:24+03:00</lastmod>
+    <lastmod>2018-12-15T11:59:52+03:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -57,7 +57,7 @@
   
   <url>
     <loc>http://www.romange.com/tags/c&#43;&#43;/</loc>
-    <lastmod>2017-11-02T13:37:51+02:00</lastmod>
+    <lastmod>2018-12-15T11:59:52+03:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -79,6 +79,12 @@
   </url>
   
   <url>
+    <loc>http://www.romange.com/tags/fibers/</loc>
+    <lastmod>2018-12-15T11:59:52+03:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>http://www.romange.com/tags/linux/</loc>
     <lastmod>2017-11-02T13:37:51+02:00</lastmod>
     <priority>0</priority>
@@ -92,13 +98,19 @@
   
   <url>
     <loc>http://www.romange.com/post/</loc>
-    <lastmod>2018-11-25T12:59:52+03:00</lastmod>
+    <lastmod>2018-12-15T11:59:52+03:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://www.romange.com/tags/programming/</loc>
     <lastmod>2017-09-26T22:46:30+03:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.romange.com/tags/reactive/</loc>
+    <lastmod>2018-12-15T11:59:52+03:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -110,13 +122,13 @@
   
   <url>
     <loc>http://www.romange.com/tags/</loc>
-    <lastmod>2018-07-12T20:45:24+03:00</lastmod>
+    <lastmod>2018-12-15T11:59:52+03:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://www.romange.com/</loc>
-    <lastmod>2018-11-25T12:59:52+03:00</lastmod>
+    <lastmod>2018-12-15T11:59:52+03:00</lastmod>
     <priority>0</priority>
   </url>
   
