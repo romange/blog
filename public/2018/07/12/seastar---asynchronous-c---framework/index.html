@@ -2,7 +2,7 @@
 <html lang="en-us">
 <head>
     <title>Seastar - Asynchronous C&#43;&#43; framework &middot; Это неправильные пчелы</title>
-    <meta name="generator" content="Hugo 0.48" />
+    <meta name="generator" content="Hugo 0.40.1" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="author" content="Roman Gershman">
@@ -21,35 +21,59 @@
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro' rel='stylesheet' type='text/css'>
     <meta property="og:title" content="Seastar - Asynchronous C&#43;&#43; framework" />
-<meta property="og:description" content="Lately there are many discussions in programming community in general and in c&#43;&#43; community in particular on how to write efficient asynchronous code. Many concepts like futures, continuations, coroutines are being discussed by c&#43;&#43; standard comittee but not much progress was made besides very minimal support of C&#43;&#43;11 futures.
+<meta property="og:description" content="Lately, there are many discussions in the programming community in general and in c&#43;&#43; community in particular on how to write efficient asynchronous code. Many concepts like futures, continuations, coroutines are being discussed by c&#43;&#43; standard
+committee but not much progress was made besides very minimal support of C&#43;&#43;11 futures.
 
-On the other hand, many mainstream programming languages progressed quicker and adopted asynchronous models either into a core language or popularized it via standard libraries. For example, coroutines are used in Python (yield) and Lua.
+On the other hand, many mainstream programming languages progressed quicker and adopted asynchronous models
+either into a core language or popularized it via standard libraries. For example, coroutines are used in Python (yield) and Lua.
 Continuations and futures are used extensively in Java. Golang and Erlang are using green threads.
-Callback based actor models are used in C and Javascript. Due to lack of official support for asynchronous programming in C&#43;&#43; the community introduced ad-hoc frameworks and libraries that allow writing asynchronous code in C&#43;&#43;.
+Callback based actor models are used in C and Javascript. Due to a lack of official support for
+asynchronous programming in C&#43;&#43;, the community introduced ad-hoc frameworks and libraries that allow writing asynchronous code in C&#43;&#43;.
 
-I would like to share my opinion on what I think will be the best direction for asynchronous models in C&#43;&#43; by reviewing two prominents frameworks: Seastar and Boost.Fiber. This (opiniated) post reviews Seastar.
+I would like to share my opinion on what I think will be the best direction for asynchronous models in C&#43;&#43; by reviewing two
+prominent frameworks: Seastar and Boost.Fiber. This (opinionated) post reviews Seastar.
 
 " />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://www.romange.com/2018/07/12/seastar---asynchronous-c---framework/" /><meta property="article:published_time" content="2018-07-12T20:45:24&#43;03:00"/>
+<meta property="og:url" content="http://www.romange.com/2018/07/12/seastar---asynchronous-c---framework/" />
+
+
+
+<meta property="article:published_time" content="2018-07-12T20:45:24&#43;03:00"/>
+
 <meta property="article:modified_time" content="2018-07-12T20:45:24&#43;03:00"/>
+
+
+
+
+
+
+
+
+
+
+
     
     
 <meta itemprop="name" content="Seastar - Asynchronous C&#43;&#43; framework">
-<meta itemprop="description" content="Lately there are many discussions in programming community in general and in c&#43;&#43; community in particular on how to write efficient asynchronous code. Many concepts like futures, continuations, coroutines are being discussed by c&#43;&#43; standard comittee but not much progress was made besides very minimal support of C&#43;&#43;11 futures.
+<meta itemprop="description" content="Lately, there are many discussions in the programming community in general and in c&#43;&#43; community in particular on how to write efficient asynchronous code. Many concepts like futures, continuations, coroutines are being discussed by c&#43;&#43; standard
+committee but not much progress was made besides very minimal support of C&#43;&#43;11 futures.
 
-On the other hand, many mainstream programming languages progressed quicker and adopted asynchronous models either into a core language or popularized it via standard libraries. For example, coroutines are used in Python (yield) and Lua.
+On the other hand, many mainstream programming languages progressed quicker and adopted asynchronous models
+either into a core language or popularized it via standard libraries. For example, coroutines are used in Python (yield) and Lua.
 Continuations and futures are used extensively in Java. Golang and Erlang are using green threads.
-Callback based actor models are used in C and Javascript. Due to lack of official support for asynchronous programming in C&#43;&#43; the community introduced ad-hoc frameworks and libraries that allow writing asynchronous code in C&#43;&#43;.
+Callback based actor models are used in C and Javascript. Due to a lack of official support for
+asynchronous programming in C&#43;&#43;, the community introduced ad-hoc frameworks and libraries that allow writing asynchronous code in C&#43;&#43;.
 
-I would like to share my opinion on what I think will be the best direction for asynchronous models in C&#43;&#43; by reviewing two prominents frameworks: Seastar and Boost.Fiber. This (opiniated) post reviews Seastar.
+I would like to share my opinion on what I think will be the best direction for asynchronous models in C&#43;&#43; by reviewing two
+prominent frameworks: Seastar and Boost.Fiber. This (opinionated) post reviews Seastar.
 
 ">
 
 
 <meta itemprop="datePublished" content="2018-07-12T20:45:24&#43;03:00" />
 <meta itemprop="dateModified" content="2018-07-12T20:45:24&#43;03:00" />
-<meta itemprop="wordCount" content="1666">
+<meta itemprop="wordCount" content="0">
 
 
 
@@ -57,13 +81,17 @@ I would like to share my opinion on what I think will be the best direction for 
 
     <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Seastar - Asynchronous C&#43;&#43; framework"/>
-<meta name="twitter:description" content="Lately there are many discussions in programming community in general and in c&#43;&#43; community in particular on how to write efficient asynchronous code. Many concepts like futures, continuations, coroutines are being discussed by c&#43;&#43; standard comittee but not much progress was made besides very minimal support of C&#43;&#43;11 futures.
+<meta name="twitter:description" content="Lately, there are many discussions in the programming community in general and in c&#43;&#43; community in particular on how to write efficient asynchronous code. Many concepts like futures, continuations, coroutines are being discussed by c&#43;&#43; standard
+committee but not much progress was made besides very minimal support of C&#43;&#43;11 futures.
 
-On the other hand, many mainstream programming languages progressed quicker and adopted asynchronous models either into a core language or popularized it via standard libraries. For example, coroutines are used in Python (yield) and Lua.
+On the other hand, many mainstream programming languages progressed quicker and adopted asynchronous models
+either into a core language or popularized it via standard libraries. For example, coroutines are used in Python (yield) and Lua.
 Continuations and futures are used extensively in Java. Golang and Erlang are using green threads.
-Callback based actor models are used in C and Javascript. Due to lack of official support for asynchronous programming in C&#43;&#43; the community introduced ad-hoc frameworks and libraries that allow writing asynchronous code in C&#43;&#43;.
+Callback based actor models are used in C and Javascript. Due to a lack of official support for
+asynchronous programming in C&#43;&#43;, the community introduced ad-hoc frameworks and libraries that allow writing asynchronous code in C&#43;&#43;.
 
-I would like to share my opinion on what I think will be the best direction for asynchronous models in C&#43;&#43; by reviewing two prominents frameworks: Seastar and Boost.Fiber. This (opiniated) post reviews Seastar.
+I would like to share my opinion on what I think will be the best direction for asynchronous models in C&#43;&#43; by reviewing two
+prominent frameworks: Seastar and Boost.Fiber. This (opinionated) post reviews Seastar.
 
 "/>
 
@@ -275,10 +303,10 @@ I would like to share my opinion on what I think will be the best direction for 
             <i class="fa fa-calendar"></i>
             <time datetime="2018-07-12 20:45:24 &#43;0300 IDT" itemprop="datePublished">Jul 12nd 2018</time>
             &middot;
-            1666
+            0
             words
             &middot;
-            8
+            0
             minute read
         </div>
         
@@ -312,13 +340,17 @@ I would like to share my opinion on what I think will be the best direction for 
 </header>
 
         <div class="article-entry" itemprop="articleBody">
-            <p>Lately there are many discussions in programming community in general and in c++ community in particular on how to write efficient asynchronous code. Many concepts like futures, continuations, coroutines are being discussed by c++ standard comittee but not much progress was made besides very minimal support of C++11 futures.</p>
+            <p>Lately, there are many discussions in the programming community in general and in c++ community in particular on how to write efficient asynchronous code. Many concepts like futures, continuations, coroutines are being discussed by c++ standard
+committee but not much progress was made besides very minimal support of C++11 futures.</p>
 
-<p>On the other hand, many mainstream programming languages progressed quicker and adopted asynchronous models either into a core language or popularized it via standard libraries. For example, coroutines are used in Python (yield) and Lua.
+<p>On the other hand, many mainstream programming languages progressed quicker and adopted asynchronous models
+either into a core language or popularized it via standard libraries. For example, coroutines are used in Python (yield) and Lua.
 Continuations and futures are used extensively in Java. Golang and Erlang are using green threads.
-Callback based actor models are used in C and Javascript. Due to lack of official support for asynchronous programming in C++ the community introduced ad-hoc frameworks and libraries that allow writing asynchronous code in C++.</p>
+Callback based actor models are used in C and Javascript. Due to a lack of official support for
+asynchronous programming in C++, the community introduced ad-hoc frameworks and libraries that allow writing asynchronous code in C++.</p>
 
-<p>I would like to share my opinion on what I think will be the best direction for asynchronous models in C++ by reviewing two prominents frameworks: <a href="http://seastar.io/">Seastar</a> and <a href="https://boost.org/doc/libs/1_67_0/libs/fiber/doc/html/index.html">Boost.Fiber</a>. This (opiniated) post reviews Seastar.</p>
+<p>I would like to share my opinion on what I think will be the best direction for asynchronous models in C++ by reviewing two
+prominent frameworks: <a href="http://seastar.io/">Seastar</a> and <a href="https://boost.org/doc/libs/1_67_0/libs/fiber/doc/html/index.html">Boost.Fiber</a>. This (opinionated) post reviews Seastar.</p>
 
 <p></p>
 
@@ -328,29 +360,36 @@ Callback based actor models are used in C and Javascript. Due to lack of officia
 the way I see it:</p>
 
 <p><strong>Given a single execution thread</strong> and a program flow consisting of potentially blocking task
-how can we write a program that fully utilizes this thread. &ldquo;fully utilizes&rdquo; in this context means that the execution thread won&rsquo;t sleep as long as there are any (cpu) tasks that could be performed.</p>
+how can we write a program that fully utilizes this thread. &ldquo;fully utilizes&rdquo; in this context means that the execution thread
+won&rsquo;t sleep as long as there are any (CPU) tasks that could be performed.</p>
 
 <p>Please note that asynchronous programming is not the same as multi-threading even though
-multi-threading might provide an workaround to the similar problem: <strong>Given a single cpu core</strong> how can we
-write a program that fully utilizes this cpu. Asynchronous programming here is discussed only in context of a single thread even though many models provide a complete solution for both asynchronous programming and multi-threaded environments.</p>
+multi-threading might provide a workaround to a similar problem: <strong>Given a single CPU core</strong> how can we
+write a program that fully utilizes this CPU. Asynchronous programming here is discussed only in
+the context of a single thread even though many models provide a complete solution for both asynchronous
+programming and multi-threaded environments.</p>
 
-<p>Seastar is a powerhorse behind very efficient Nosql database <a href="https://scylladb.com">ScyllaDB</a> and is developed by a very talanted team of world class developers. Seastar is a framework that adopts <a href="https://en.wikipedia.org/wiki/Continuation-passing_style">continuation-passing style</a> (CSP) of writing fully asynchronous code.</p>
+<p>Seastar is a power-horse behind a very efficient Nosql database <a href="https://scylladb.com">ScyllaDB</a> and
+is developed by a very talented team of world-class developers. Seastar is a framework that adopts <a href="https://en.wikipedia.org/wiki/Continuation-passing_style">continuation-passing style</a> (CSP) of writing fully asynchronous code.</p>
 
-<p>CSP programming solves asynchronous programming by breaking the program flow into cpu-only tasks
+<p>CSP programming solves asynchronous programming by breaking the program flow into CPU-only tasks
 that should not block and IO requests. Each io request returns a future object describing the result.
-A program flow is extended by appending to a future a possible continuation - either a cpu-task or another io-request.
+Program flow is extended by appending to a future a possible continuation - either a cpu-task or another io-request.
 The goal of this post is not to review or explain CSP but to check whether CSP can be applied naturally inside C++
 based on my experience with Seastar.</p>
 
-<p>Seastar framework itself has proven to be very efficient. In fact it allows to respond to requests
-with sub-millisecond latencies (even at 99nth percentile) and scale linearly in number of cores.
-It has been used already in <a href="http://seastar.io/seastar-applications/">few projects</a> and gave consistently superior performance compared to the existing alternatives.</p>
+<p>Seastar framework itself has proven to be very efficient. In fact, it allows responding to requests
+with sub-millisecond latencies (even at 99nth percentile) and scale linearly in the number of cores.
+It has been used already in <a href="http://seastar.io/seastar-applications/">a few projects</a> and
+gave consistently superior performance compared to the existing alternatives.</p>
 
-<p>Seastar shows the true potential of a hardware it utilizes. It has lots of pre-built constructs to cover many synchronization scenarios and I think it&rsquo;s a perfect candidate to analyze how futures and continuations code might look in C++.</p>
+<p>Seastar shows the true potential of the hardware it utilizes. It has lots of pre-built constructs
+to cover many synchronization scenarios and I think it&rsquo;s a perfect candidate to analyze how futures
+and continuations code might look in C++.</p>
 
 <h2 id="scopes-and-execution-context">Scopes and execution context</h2>
 
-<p>Right from the start it was hard for me to get used to the unique style of writing CSP.
+<p>Right from the start, it was hard for me to get used to the unique style of writing CSP.
 The problem is common to Java futures as well, not just to C++ or Seastar.</p>
 
 <p>Consider, for example, the following code taken from Seastar&rsquo;s wiki page.
@@ -379,19 +418,18 @@ For each accepted connection it writes a response into its socket and then close
 }
 </code></pre>
 
-<p>The code has notable flow that is common to all continuation passing frameworks.
+<p>The code has a notable flow that is common to all continuation-passing frameworks.
 It indents to right with each continuation or lambda. There are lots of lambda functions
-and it&rsquo;s very hard to see which block can access what variables.
-Every continuation or asynchronous function breaks the execution context and it&rsquo;s very hard
+and it&rsquo;s very hard to follow which block can access what variables.
+Every continuation or asynchronous function breaks the execution context and it becomes non-trivial effort
 to reason about the flow of the program.</p>
 
 <p>Now consider <code>seastar::keep_doing</code>. It is a pre-built routine that accepts an (a)synchronous function
-as argument and it allows running this function in infinite but preemptable loop. Why do we need such function?
-Suppose our goal is to schedule <code>do_smthing_async()</code> time after time in sequential manner.
-The function itself might block due to IO but we do not want to stall the execution thread.
-Since we want to write fully asynchronous code we can not just write <code>while (true) { do_smthing_async(); }</code>
-because then we are trapped inside the loop.
-Instead <code>keep_doing</code> uses &ldquo;futurized&rdquo; recursion to run the code and schedule it again (simplified below):</p>
+as an argument and it allows running this function in the infinite but preemptable loop.
+Why do we need such a function?  Suppose our goal is to schedule <code>do_smthing_async()</code> time after time
+sequentially. The function itself might block due to I/O, but we do not want to stall the execution thread.
+Since we want to write fully asynchronous code, we can not just write <code>while (true) { do_smthing_async(); }</code>
+because then we are trapped inside the loop. Instead <code>keep_doing</code> uses &ldquo;futurized&rdquo; recursion to run the code and schedule it again (simplified below):</p>
 
 <pre><code>  // AsyncAction is a callback returning seastar::future&lt;&gt; des an asynchronous computation.
   template seastar::future&lt;&gt; keep_doing(AsynchAction action) {
@@ -400,21 +438,24 @@ Instead <code>keep_doing</code> uses &ldquo;futurized&rdquo; recursion to run th
 </code></pre>
 
 <p>The code above is very simplified and the real Seastar code can handle many loops constructs with
-synchronous or asynchronous functions. In addition Seastar does optimizations to improve latency of asynchronous operations when possible. As a result <code>keep_doing</code> provides meta construct to tell Seastar engine about asynchronous state-machine
-describing a loop. The execution thread is not blocked we schedule the loop.
+synchronous or asynchronous functions. In addition, Seastar does optimizations to improve
+the latency of asynchronous operations when possible. As a result, <code>keep_doing</code> provides meta
+construct to tell Seastar engine about asynchronous state-machine describing a loop.
+The execution thread is not blocked we schedule the loop.
 Eventually, when we schedule the initial state of the program the main thread
 will enter the execution loop which will start unwinding the  state that was queued into the engine and execute
 its asynchronous commands.</p>
 
-<p>As a result, C++ language is used to create and connect Seastar data-structures that tell Seastar framework
+<p>As a result, C++ language is used to create and connect Seastar data-structures that tell the Seastar framework
 how to run functions instead of actually running them. Such style differs greatly from classic C++ programming.
 Some native C++ constructs work differently with such flow. For example, if exceptions are thrown
 in CSP code it&rsquo;s not immediately clear where to put the catch handler:
-it can be thrown from the code currently scheduling the io request, or, alternatively it might be thrown from the continuation lambda when it runs. Both cases require different handling. As a result continuation chaining has implicit interactions that are not tracked via core language.</p>
+it can be thrown from the code currently scheduling the io request, or alternatively,
+it might be thrown from the continuation lambda when it runs. Both cases require different handling. As a result continuation chaining has implicit interactions that are not tracked via core language.</p>
 
 <h2 id="object-life-management">Object life management.</h2>
 
-<p>If following the execution context or changing the mindset for scheduling asyncronous dependencies
+<p>If following the execution context or changing the mindset for scheduling asynchronous dependencies
 can be hard in C++, then tracking object lifecycles can be a real hell.</p>
 
 <p>Unlike in Python, Java, Go, a c++ programmer is required to think about object lifecycle and with CSP
@@ -430,7 +471,7 @@ it&rsquo;s much harder even with naive looking cases. Consider the following cod
 <p><code>f.size()</code> is implemented as an asynchronous operation because it might need to
 read file attributes from the disk i.e. to block on IO. The lambda that captures <code>f</code> exits immediately
 after issuing an asynchronous call <code>f.size()</code>. The asynchronous code that is gonna run by the framework requires <code>f</code> to exist, of course, but <code>f</code> captured by lambda and is gonna be destroyed after the lambda exits.
-In order to prolong object&rsquo;s life we are advised to add <code>finally([f] {})</code> which
+In order to prolong the object&rsquo;s life we are advised to add <code>finally([f] {})</code> which
 serves as an object scoped guard for Seastar flow.</p>
 
 <pre><code class="language-cpp">seastar::future&lt;uint64_t&gt; slow_size(file f) {
@@ -440,33 +481,40 @@ serves as an object scoped guard for Seastar flow.</p>
 }
 </code></pre>
 
-<p>Lets see another example. Suppose we have a moveable-only class <code>pipe</code> that has an asynchronous method
-<code>future&lt;&gt; read(size_t, AsyncFunc f)</code>. <code>AsyncFunc</code> is a function that is expected to receive a future object containing buffer contents upon successful read. With lessons learned from the previous example we might write the following code to
-keep <code>p</code> alive while lambda runs.</p>
+<p>Let&rsquo;s see another example. Suppose we have a moveable-only class <code>pipe</code> that has an asynchronous method
+<code>future&lt;&gt; read(size_t, AsyncFunc f)</code>. <code>AsyncFunc</code> is a function that is expected to receive a future
+object containing buffer contents upon successful read. With lessons learned from the previous example,
+we might write the following code to keep <code>p</code> alive while lambda runs.</p>
 
 <pre><code class="language-cpp">future&lt;&gt; (pipe p) {
   return p.read(16, [p = std::move(p)] (auto future_buf) { handle(future_buf); ... });
 }
 </code></pre>
 
-<p>Unfortunately this code causes &ldquo;undedined behavior&rdquo; and most likely will crash because C++ does not define the order evaluation of lambda capture and function call inside the same execution statement. So what may (and does) happen is that the compiler first moves the object <code>p</code> into the lambda and then calls <code>p.read(..)</code> on already undefined object <code>p</code>.
+<p>Unfortunately, this code causes &ldquo;undefined behavior&rdquo; and most likely will crash because C++ does
+not define the order evaluation of lambda capture and function call inside the same execution statement.
+So what may (and does) happen is that the compiler first moves the object <code>p</code> into the lambda and
+then calls <code>p.read(..)</code> on already undefined object <code>p</code>.
 The workaround to this problem is to use <code>shared_ptr</code> to allow copy semantics and pay attention to captures that move objects.</p>
 
-<p>As you can see using CSP in C++ is not a trivial matter and I showed only small number of things a programmer needs to think about when he uses Seastar. Unfortunately, it&rsquo;s not Seastar to blame - it comes from the fact that C++ is not designed to desribe CSP flows.</p>
+<p>As you can see using CSP in C++ is not a trivial matter and I showed only a few issues a programmer needs to think about when he uses Seastar. Unfortunately, it&rsquo;s not Seastar to blame - it comes from the fact that C++ is not designed to describe CSP flows.</p>
 
-<p>Seastar team tries to overcome those difficulties by providing building blocks for most common syncronization patterns and for giving an idiomatic way on how to use their framework. On of the disadvantages of this approach is that many of their utilities hide memory allocations which is by itself anti-idiomatic to C++. For example, their solution to the problem above is using <code>do_with</code> construct that allows binding the scope of moveable objects to their asynchronous operations
-but hides the allocation of its helper objects. Also, the framework becomes complicated and hard to learn.</p>
+<p>Seastar team tries to overcome those difficulties by providing building blocks for most common
+synchronization patterns and for giving an idiomatic way on how to use their framework.
+One of the disadvantages of this approach is that many of their utilities hide memory allocations,
+which is by itself anti-idiomatic to C++. For example, their solution to the problem above is
+using <code>do_with</code> construct that allows binding the scope of moveable objects to their asynchronous operations
+but hides the allocation of its helper objects. As a result, the framework becomes complicated and hard to learn.</p>
 
 <p>In addition, the constructs like these still do not solve the core problem - future chaining looks
 confusing and unnatural in C++.</p>
 
-<p>Seastar has other problems: the framework itself is very opinionated on - it requires
-that all the application code must follow specific rules which basically deny an integration with almost any other
-third-party library.</p>
-
 <p>To summarize, Seastar is a very efficient framework but requires total commitment to it right from the start.
-It allows you to describe fully asynchronous flows but requires lots of attention - debugging the problems might be hard. If you decide using it, you probably won&rsquo;t be able to integrate it well with other open source libraries, especially with those that use synchronous system-calls, synchronization mechanisms and multi-threading. In addition, having just CSP style of writing
-asynchronous code can be very tedius in C++, hard to reason and error prone but possible.</p>
+It allows you to describe fully asynchronous flows but requires lots of attention - debugging the problems might be hard.
+If you decide using it, you probably won&rsquo;t be able to integrate it well with other open-source libraries,
+especially with those that use synchronous system-calls, synchronization mechanisms, and multi-threading.
+Despite the fact that having the CSP style of writing asynchronous code can be very tedious in C++,
+hard to reason and error-prone it&rsquo;s still possible.</p>
 
 <p>In my next post I will go over <a href="https://boost.org/doc/libs/1_67_0/libs/fiber/doc/html/index.html">Boost.Fiber</a>
 framework and will explain how it solves asynchronous programming but retains the original style of writing C++ programs.</p>
@@ -578,7 +626,7 @@ framework and will explain how it solves asynchronous programming but retains th
 <section id="comments">
     <div id="disqus_thread">
         <div id="disqus_thread"></div>
-<script type="application/javascript">
+<script>
     var disqus_config = function () {
     
     
@@ -869,24 +917,21 @@ framework and will explain how it solves asynchronous programming but retains th
 <footer id="footer">
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2018
+      &copy; 2019
       Roman Gershman
     </div>
   </div>
 </footer>
 
 
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-107146718-1', 'auto');
-	
-	ga('send', 'pageview');
-}
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-107146718-1', 'auto');
+ga('send', 'pageview');
 </script>
 
 <script src="http://www.romange.com/fancybox/jquery.fancybox.pack.js"></script>
