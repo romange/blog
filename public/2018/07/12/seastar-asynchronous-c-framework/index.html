@@ -2,15 +2,15 @@
 <html lang="en-us">
 <head>
     <title>Seastar - Asynchronous C&#43;&#43; framework &middot; Это неправильные пчелы</title>
-    <meta name="generator" content="Hugo 0.40.1" />
+    <meta name="generator" content="Hugo 0.55.6" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="author" content="Roman Gershman">
     
-      <meta name="description" content="These bees are wrong">
+      <meta name="description" content="These are the wrong bees">
     
     
-    <link rel="canonical" href="http://www.romange.com/2018/07/12/seastar---asynchronous-c---framework/"/>
+    <link rel="canonical" href="http://www.romange.com/2018/07/12/seastar-asynchronous-c-framework/"/>
     <link rel="icon" href="http://www.romange.com/favicon.ico">
     <link rel="apple-touch-icon" href="http://www.romange.com/apple-touch-icon.png"/>
     <link rel="stylesheet" href="http://www.romange.com/css/style.css">
@@ -31,27 +31,11 @@ Callback based actor models are used in C and Javascript. Due to a lack of offic
 asynchronous programming in C&#43;&#43;, the community introduced ad-hoc frameworks and libraries that allow writing asynchronous code in C&#43;&#43;.
 
 I would like to share my opinion on what I think will be the best direction for asynchronous models in C&#43;&#43; by reviewing two
-prominent frameworks: Seastar and Boost.Fiber. This (opinionated) post reviews Seastar.
-
-" />
+prominent frameworks: Seastar and Boost.Fiber. This (opinionated) post reviews Seastar." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://www.romange.com/2018/07/12/seastar---asynchronous-c---framework/" />
-
-
-
+<meta property="og:url" content="http://www.romange.com/2018/07/12/seastar-asynchronous-c-framework/" />
 <meta property="article:published_time" content="2018-07-12T20:45:24&#43;03:00"/>
-
 <meta property="article:modified_time" content="2018-07-12T20:45:24&#43;03:00"/>
-
-
-
-
-
-
-
-
-
-
 
     
     
@@ -66,14 +50,12 @@ Callback based actor models are used in C and Javascript. Due to a lack of offic
 asynchronous programming in C&#43;&#43;, the community introduced ad-hoc frameworks and libraries that allow writing asynchronous code in C&#43;&#43;.
 
 I would like to share my opinion on what I think will be the best direction for asynchronous models in C&#43;&#43; by reviewing two
-prominent frameworks: Seastar and Boost.Fiber. This (opinionated) post reviews Seastar.
-
-">
+prominent frameworks: Seastar and Boost.Fiber. This (opinionated) post reviews Seastar.">
 
 
 <meta itemprop="datePublished" content="2018-07-12T20:45:24&#43;03:00" />
 <meta itemprop="dateModified" content="2018-07-12T20:45:24&#43;03:00" />
-<meta itemprop="wordCount" content="0">
+<meta itemprop="wordCount" content="1642">
 
 
 
@@ -91,9 +73,7 @@ Callback based actor models are used in C and Javascript. Due to a lack of offic
 asynchronous programming in C&#43;&#43;, the community introduced ad-hoc frameworks and libraries that allow writing asynchronous code in C&#43;&#43;.
 
 I would like to share my opinion on what I think will be the best direction for asynchronous models in C&#43;&#43; by reviewing two
-prominent frameworks: Seastar and Boost.Fiber. This (opinionated) post reviews Seastar.
-
-"/>
+prominent frameworks: Seastar and Boost.Fiber. This (opinionated) post reviews Seastar."/>
 
     
 
@@ -291,7 +271,7 @@ prominent frameworks: Seastar and Boost.Fiber. This (opinionated) post reviews S
         
 
         <header class="article-header">
-    <a href="http://www.romange.com/2018/07/12/seastar---asynchronous-c---framework/">
+    <a href="http://www.romange.com/2018/07/12/seastar-asynchronous-c-framework/">
     <h1 class="article-title" itemprop="name">
         Seastar - Asynchronous C&#43;&#43; framework
     </h1>
@@ -303,10 +283,10 @@ prominent frameworks: Seastar and Boost.Fiber. This (opinionated) post reviews S
             <i class="fa fa-calendar"></i>
             <time datetime="2018-07-12 20:45:24 &#43;0300 IDT" itemprop="datePublished">Jul 12nd 2018</time>
             &middot;
-            0
+            1642
             words
             &middot;
-            0
+            8
             minute read
         </div>
         
@@ -351,8 +331,6 @@ asynchronous programming in C++, the community introduced ad-hoc frameworks and 
 
 <p>I would like to share my opinion on what I think will be the best direction for asynchronous models in C++ by reviewing two
 prominent frameworks: <a href="http://seastar.io/">Seastar</a> and <a href="https://boost.org/doc/libs/1_67_0/libs/fiber/doc/html/index.html">Boost.Fiber</a>. This (opinionated) post reviews Seastar.</p>
-
-<p></p>
 
 <h1 id="seastar">Seastar</h1>
 
@@ -520,12 +498,12 @@ hard to reason and error-prone it&rsquo;s still possible.</p>
 framework and will explain how it solves asynchronous programming but retains the original style of writing C++ programs.</p>
         </div>
         <footer class="article-footer">
-    <a data-url="http://www.romange.com/2018/07/12/seastar---asynchronous-c---framework/" data-id="c898dc4bc2df3f11acc490a18d2cf803" class="article-share-link">
+    <a data-url="http://www.romange.com/2018/07/12/seastar-asynchronous-c-framework/" data-id="c898dc4bc2df3f11acc490a18d2cf803" class="article-share-link">
         <i class="fa fa-share"></i>
         Share
     </a>
     
-    <a href="http://www.romange.com/2018/07/12/seastar---asynchronous-c---framework/#disqus_thread" class="article-comment-link">
+    <a href="http://www.romange.com/2018/07/12/seastar-asynchronous-c-framework/#disqus_thread" class="article-comment-link">
         Comments
     </a>
     
@@ -610,7 +588,7 @@ framework and will explain how it solves asynchronous programming but retains th
     
 
     
-    <a href="http://www.romange.com/2018/12/15/introduction-to-fibers-in-c--/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="http://www.romange.com/2018/12/15/introduction-to-fibers-in-c-/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">
           Newer
       </strong>
@@ -626,7 +604,7 @@ framework and will explain how it solves asynchronous programming but retains th
 <section id="comments">
     <div id="disqus_thread">
         <div id="disqus_thread"></div>
-<script>
+<script type="application/javascript">
     var disqus_config = function () {
     
     
@@ -668,7 +646,7 @@ framework and will explain how it solves asynchronous programming but retains th
                     
                     
                     
-                    <p class="item-title"><a href="http://www.romange.com/2018/12/15/introduction-to-fibers-in-c--/" class="title">Introduction to fibers in c&#43;&#43;</a></p>
+                    <p class="item-title"><a href="http://www.romange.com/2018/12/15/introduction-to-fibers-in-c-/" class="title">Introduction to fibers in c&#43;&#43;</a></p>
                     <p class="item-date">
                         <time datetime="2018-12-15 11:59:52 &#43;0300 &#43;0300" itemprop="datePublished">Dec 15nd 2018</time>
                     </p>
@@ -682,7 +660,7 @@ framework and will explain how it solves asynchronous programming but retains th
                     
                     
                     
-                    <p class="item-title"><a href="http://www.romange.com/2018/07/12/seastar---asynchronous-c---framework/" class="title">Seastar - Asynchronous C&#43;&#43; framework</a></p>
+                    <p class="item-title"><a href="http://www.romange.com/2018/07/12/seastar-asynchronous-c-framework/" class="title">Seastar - Asynchronous C&#43;&#43; framework</a></p>
                     <p class="item-date">
                         <time datetime="2018-07-12 20:45:24 &#43;0300 IDT" itemprop="datePublished">Jul 12nd 2018</time>
                     </p>
@@ -924,14 +902,17 @@ framework and will explain how it solves asynchronous programming but retains th
 </footer>
 
 
-<script>
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-ga('create', 'UA-107146718-1', 'auto');
-ga('send', 'pageview');
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-107146718-1', 'auto');
+	
+	ga('send', 'pageview');
+}
 </script>
 
 <script src="http://www.romange.com/fancybox/jquery.fancybox.pack.js"></script>

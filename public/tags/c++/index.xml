@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>C&#43;&#43; on Это неправильные пчелы</title>
+    <title>c&#43;&#43; on Это неправильные пчелы</title>
     <link>http://www.romange.com/tags/c&#43;&#43;/</link>
-    <description>Recent content in C&#43;&#43; on Это неправильные пчелы</description>
+    <description>Recent content in c&#43;&#43; on Это неправильные пчелы</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 15 Dec 2018 11:59:52 +0300</lastBuildDate>
@@ -13,10 +13,10 @@
     
     <item>
       <title>Introduction to fibers in c&#43;&#43;</title>
-      <link>http://www.romange.com/2018/12/15/introduction-to-fibers-in-c--/</link>
+      <link>http://www.romange.com/2018/12/15/introduction-to-fibers-in-c-/</link>
       <pubDate>Sat, 15 Dec 2018 11:59:52 +0300</pubDate>
       
-      <guid>http://www.romange.com/2018/12/15/introduction-to-fibers-in-c--/</guid>
+      <guid>http://www.romange.com/2018/12/15/introduction-to-fibers-in-c-/</guid>
       <description>In my post about Seastar we&amp;rsquo;ve covered continuations style asynchronous programming. My personal opinion is that this style is hard to work with in C++. In this post I would like to cover alternative, Fiber-based approach. In this post I will use Boost.Fibers library in all my examples.
 Fibers, or green threads, or cooperative threads are similar to regular threads but with few important distinctions:
  Fibers can not switch between system threads and they are usually pinned to a specific thread.</description>
@@ -37,9 +37,7 @@ Fibers, or green threads, or cooperative threads are similar to regular threads 
       <pubDate>Fri, 29 Sep 2017 15:46:55 +0300</pubDate>
       
       <guid>http://www.romange.com/2017/09/29/reloading-data-structures-under-high-throughput/</guid>
-      <description>&lt;p&gt;Suppose you have a multi-threaded server that serves tens of thousands read queries per second. Those queries use a shared data-structure or index that is mostly immutable during the server run with the exception of periodic index reloads.  How do you implement data reloads in that server while keeping it live and kicking in production?&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+      <description>&lt;p&gt;Suppose you have a multi-threaded server that serves tens of thousands read queries per second. Those queries use a shared data-structure or index that is mostly immutable during the server run with the exception of periodic index reloads.  How do you implement data reloads in that server while keeping it live and kicking in production?&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -49,9 +47,7 @@ Fibers, or green threads, or cooperative threads are similar to regular threads 
       
       <guid>http://www.romange.com/2017/09/26/how-to-serialize-integers-into-memory/</guid>
       <description>&lt;p&gt;Here is the analysis of a recent bug I&amp;rsquo;ve stumbled upon. My initial reaction was that
-the problem is in the compiler (or that &lt;a href=&#34;https://www.youtube.com/watch?v=PIuE5J9dfAo&#34;&gt;&amp;ldquo;These are wrong bees&amp;rdquo;&lt;/a&gt;). Consider the code below. We copy 64 integers into a properly allocated destination buffer and yet, if compiled with &lt;code&gt;-O3&lt;/code&gt; switch this code crashes with segfault!&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+the problem is in the compiler (or that &lt;a href=&#34;https://www.youtube.com/watch?v=PIuE5J9dfAo&#34;&gt;&amp;ldquo;These are wrong bees&amp;rdquo;&lt;/a&gt;). Consider the code below. We copy 64 integers into a properly allocated destination buffer and yet, if compiled with &lt;code&gt;-O3&lt;/code&gt; switch this code crashes with segfault!&lt;/p&gt;</description>
     </item>
     
   </channel>

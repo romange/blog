@@ -12,7 +12,7 @@
     
     
     <item>
-      <title>Asynchronous</title>
+      <title>asynchronous</title>
       <link>http://www.romange.com/tags/asynchronous/</link>
       <pubDate>Sat, 15 Dec 2018 11:59:52 +0300</pubDate>
       
@@ -21,25 +21,7 @@
     </item>
     
     <item>
-      <title>Backend</title>
-      <link>http://www.romange.com/tags/backend/</link>
-      <pubDate>Fri, 29 Sep 2017 15:46:55 +0300</pubDate>
-      
-      <guid>http://www.romange.com/tags/backend/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Blogging</title>
-      <link>http://www.romange.com/tags/blogging/</link>
-      <pubDate>Tue, 26 Sep 2017 16:16:40 +0300</pubDate>
-      
-      <guid>http://www.romange.com/tags/blogging/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>C&#43;&#43;</title>
+      <title>c&#43;&#43;</title>
       <link>http://www.romange.com/tags/c&#43;&#43;/</link>
       <pubDate>Sat, 15 Dec 2018 11:59:52 +0300</pubDate>
       
@@ -48,25 +30,7 @@
     </item>
     
     <item>
-      <title>Code Generation</title>
-      <link>http://www.romange.com/tags/code-generation/</link>
-      <pubDate>Tue, 26 Sep 2017 22:46:30 +0300</pubDate>
-      
-      <guid>http://www.romange.com/tags/code-generation/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Concurrency</title>
-      <link>http://www.romange.com/tags/concurrency/</link>
-      <pubDate>Thu, 12 Jul 2018 20:45:24 +0300</pubDate>
-      
-      <guid>http://www.romange.com/tags/concurrency/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Fibers</title>
+      <title>fibers</title>
       <link>http://www.romange.com/tags/fibers/</link>
       <pubDate>Sat, 15 Dec 2018 11:59:52 +0300</pubDate>
       
@@ -75,34 +39,7 @@
     </item>
     
     <item>
-      <title>Linux</title>
-      <link>http://www.romange.com/tags/linux/</link>
-      <pubDate>Thu, 02 Nov 2017 13:37:51 +0200</pubDate>
-      
-      <guid>http://www.romange.com/tags/linux/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Posix</title>
-      <link>http://www.romange.com/tags/posix/</link>
-      <pubDate>Thu, 02 Nov 2017 13:37:51 +0200</pubDate>
-      
-      <guid>http://www.romange.com/tags/posix/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Programming</title>
-      <link>http://www.romange.com/tags/programming/</link>
-      <pubDate>Tue, 26 Sep 2017 22:46:30 +0300</pubDate>
-      
-      <guid>http://www.romange.com/tags/programming/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Reactive</title>
+      <title>reactive</title>
       <link>http://www.romange.com/tags/reactive/</link>
       <pubDate>Sat, 15 Dec 2018 11:59:52 +0300</pubDate>
       
@@ -111,11 +48,74 @@
     </item>
     
     <item>
-      <title>Seastar</title>
+      <title>concurrency</title>
+      <link>http://www.romange.com/tags/concurrency/</link>
+      <pubDate>Thu, 12 Jul 2018 20:45:24 +0300</pubDate>
+      
+      <guid>http://www.romange.com/tags/concurrency/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>seastar</title>
       <link>http://www.romange.com/tags/seastar/</link>
       <pubDate>Thu, 12 Jul 2018 20:45:24 +0300</pubDate>
       
       <guid>http://www.romange.com/tags/seastar/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>linux</title>
+      <link>http://www.romange.com/tags/linux/</link>
+      <pubDate>Thu, 02 Nov 2017 13:37:51 +0200</pubDate>
+      
+      <guid>http://www.romange.com/tags/linux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>posix</title>
+      <link>http://www.romange.com/tags/posix/</link>
+      <pubDate>Thu, 02 Nov 2017 13:37:51 +0200</pubDate>
+      
+      <guid>http://www.romange.com/tags/posix/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>backend</title>
+      <link>http://www.romange.com/tags/backend/</link>
+      <pubDate>Fri, 29 Sep 2017 15:46:55 +0300</pubDate>
+      
+      <guid>http://www.romange.com/tags/backend/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>code generation</title>
+      <link>http://www.romange.com/tags/code-generation/</link>
+      <pubDate>Tue, 26 Sep 2017 22:46:30 +0300</pubDate>
+      
+      <guid>http://www.romange.com/tags/code-generation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>programming</title>
+      <link>http://www.romange.com/tags/programming/</link>
+      <pubDate>Tue, 26 Sep 2017 22:46:30 +0300</pubDate>
+      
+      <guid>http://www.romange.com/tags/programming/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>blogging</title>
+      <link>http://www.romange.com/tags/blogging/</link>
+      <pubDate>Tue, 26 Sep 2017 16:16:40 +0300</pubDate>
+      
+      <guid>http://www.romange.com/tags/blogging/</guid>
       <description></description>
     </item>
     

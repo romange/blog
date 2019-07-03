@@ -21,7 +21,7 @@ buildDrafts = false
     author = "Roman Gershman"
     bio = "Programmer"
     location = "Tel Aviv"
-    site_description = "These bees are wrong"
+    site_description = "These are the wrong bees"
     copyright  = "Roman Gershman"
     avatar = "css/images/avatar.png"
 
