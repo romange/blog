@@ -2,5 +2,7 @@
 
 
 # blog code
-Use `git subtree push --prefix public origin gh-pages` to push live.
+[![Build Status](https://api.travis-ci.org/romange/blog.svg)](https://travis-ci.org/romange/blog)
+
+The blog is pushed automatically to `gh-pages` using travis build.
 Use `hugo server -D` to check the posts locally.
