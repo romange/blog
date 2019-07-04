@@ -10,7 +10,9 @@ date = 2018-12-15T11:59:52+03:00
 +++
 
 In my [post about Seastar]( {{< ref "seastar.md" >}}) we've covered continuations style
-asynchronous programming. My personal opinion is that this style is hard to work with in C++. In this post I would like to cover alternative, Fiber-based approach. In this post I will use `Boost.Fibers` library in all my examples.
+asynchronous programming. My personal opinion is that this style is hard to work with in C++.
+In this post I would like to cover alternative, Fiber-based approach.
+I will use `Boost.Fibers` library in all my examples.
 
 Fibers, or [green threads](https://en.wikipedia.org/wiki/Green_threads), or *cooperative threads* are similar to regular threads but with few important distinctions:
 
