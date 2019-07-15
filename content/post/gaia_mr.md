@@ -27,11 +27,11 @@ Originally, [it was introduced by Google](https://research.google.com/archive/ma
 but then was quickly picked up in the industry and rebranded externally as Hadoop.
 
 A mapreduce algorithm is a glorified `GroupBy` or `HashJoin` operation from the DB world.
-Its purpose is to go over (big) data (how I hate this term!) and transform it in such a way that pieces of information dispersed across different sources could be grouped for further processing.
+Its purpose is to go over (big) data (I hate this term!) and transform it in such a way that pieces of information dispersed across different sources could be grouped for further processing.
 
 One of the big advantages of Mapreduce framework is that it allows a clean separation between low-level mechanics
 like multi-threading, multi-machine communication, disk-based algorithms, external data structures,
-efficient I/O optimization, etc - on one side, and user-provided pipeline logic on the other side.
+efficient I/O optimization, etc - on the one side, and user-provided pipeline logic on the other side.
 Another advantage is virtualization of resources that allows the framework to run over multiple CPUs,
 multiple disks and machines in a way that is semi-transparent to a user.
 
@@ -53,8 +53,7 @@ See ![Map Reduce Step](/img/MapReduce-Tutorial-1.png)
 Reducers, on the other hand, read already partitioned data. The data is essentially grouped together according to user-supplied criteria into multiple groups, or as we call them "shards".
 Usually those "shards" can be loaded fully into RAM.
 
-Suppose, for example, WalMart wants to join last 10 years of its buyer transactions with another dataset of buyer details.
-Both sources should be joined by user id but unfortunately they can not be loaded into RAM due to their huge size.
+Suppose, for example, WalMart wants to join last 10 years of its buyer transactions with another dataset of their buyers personal details. Both sources should be joined by user id but unfortunately they can not be loaded into RAM due to their huge size.
 Not to worry - Mapreduce to the rescue!
 
 We can provide a mapper that just output records from each dataset into
@@ -64,9 +63,11 @@ at the end of the mapping phase using the sharding function `user_id % N`.
 N must be large enough to allow loading of each shard into workers memory.
 The mapping step of moving randomly distributed records from the input dataset to partitioned one allows us performing the next step.
 
+![Wallmart Join](/img/mr1.png)
+
 Reducer processors load shards `Transaction'(i)` and `UserData'(i)` into RAM. Those shards produced by mappers and they contain all the records for which `user_id % N = i`. After loading those shards, reducers can join them using hash-join or merge sort algolrithms. Eventually reducers produce N output shards that contain joined information. See the picture above. So sharding allows to reduce the size of the minimal working set to one that can fit into RAM.
 
-#### Classic mapreduce flow and API
+#### Classic mapreduce flow and the API
 Usually a framework is configured by providing instantiations of mapper or reducer classes.
 
 For example, a mapper class may look like this:
@@ -79,8 +80,7 @@ For example, a mapper class may look like this:
   };
 ```
 
-It can have a function `void Map(RecordType input, Context<OutputType>* context)` that is overriden by a developer.
-In that function he can implement any logic and call `context->Write(shard_id, joined_key, my_outp)` any number of times per invocation.
+It can have a function `void Map(RecordType input, Context<OutputType>* context)` that is overriden by a developer. In that function he can implement any logic and call `context->Write(shard_id, joined_key, my_outp)` any number of times per invocation.
 The framework instantiates mapper classes on multiple machines processes, processes input data,
 stores intermediate shards, possibly sorts and partitions them.
 
