@@ -10,7 +10,7 @@ date = 2019-07-25T11:38:01+03:00
 draft = false
 +++
 
-I've recently had chance to benchmark GAIA in Google cloud. The goal was to test how quickly I can
+I've recently had a chance to benchmark GAIA in Google cloud. The goal was to test how quickly I can
 process compressed text data (i.e read and uncompress on the fly) when running on a single VM and reading directly from cloud storage. The results were quite surprising.
 
 <!--more-->
@@ -39,13 +39,20 @@ pipeline->Run(runner);
 ## Setup
 I've used 32 core machine on Google Cloud. The [documentation says](https://cloud.google.com/vpc/docs/quota) that Google does not cap ingress traffic but we can roughly assume to
 expect around 10Gbit/s or 1.25GB/s. I did not find any references to Google storage bandwidth caps.
-I was curious to know if I can reach 1.25GB/s cap by reading compressed data and uncompress it **on the fly**. Storing compressed data in cloud is a good CPU vs I/O tradeoff because usually, in the cloud, we are bottlenecked on I/O bandwidth. In order to really stress the framework, I've prepared 2TB dataset comprised of 260 thousand zstd compressed files of different sizes. I've used [zstd compression](https://facebook.github.io/zstd/) because it's the best open source compressor that exist these days. If you did not use it before - do try it. It's especially efficient during the decompression phase, reaching very high speeds. By the way,GAIA-MR supports both gzip and zstd formats out of the box.
+I was curious to know if I can reach 1.25GB/s cap by reading compressed data and uncompress it **on the fly**. Storing compressed data in the cloud is a good CPU vs I/O tradeoff because usually, in the cloud,
+we are bottlenecked on I/O bandwidth. I've prepared 2TB dataset comprised of 260 thousand zstd
+compressed files of different sizes that should inflict enough load on the framework.
 
-By default, the framework creates a IO read fiber per each CPU core. In order to stress I/O component
-and reach maximum CPU utilization I've used parameter `--map_io_read_factor=2` to create 2 I/O
-fibers per each CPU core. I've used slightly modified ubuntu 18.04 image provided by Google cloud.
-For 32 core instance it means that the framework will create 64 socket connections to google storage
-api gateway.
+I've used [zstd compression](https://facebook.github.io/zstd/) because it's the best open source
+compressor that exists these days. If you did not use it before - do try it.
+It's especially efficient during the decompression phase, reaching very high speeds.
+By the way, GAIA-MR supports both gzip and zstd formats out of the box.
+
+By default, the framework creates a 2 IO read fibers per each CPU core.
+For 32 core instance, it means that the framework creates
+64 socket connections to google storage api gateway (In general, you can control
+this setting with `--map_io_read_factor` flag).
+I've used slightly modified ubuntu 18.04 image provided by Google cloud.
 
 ## Benchmark
 To run mr_read_test I used the following command:
@@ -58,6 +65,7 @@ I've used double star suffix to instruct the framework to treat the path as glob
 it recursively.
 
 ## Results
+
 The `time` command exited with the following statistics:
 ```bash
   Command being timed: "mr_read_test --map_io_read_factor=2 gs://mytestbucket/mydataset/**"
@@ -76,11 +84,13 @@ The `time` command exited with the following statistics:
 	Exit status: 0
 ```
 This ![htop snapshot](/img/htop_bench1.png) shows that we succeeded
-to utilize all 32 cores fully. Moreover all-green bars show that CPUs spend most of their time in user land. Well, it's not hard to create a program that burns CPU time.
+to utilize all 32 cores fully. Moreover all-green bars show that CPUs spend most of their
+time in a user land.
 
-So what can we say about our goal of reading compressed data quickly?
-So first of all, just dividing 2TB by total 31:10 minutes gives us 1.07GB/s of reading
-the compressed data. It's not bad, i guess, since we also included the bootstrapping time where the framework expands the input path into 260K file objects.
+What can we say about our goal of reading compressed data quickly?
+So, first of all, just dividing 2TB by total 31:10 minutes gives us 1.07GB/s of reading
+the compressed data. It's not bad, I guess since we also included the bootstrapping time
+where the framework expands the input path into 260K file objects.
 
 But if we look on the ![network usage](/img/network_bench1.png) we will see
 that we reached 1.76GB/s at peak. It's above the expected 1.25GB speed.
