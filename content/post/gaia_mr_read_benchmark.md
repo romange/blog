@@ -83,7 +83,7 @@ The `time` command exited with the following statistics:
 	Page size (bytes): 4096
 	Exit status: 0
 ```
-This ![htop snapshot](/img/htop_bench1.png) shows that we succeeded
+This htop snapshot ![htop snapshot](/img/htop_bench1.png) shows that we succeeded
 to utilize all 32 cores fully. Moreover all-green bars show that CPUs spend most of their
 time in a user land.
 
@@ -92,11 +92,12 @@ So, first of all, just dividing 2TB by total 31:10 minutes gives us 1.07GB/s of 
 the compressed data. It's not bad, I guess since we also included the bootstrapping time
 where the framework expands the input path into 260K file objects.
 
-But if we look on the ![network usage](/img/network_bench1.png) we will see
+But if we look on the network usage ![network usage](/img/network_bench1.png) we can see
 that we reached 1.76GB/s at peak. It's above the expected 1.25GB speed.
 
 ## Summary
-I've shown that GAIA-MR can read efficiently datasets of order of few terabytes of compressed data. Just by using 64 parallel connections to Google storage gateway we've reached 1.76GB/s peak speed
+I've shown that GAIA-MR can read efficiently datasets of order of few terabytes of compressed data
+on a single node. Just by using 64 parallel connections to Google storage gateway we've reached 1.76GB/s peak speed
 and were bottlenecked on CPU. Google cloud network and GCS provided me with the bandwidth
 I would not expect to reach with disk based systems. I think that GAIA-MR in a cloud environment can provide very good value for money when batch processing datasets of few terrabytes. Please try it and tell me what you think!
 
