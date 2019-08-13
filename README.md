@@ -5,3 +5,4 @@ It uses hugo for rendering. The blog is pushed automatically to `gh-pages` using
 Use `hugo server -D` to check the posts locally.
 
 To initialize a cloned repo run: `git submodule update --init --recursive` to pull its theme.
+To add a new post, run `hugo new content/post/gaia_mr2.md`.

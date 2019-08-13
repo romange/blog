@@ -17,8 +17,7 @@ Apache [Beam](https://beam.apache.org/), [Flink](https://flink.apache.org/), [Ap
 It's currently implemented for a single machine but even with this restriction I've seen
 up-to 3-7 times reduction in cost and running time vs current alternatives.
 
-Please note that the single machine restriction put a hard limit on how much data we can process, nethertheless GAIA-MR shines with small-to-medium size workloads (upto few hundred gigabytes).
-This part gives an introduction about mapreduce in general.
+Please note that the single machine restriction put a hard limit on how much data we can process, nethertheless GAIA-MR shines with small-to-medium size workloads (~1TB). This part gives an introduction about mapreduce in general.
 
 <!--more-->
 ## Background
@@ -61,11 +60,15 @@ intermediate shards using `user_id % N` rule. Thus we produce `N` shards for eac
 The mapreduce will colocate information about each user in a single shard per source
 at the end of the mapping phase using the sharding function `user_id % N`.
 N must be large enough to allow loading of each shard into workers memory.
-The mapping step of moving randomly distributed records from the input dataset to partitioned one allows us performing the next step.
+The mapping step of moving randomly distributed records from the input dataset to partitioned one
+allows us performing the next step.
 
 ![Wallmart Join](/img/mr1.png)
 
-Reducer processors load shards `Transaction'(i)` and `UserData'(i)` into RAM. Those shards produced by mappers and they contain all the records for which `user_id % N = i`. After loading those shards, reducers can join them using hash-join or merge sort algolrithms. Eventually reducers produce N output shards that contain joined information. See the picture above. So sharding allows to reduce the size of the minimal working set to one that can fit into RAM.
+Reducer processors load shards `Transaction'(i)` and `UserData'(i)` into RAM. Those shards produced by mappers and they contain all the records for which `user_id % N = i`. After loading those shards, reducers can join them using hash-join
+or merge sort algorithms. Eventually, reducers produce N output shards that contain the joined information.
+See the picture above. Therefore, sharding allows reducing the size of the minimal working set
+to one that can fit into RAM.
 
 #### Classic mapreduce flow and the API
 Usually a framework is configured by providing instantiations of mapper or reducer classes.
@@ -80,11 +83,13 @@ For example, a mapper class may look like this:
   };
 ```
 
-It can have a function `void Map(RecordType input, Context<OutputType>* context)` that is overriden by a developer. In that function he can implement any logic and call `context->Write(shard_id, joined_key, my_outp)` any number of times per invocation.
-The framework instantiates mapper classes on multiple machines processes, processes input data,
-stores intermediate shards, possibly sorts and partitions them.
+It might have a function `void Map(RecordType input, Context<OutputType>* context)`
+that is implemented by pipeline developer. This function should contain pipeline specific logic
+and it can call `context->Write(shard_id, joined_key, map_output)` any number of times.
+The framework instantiates mapper classes on multiple machines processes, passes input data to them,
+stores intermediate shards produced by mappers and finally sorts and partitions them.
 
-After all it instantiates the reducer classes. A reducer class might look like this:
+After all the framework instantiates reducer classes. A reducer class might look like this:
 
 ```cpp
 class Reducer {
@@ -95,12 +100,14 @@ class Reducer {
 ```
 
 `Reduce` will be called with joined key and a stream of values corresponding to that key.
-In our walmart example, the `key` would be user_id and `Stream<ValueType>` will contain all the transactions for that user and his own user data from the second dataset. Each `key` will be sent to exactly one reducer that processes its shard.
+In our walmart example, the `key` would be user_id and `Stream<ValueType>` will contain all
+the transactions for that user and his own user data from the second dataset.
+Each `key` will be sent to exactly one reducer that processes its shard.
 `Reduce` will be called by the framework for each key  and will be able to output
 its final result via `Writer`. Reducers and Mappers do not talk with each other and usually behave
 like independent entities.
 
-This classic Reducer interface guarantees to provide us each key with its values grouped.
+A classic Reducer interface guarantees to provide us each key with its values grouped.
 In order to do this, the mapreduce framework is usually required to shuffle and sort the intermediate shards before
 reducing on them. Therefore, having values colocated together with their keys requires additional I/O:
 we need to load each shard, sort it and write again. This way we will be able to keep file iterators per each
