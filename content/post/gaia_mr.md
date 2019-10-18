@@ -23,15 +23,17 @@ Please note that the single machine restriction put a hard limit on how much dat
 ## Background
 Before I start explaining about GAIA, I would like to explain what MapReduce is for.
 Originally, [it was introduced by Google](https://research.google.com/archive/mapreduce-osdi04.pdf)
-but then was quickly picked up in the industry and rebranded externally as Hadoop.
+and then was quickly picked up by the industry and rebranded externally as Hadoop.
 
 A mapreduce algorithm is a glorified `GroupBy` or `HashJoin` operation from the DB world.
 Its purpose is to go over (big) data (I hate this term!) and transform it in such a way that pieces of information dispersed across different sources could be grouped for further processing.
 
-One of the big advantages of Mapreduce framework is that it allows a clean separation between low-level mechanics
-like multi-threading, multi-machine communication, disk-based algorithms, external data structures,
-efficient I/O optimization, etc - on the one side, and user-provided pipeline logic on the other side.
-Another advantage is virtualization of resources that allows the framework to run over multiple CPUs,
+One of the big advantages of Mapreduce framework is that it allows clean separation between low-level mechanics like multi-threading, 
+multi-machine communication, disk-based algorithms, external data structures,
+efficient I/O optimization, etc - on the one side, 
+and user-provided pipeline logic on the other side. 
+Another advantage is virtualization of resources that allows the framework 
+to run over multiple CPUs, 
 multiple disks and machines in a way that is semi-transparent to a user.
 
 In other words, a user may focus on his high-level processing task.
@@ -99,6 +101,7 @@ class Reducer {
   };
 ```
 
+#### Reduce API
 `Reduce` will be called with joined key and a stream of values corresponding to that key.
 In our walmart example, the `key` would be user_id and `Stream<ValueType>` will contain all
 the transactions for that user and his own user data from the second dataset.
@@ -109,8 +112,8 @@ like independent entities.
 
 A classic Reducer interface guarantees to provide us each key with its values grouped.
 In order to do this, the mapreduce framework is usually required to shuffle and sort the intermediate shards before
-reducing on them. Therefore, having values colocated together with their keys requires additional I/O:
-we need to load each shard, sort it and write again. This way we will be able to keep file iterators per each
+applying reducers on them. Therefore, having values colocated together with their keys **requires additional I/O:
+we need to load each shard, sort it and write again**. This way we will be able to keep file iterators per each
 sorted shard and reduce on them with `O(N)` complexity by just seeking over the files.
 
 #### GAIA MR
