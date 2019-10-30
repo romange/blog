@@ -19,7 +19,7 @@ If you recall, [in Section "Reduce API"]({{< ref "gaia_mr.md#reduce-api" >}}), I
 
 GAIA-MR optimize the mapreduce flow by applying the following changes:
 
-1. It relaxes the framework guarantees and sends the whole shard to a reducer instead of sending `(Key, Array<Value>)` tuples. It becomes a responsibility of a programmer to group values according to the specific use-case he needs. In my experience, it suffices to use in-memory hash-table that merges multiple values for the same key for the majority of cases. Luckily, with absl/C++14 it's just a few more lines to write. GAIA-MR guarantees shard locality, i.e., the whole shard will still reach the same reducer instance. Also, a programmer fully controls the order in which the shards from multiple sources arrive to a reducer. Which, in turn, could lead to additional optimizations.
+1. It relaxes the framework guarantees and sends the whole shard to a reducer instead of sending `(Key, Array<Value>)` tuples. It becomes a responsibility of a programmer to group values according to the specific use-case he needs. In my experience, it most likely suffices to use in-memory hash-table that merges multiple values for the same key. Luckily, with absl/C++14 it's just a few more lines to write. GAIA-MR guarantees shard locality, i.e., the whole shard will still reach the same reducer instance. Also, a programmer fully controls the order in which the shards from multiple sources arrive to a reducer. Which, in turn, could lead to additional optimizations.
 
 This change eliminates the shuffle phase during which the framework is required to sort each shard before sending it to reducers. The shuffle-phase is usually the most time-consuming phase during a MR run.
 
@@ -27,17 +27,47 @@ This change eliminates the shuffle phase during which the framework is required 
 
 3. Modern C++ libraries provide very efficient data-structures and utilites that can read, parse and process data much faster than the their according counter-parts in Java, thus adding another factor to the speed-up.
 
-I am going to go over GAIA API in detail in following sections, covering two most common use-cases: grouping data together by the same key and joining multiple sources of data
-for the same key.
+I am going to go over GAIA API in detail in following section, covering most common use-cases: grouping data together by the same key.
 
-# GSOD example
-I've used [GSOD weather dataset](https://console.cloud.google.com/bigquery?p=bigquery-public-data&d=samples&t=gsod&page=table) from [Google Bigquery Public Datasets](https://cloud.google.com/bigquery/public-data/) for my "group by" example. This data contains historic weather measurements in USA, but for this example, we will use only few fields from each record.
-
-In order to access the dataset, we need to export it to google cloud storage (GCS) first.
-I've prepared publicly accessible reduced dataset at `gs://kushkush/gsod/` that you can copy
-to you local disk. We will go over [gsod_group.cc](https://github.com/romange/gaia/blob/master/examples/gsod_group.cc) example that demonstrates a very simple MR flow that reads
-the input data and counts number of measurements
+# Words count example
+"Words count" is one of the classic mapreduce problems. The goal is, given a text repository, to extract words and count their frequency. The text can be a large data file, web pages extract etc.
+In our case, I've used [Common Crawl](https://commoncrawl.org/the-data/get-started/) dataset for my "word count" example. Common Crawl project crawls the internet pages and stores them in special formats on s3. We need [WET](https://commoncrawl.org/the-data/get-started/#WET-Format) files that keep text extracts from the pages without all the meta data and html tags. Once you copy some of them locally, please run `warc_parse <wet_files_glob> --dest_dir=... --num_shards=...` to produce bunch of raw text files that can be easily processed by the mapreduce. [warc_parse](https://github.com/romange/gaia/blob/master/examples/wordcount/warc_parse.cc) is just a convenient preprocessor that enables us to read regular compressed text
+files instead of working with WET files. And the end of this step we should have sampled unicode text from the internet and we are ready to proceed with [word_count](https://github.com/romange/gaia/blob/master/examples/wordcount/word_count.cc) mr.
 
 ## GAIA MR for grouping
+We can launch [word_count](https://github.com/romange/gaia/blob/master/examples/wordcount/word_count.cc) on a local machine by running `word_count --use_combine=false --dest_dir=... --num_shards=... <input_text_glob*.gz>`. This pipeline is comprised from a single MR step that does the extraction of words from text files and their frequency counting. Essentially the logic is equivalent to `select word, count(*) from <input_text_glob*.gz> group by 1` in SQL.
 
-## GAIA MR for joining
+The code in the `main` function describes the overall flow of the pipeline.
+
+```cpp
+  // Mapper phase
+  PTable<WordCount> intermediate_table =
+      pipeline->ReadText("inp1", inputs).Map<WordSplitter>("word_splitter", db);
+  intermediate_table.Write("word_interim", pb::WireFormat::TXT)
+      .WithModNSharding(FLAGS_num_shards,
+                        [](const WordCount& wc) { return base::Fingerprint(wc.word); })
+      .AndCompress(pb::Output::ZSTD, FLAGS_compress_level);
+
+  // GroupBy phase
+  PTable<WordCount> word_counts = pipeline->Join<WordGroupBy>(
+      "group_by", {intermediate_table.BindWith(&WordGroupBy::OnWordCount)});
+  word_counts.Write("wordcounts", pb::WireFormat::TXT)
+      .AndCompress(pb::Output::ZSTD, FLAGS_compress_level);
+```
+
+The line `pipeline->ReadText("inp1", inputs).Map<WordSplitter>("word_splitter", db);` instructs the pipeline to read text files passed by inputs array and apply on them mapper `WordSplitter`. We call our MR step "word_splitter". Please note, that the mapper takes raw text line and produces a stream of objects of type `WordCount`. This type is the c++ class defined in the example and is not known
+to GAIA framework. In order to help GAIA-MR to serialize this class we must provide `RecordTraits<WordCount>` class specialization in `mr3` namespace [which we do right after](https://github.com/romange/gaia/blob/master/examples/wordcount/word_count.cc#L46) the `WordCount` class definition.
+
+The stream of `WordCount` objects produced by the `WordSplitter` is represented by a handle `intermediate_table` of type `PTable<WordCount>`. Remember, that MR requires resharding/repartitioning operation that involves flushing the intermediate data on the disk. We must explicitly tell GAIA to write the data. This is done in the line.
+
+```cpp
+intermediate_table.Write("word_interim", pb::WireFormat::TXT)
+      .WithModNSharding(FLAGS_num_shards,
+                        [](const WordCount& wc) { return base::Fingerprint(wc.word); })
+      .AndCompress(pb::Output::ZSTD, FLAGS_compress_level);
+```
+
+Here we instruct to store `WordCount` objects in TXT format and to shard them using the lambda function that hashes the "word" part of the object. We also compress the files before storing on the disk. The framework will write exactly `N=FLAGS_num_shards` shards using modulo-hash rule.
+
+`WordSplitter` class is the mapper class that is responsible for the word extraction and for emitting words further into the pipeline. The example allows multiple options, using different regex engines to extract the data or useing `combiner` optimization to reduce data volume passed in the pipeline. We won't cover these options for now. In our case `WordSplitter` will just use `cntx->Write(WordCount{string(word), 1});` codepath to output `<word,1>` pair.
+`WordCount` is our C++ class that we handle in the pipeline. You can see that the mapping.
