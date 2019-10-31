@@ -58,7 +58,7 @@ The code in the `main` function describes the overall flow of the pipeline.
 The line `pipeline->ReadText("inp1", inputs).Map<WordSplitter>("word_splitter", db);` instructs the pipeline to read text files passed by inputs array and apply on them mapper `WordSplitter`. We call our MR step "word_splitter". Please note, that the mapper takes raw text line and produces a stream of objects of type `WordCount`. This type is the c++ class defined in the example and is not known
 to GAIA framework. In order to help GAIA-MR to serialize this class we must provide `RecordTraits<WordCount>` class specialization in `mr3` namespace [which we do right after](https://github.com/romange/gaia/blob/master/examples/wordcount/word_count.cc#L46) the `WordCount` class definition.
 
-The stream of `WordCount` objects produced by the `WordSplitter` is represented by a handle `intermediate_table` of type `PTable<WordCount>`. Remember, that MR requires resharding/repartitioning operation that involves flushing the intermediate data on the disk. We must explicitly tell GAIA to write the data. This is done in the line.
+`WordSplitter` mapper produces a stream of `WordCount` objects which represented by a handle `intermediate_table` of type `PTable<WordCount>`. Remember, that MR requires resharding/repartitioning operation that involves flushing the intermediate data on the disk. We must explicitly tell GAIA to write the data, as shown at the snippet below.
 
 ```cpp
 intermediate_table.Write("word_interim", pb::WireFormat::TXT)
@@ -67,7 +67,20 @@ intermediate_table.Write("word_interim", pb::WireFormat::TXT)
       .AndCompress(pb::Output::ZSTD, FLAGS_compress_level);
 ```
 
-Here we instruct to store `WordCount` objects in TXT format and to shard them using the lambda function that hashes the "word" part of the object. We also compress the files before storing on the disk. The framework will write exactly `N=FLAGS_num_shards` shards using modulo-hash rule.
+Here we instruct to store `WordCount` objects in TXT format and to shard them using the lambda function that hashes the "word".  We also compress the files before storing them on the disk. The framework writes `FLAGS_num_shards` shards using modulo-hash rule.
 
-`WordSplitter` class is the mapper class that is responsible for the word extraction and for emitting words further into the pipeline. The example allows multiple options, using different regex engines to extract the data or useing `combiner` optimization to reduce data volume passed in the pipeline. We won't cover these options for now. In our case `WordSplitter` will just use `cntx->Write(WordCount{string(word), 1});` codepath to output `<word,1>` pair.
-`WordCount` is our C++ class that we handle in the pipeline. You can see that the mapping.
+To group items by word we join the intermediate table using `WordGroupBy` class.
+Shards from the intermediate table are binded with `WordGroupBy::OnWordCount` method, so the framework knows how to pass data into the joiner. `word_counts` handle represents the output table of WordGroupBy operation. We write it into "wordcounts" dataset and finish the pipeline steps.
+Similar to other frameworks, all these operations only instuct the framework how to run. The actual
+run starts with a call `StartLocalRunner(FLAGS_dest_dir)`. Please note that the destination directory can be either the local directory or a GCS path.
+
+```cpp
+PTable<WordCount> word_counts = pipeline->Join<WordGroupBy>(
+      "group_by", {intermediate_table.BindWith(&WordGroupBy::OnWordCount)});
+  word_counts.Write("wordcounts", pb::WireFormat::TXT)
+      .AndCompress(pb::Output::ZSTD, FLAGS_compress_level);
+LocalRunner* runner = pm.StartLocalRunner(FLAGS_dest_dir);
+```
+
+`WordSplitter` class is the mapper class that is responsible for the word extraction and for emitting words further into the pipeline. The example allows multiple options, using different regex engines to extract the data or using `combiner` optimization to reduce data volume passed in the pipeline. We won't cover these options for now. In our case `WordSplitter`  uses `cntx->Write(WordCount{string(word), 1});`  flow to output `<word,1>` pair.
+`WordCount` is our C++ record that we handle and pass via the pipeline.
