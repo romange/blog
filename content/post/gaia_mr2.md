@@ -20,7 +20,6 @@ If you recall, [in Section "Reduce API"]({{< ref "gaia_mr.md#reduce-api" >}}), I
 GAIA-MR optimize the mapreduce flow by applying the following changes:
 
 1. It relaxes the framework guarantees and sends the whole shard to a reducer instead of sending `(Key, Array<Value>)` tuples. It becomes a responsibility of a programmer to group values according to the specific use-case he needs. In my experience, it most likely suffices to use in-memory hash-table that merges multiple values for the same key. Luckily, with absl/C++14 it's just a few more lines to write. GAIA-MR guarantees shard locality, i.e., the whole shard will still reach the same reducer instance. Also, a programmer fully controls the order in which the shards from multiple sources arrive to a reducer. Which, in turn, could lead to additional optimizations.
-
 This change eliminates the shuffle phase during which the framework is required to sort each shard before sending it to reducers. The shuffle-phase is usually the most time-consuming phase during a MR run.
 
 2. Gaia MR is multi-threaded and is especially tuned towards efficiently using all the available cores on host. Sharing data between threads is easier and faster than sharing data between different nodes: there is no communication penalty, no network bottleneck.
