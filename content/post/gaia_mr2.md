@@ -6,8 +6,8 @@ description = ""
 menu = ""
 banner = ""
 images = []
-date = 2019-08-12T21:30:12+03:00
-draft = true
+date = 2019-11-01T10:30:12+03:00
+draft = false
 +++
 
 In [part 1 of my tutorial]({{< ref "gaia_mr.md" >}}) I've explained behind the scenes of a typical mapreduce
@@ -30,9 +30,7 @@ This change eliminates the shuffle phase during which the framework is required 
 I am going to go over GAIA API in detail in following section, covering most common use-cases: grouping data together by the same key.
 
 # Words count example
-"Words count" is one of the classic mapreduce problems. The goal is, given a text repository, to extract words and count their frequency. The text can be a large data file, web pages extract etc.
-In our case, I've used [Common Crawl](https://commoncrawl.org/the-data/get-started/) dataset for my "word count" example. Common Crawl project crawls the internet pages and stores them in special formats on s3. We need [WET](https://commoncrawl.org/the-data/get-started/#WET-Format) files that keep text extracts from the pages without all the meta data and html tags. Once you copy some of them locally, please run `warc_parse <wet_files_glob> --dest_dir=... --num_shards=...` to produce bunch of raw text files that can be easily processed by the mapreduce. [warc_parse](https://github.com/romange/gaia/blob/master/examples/wordcount/warc_parse.cc) is just a convenient preprocessor that enables us to read regular compressed text
-files instead of working with WET files. And the end of this step we should have sampled unicode text from the internet and we are ready to proceed with [word_count](https://github.com/romange/gaia/blob/master/examples/wordcount/word_count.cc) mr.
+“Words count” is one of the classic MapReduce problems. The goal is, given a text repository, to extract words and count their frequency. The text can be a large data file coming from web pages extract. In our case, I’ve used [Common Crawl](https://commoncrawl.org/the-data/get-started/) dataset for my “word count” example. Common Crawl project crawls the internet pages and stores them in special formats on s3. We need [WET](https://commoncrawl.org/the-data/get-started/#WET-Format) files that keep text extracts from the pages without all the metadata and html tags. Once you copy some of them locally, please run `warc_parse <wet_files_glob> --dest_dir=... --num_shards=...` to produce a bunch of raw text files that can be easily processed by the MapReduce. "warc_parse" is just a useful preprocessor that enables us to read regular compressed text files instead of working with WET files. At the end of this step, we should have a sampled Unicode text from the internet, and we are ready to proceed with word_count mr.
 
 ## GAIA MR for grouping
 We can launch [word_count](https://github.com/romange/gaia/blob/master/examples/wordcount/word_count.cc) on a local machine by running `word_count --use_combine=false --dest_dir=... --num_shards=... <input_text_glob*.gz>`. This pipeline is comprised from a single MR step that does the extraction of words from text files and their frequency counting. Essentially the logic is equivalent to `select word, count(*) from <input_text_glob*.gz> group by 1` in SQL.
@@ -67,12 +65,11 @@ intermediate_table.Write("word_interim", pb::WireFormat::TXT)
       .AndCompress(pb::Output::ZSTD, FLAGS_compress_level);
 ```
 
-Here we instruct to store `WordCount` objects in TXT format and to shard them using the lambda function that hashes the "word".  We also compress the files before storing them on the disk. The framework writes `FLAGS_num_shards` shards using modulo-hash rule.
+Here we instruct to store `WordCount` objects in TXT format and to shard them using the lambda function that hashes the "word".  We also compress the files before storing them on the disk. The framework writes `FLAGS_num_shards` shards using modulo rule.
 
-To group items by word we join the intermediate table using `WordGroupBy` class.
-Shards from the intermediate table are binded with `WordGroupBy::OnWordCount` method, so the framework knows how to pass data into the joiner. `word_counts` handle represents the output table of WordGroupBy operation. We write it into "wordcounts" dataset and finish the pipeline steps.
-Similar to other frameworks, all these operations only instuct the framework how to run. The actual
-run starts with a call `StartLocalRunner(FLAGS_dest_dir)`. Please note that the destination directory can be either the local directory or a GCS path.
+To group items by word, we join the intermediate table using `WordGroupBy` class.
+Shards from the intermediate table are bound with `WordGroupBy::OnWordCount` method, so the framework knows how to pass data into the joiner. `word_counts` handle represents the output table of `WordGroupBy` operation. We write it into "wordcounts" dataset and finish the pipeline steps.
+Similar to other frameworks, the operations described above only instruct the framework how to run. The actual run starts with a blocking call `StartLocalRunner(FLAGS_dest_dir)`. Please note that the destination directory can be either a local directory or a GCS path.
 
 ```cpp
 PTable<WordCount> word_counts = pipeline->Join<WordGroupBy>(
@@ -82,5 +79,16 @@ PTable<WordCount> word_counts = pipeline->Join<WordGroupBy>(
 LocalRunner* runner = pm.StartLocalRunner(FLAGS_dest_dir);
 ```
 
-`WordSplitter` class is the mapper class that is responsible for the word extraction and for emitting words further into the pipeline. The example allows multiple options, using different regex engines to extract the data or using `combiner` optimization to reduce data volume passed in the pipeline. We won't cover these options for now. In our case `WordSplitter`  uses `cntx->Write(WordCount{string(word), 1});`  flow to output `<word,1>` pair.
-`WordCount` is our C++ record that we handle and pass via the pipeline.
+
+## WordSplitter Mapper
+`WordSplitter` class is the mapper class that is responsible for the word extraction and for emitting words further into the pipeline. The example allows multiple options, using different regex engines to extract the data or using `combiner` optimization to reduce data volume passed in the pipeline. We won't cover these options for now. In our case `WordSplitter` uses the basic flow and it calls `cntx->Write(WordCount{string(word), 1});`  to emit `<word,1>` pair. Once it's emitted
+it is serialized and added to the appropriate shard according to the sharding function.
+By default, our mapper instances use hyperscan regex engine `db` and they must accept it in the constructor. In order to pass constructor arguments to mappers we just pass them into `Map<MyMapperClass>("stepname", args...);` call that makes sure to pass them along when mapper instances are created. This demonstrates that we can pass global resources outside the framework into our classes in a convenient way.
+
+## WordGroupBy joiner
+`WordGroupBy` instances are created by the framework and they process each their own shard using
+member method `OnWordCount`. The framework will call this method per each record in the shard. It does not guarantee a specific order, but it guarantees that the same shard will reach the same joiner instance fully (shard locality).
+
+For the word count logic we do not need to sort words, just to count them, so we use a hash table `WordCountTable` class to count them. `OnWordCount` does not output any data because at this point the counts for any of the processed words are not finalized yet. Eventually the intermediate shard is processed by joiner instance and then `OnShardFinish` is called. It goes over the hash table and outputs the final `<word, count>` pairs.
+
+As you can see writing GAIA MRs is not complicated as long as you understand the mechanics of Mapreduce systems. As a bonus you get unprecendented performance and the ability to debug, monitor and profile your MR code on your machine.
