@@ -4,7 +4,7 @@ tags = ["c++", "asynchronous", "fibers", "reactive"]
 categories = []
 description = "A small introduction to fiber-based programming model based on Boost.Fibers library"
 menu = ""
-banner = ""
+banner = "banners/fibers.png"
 images = []
 date = 2018-12-15T11:59:52+03:00
 +++
