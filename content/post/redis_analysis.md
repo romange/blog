@@ -99,21 +99,3 @@ improve **vastly**  reliability, performance and cost-efficiency metrics of Redi
 In my next posts, I am going to go over Redis design principles described above and show how a different
 architecture, if aligned better with modern hardware systems, could provide, what I think
 a disruptive change to the in-memory datastore market.
-
-
-
-### Appendix:
-https://medium.com/@john_63123/redis-should-be-multi-threaded-e28319cab744
-
-https://twitter.com/antirez/status/1110973404226772995
-
-http://antirez.com/news/85
-
-https://medium.com/@john_63123
-
-https://twitter.com/kellabyte/status/1111380252398280704
-
-
-ping_iouring_server - 4.4M ping qps on 5.11.0-1019-aws (u21.04), ena 2.5, c6gn.16xlarge.
-
-memcached on the same server: 4.4M get qps, with -t 64, -c 20000.
