@@ -1,4 +1,4 @@
-baseurl = "http://www.romange.com/"
+baseurl = "https://www.romange.com/"
 languageCode = "en-us"
 title = "Это неправильные пчелы"
 
@@ -21,7 +21,7 @@ buildDrafts = false
     author = "Roman Gershman"
     bio = "Programmer"
     location = "Tel Aviv"
-    site_description = "These are the wrong bees"
+    site_description = "The wrong sort of bees"
     copyright  = "Roman Gershman"
     avatar = "css/images/avatar.png"
 
