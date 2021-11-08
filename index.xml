@@ -1,121 +1,22 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Это неправильные пчелы</title>
-    <link>http://www.romange.com/</link>
-    <description>Recent content on Это неправильные пчелы</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Fri, 01 Nov 2019 10:30:12 +0300</lastBuildDate>
-    
-	<atom:link href="http://www.romange.com/index.xml" rel="self" type="application/rss+xml" />
-    
-    
-    <item>
-      <title>Gaia Mapreduce Tutorial - part2</title>
-      <link>http://www.romange.com/2019/11/01/gaia-mapreduce-tutorial-part2/</link>
-      <pubDate>Fri, 01 Nov 2019 10:30:12 +0300</pubDate>
-      
-      <guid>http://www.romange.com/2019/11/01/gaia-mapreduce-tutorial-part2/</guid>
-      <description>&lt;p&gt;In &lt;a href=&#34;http://www.romange.com/2019/07/15/gaia-mapreduce-tutorial-part1/&#34;&gt;part 1 of my tutorial&lt;/a&gt; I&amp;rsquo;ve explained behind the scenes of a typical mapreduce
-framework. In this section we will go over GAIA-MR and will show why it&amp;rsquo;s more efficiant than other open-source frameworks.&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>Benchmarking GAIA MR on Google cloud</title>
-      <link>http://www.romange.com/2019/07/25/benchmarking-gaia-mr-on-google-cloud/</link>
-      <pubDate>Thu, 25 Jul 2019 11:38:01 +0300</pubDate>
-      
-      <guid>http://www.romange.com/2019/07/25/benchmarking-gaia-mr-on-google-cloud/</guid>
-      <description>&lt;p&gt;I&amp;rsquo;ve recently had a chance to benchmark GAIA in Google cloud. The goal was to test how quickly I can
-process compressed text data (i.e read and uncompress on the fly) when running on a single VM and reading directly from cloud storage. The results were quite surprising.&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>Gaia Mapreduce Tutorial - part1</title>
-      <link>http://www.romange.com/2019/07/15/gaia-mapreduce-tutorial-part1/</link>
-      <pubDate>Mon, 15 Jul 2019 00:00:35 +0300</pubDate>
-      
-      <guid>http://www.romange.com/2019/07/15/gaia-mapreduce-tutorial-part1/</guid>
-      <description>&lt;p&gt;There are many Java-based mapreduce frameworks that exist today -
-Apache &lt;a href=&#34;https://beam.apache.org/&#34;&gt;Beam&lt;/a&gt;, &lt;a href=&#34;https://flink.apache.org/&#34;&gt;Flink&lt;/a&gt;, &lt;a href=&#34;https://apex.apache.org/&#34;&gt;Apex&lt;/a&gt; are to name few.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/romange/gaia&#34;&gt;GAIA-MR&lt;/a&gt; is my attempt to show advantages of a C++ over other languages in this domain.
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Это неправильные пчелы</title><link>http://www.romange.com/</link><description>Recent content on Это неправильные пчелы</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 01 Nov 2019 10:30:12 +0300</lastBuildDate><atom:link href="http://www.romange.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Gaia Mapreduce Tutorial - part2</title><link>http://www.romange.com/2019/11/01/gaia-mapreduce-tutorial-part2/</link><pubDate>Fri, 01 Nov 2019 10:30:12 +0300</pubDate><guid>http://www.romange.com/2019/11/01/gaia-mapreduce-tutorial-part2/</guid><description>&lt;p>In &lt;a href="http://www.romange.com/2019/07/15/gaia-mapreduce-tutorial-part1/">part 1 of my tutorial&lt;/a> I&amp;rsquo;ve explained behind the scenes of a typical mapreduce
+framework. In this section we will go over GAIA-MR and will show why it&amp;rsquo;s more efficiant than other open-source frameworks.&lt;/p></description></item><item><title>Benchmarking GAIA MR on Google cloud</title><link>http://www.romange.com/2019/07/25/benchmarking-gaia-mr-on-google-cloud/</link><pubDate>Thu, 25 Jul 2019 11:38:01 +0300</pubDate><guid>http://www.romange.com/2019/07/25/benchmarking-gaia-mr-on-google-cloud/</guid><description>&lt;p>I&amp;rsquo;ve recently had a chance to benchmark GAIA in Google cloud. The goal was to test how quickly I can
+process compressed text data (i.e read and uncompress on the fly) when running on a single VM and reading directly from cloud storage. The results were quite surprising.&lt;/p></description></item><item><title>Gaia Mapreduce Tutorial - part1</title><link>http://www.romange.com/2019/07/15/gaia-mapreduce-tutorial-part1/</link><pubDate>Mon, 15 Jul 2019 00:00:35 +0300</pubDate><guid>http://www.romange.com/2019/07/15/gaia-mapreduce-tutorial-part1/</guid><description>&lt;p>There are many Java-based mapreduce frameworks that exist today -
+Apache &lt;a href="https://beam.apache.org/">Beam&lt;/a>, &lt;a href="https://flink.apache.org/">Flink&lt;/a>, &lt;a href="https://apex.apache.org/">Apex&lt;/a> are to name few.&lt;/p>
+&lt;p>&lt;a href="https://github.com/romange/gaia">GAIA-MR&lt;/a> is my attempt to show advantages of a C++ over other languages in this domain.
 It&amp;rsquo;s currently implemented for a single machine but even with this restriction I&amp;rsquo;ve seen
-up-to 3-7 times reduction in cost and running time vs current alternatives.&lt;/p&gt;
-
-&lt;p&gt;Please note that the single machine restriction put a hard limit on how much data we can process, nethertheless GAIA-MR shines with small-to-medium size workloads (~1TB). This part gives an introduction about mapreduce in general.&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>Introduction to fibers in c&#43;&#43;</title>
-      <link>http://www.romange.com/2018/12/15/introduction-to-fibers-in-c-/</link>
-      <pubDate>Sat, 15 Dec 2018 11:59:52 +0300</pubDate>
-      
-      <guid>http://www.romange.com/2018/12/15/introduction-to-fibers-in-c-/</guid>
-      <description>In my post about Seastar we&amp;rsquo;ve covered continuations style asynchronous programming. My personal opinion is that this style is hard to work with in C++. In this post I would like to cover alternative, Fiber-based approach. I will use Boost.Fibers library in all my examples.
+up-to 3-7 times reduction in cost and running time vs current alternatives.&lt;/p>
+&lt;p>Please note that the single machine restriction put a hard limit on how much data we can process, nethertheless GAIA-MR shines with small-to-medium size workloads (~1TB). This part gives an introduction about mapreduce in general.&lt;/p></description></item><item><title>Introduction to fibers in c++</title><link>http://www.romange.com/2018/12/15/introduction-to-fibers-in-c-/</link><pubDate>Sat, 15 Dec 2018 11:59:52 +0300</pubDate><guid>http://www.romange.com/2018/12/15/introduction-to-fibers-in-c-/</guid><description>In my post about Seastar we&amp;rsquo;ve covered continuations style asynchronous programming. My personal opinion is that this style is hard to work with in C++. In this post I would like to cover alternative, Fiber-based approach. I will use Boost.Fibers library in all my examples.
 Fibers, or green threads, or cooperative threads are similar to regular threads but with few important distinctions:
- Fibers can not move between system threads and they are usually pinned to a specific thread.</description>
-    </item>
-    
-    <item>
-      <title>Seastar - Asynchronous C&#43;&#43; framework</title>
-      <link>http://www.romange.com/2018/07/12/seastar-asynchronous-c-framework/</link>
-      <pubDate>Thu, 12 Jul 2018 20:45:24 +0300</pubDate>
-      
-      <guid>http://www.romange.com/2018/07/12/seastar-asynchronous-c-framework/</guid>
-      <description>&lt;p&gt;Lately, there are many discussions in the programming community in general and in c++ community in particular on how to write efficient asynchronous code. Many concepts like futures, continuations, coroutines are being discussed by c++ standard
-committee but not much progress was made besides very minimal support of C++11 futures.&lt;/p&gt;
-
-&lt;p&gt;On the other hand, many mainstream programming languages progressed quicker and adopted asynchronous models
+Fibers can not move between system threads and they are usually pinned to a specific thread.</description></item><item><title>Seastar - Asynchronous C++ framework</title><link>http://www.romange.com/2018/07/12/seastar-asynchronous-c-framework/</link><pubDate>Thu, 12 Jul 2018 20:45:24 +0300</pubDate><guid>http://www.romange.com/2018/07/12/seastar-asynchronous-c-framework/</guid><description>&lt;p>Lately, there are many discussions in the programming community in general and in c++ community in particular on how to write efficient asynchronous code. Many concepts like futures, continuations, coroutines are being discussed by c++ standard
+committee but not much progress was made besides very minimal support of C++11 futures.&lt;/p>
+&lt;p>On the other hand, many mainstream programming languages progressed quicker and adopted asynchronous models
 either into a core language or popularized it via standard libraries. For example, coroutines are used in Python (yield) and Lua.
 Continuations and futures are used extensively in Java. Golang and Erlang are using green threads.
 Callback based actor models are used in C and Javascript. Due to a lack of official support for
-asynchronous programming in C++, the community introduced ad-hoc frameworks and libraries that allow writing asynchronous code in C++.&lt;/p&gt;
-
-&lt;p&gt;I would like to share my opinion on what I think will be the best direction for asynchronous models in C++ by reviewing two
-prominent frameworks: &lt;a href=&#34;http://seastar.io/&#34;&gt;Seastar&lt;/a&gt; and &lt;a href=&#34;https://boost.org/doc/libs/1_67_0/libs/fiber/doc/html/index.html&#34;&gt;Boost.Fiber&lt;/a&gt;. This (opinionated) post reviews Seastar.&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>Implementing cheap and precise clock</title>
-      <link>http://www.romange.com/2017/11/02/implementing-cheap-and-precise-clock/</link>
-      <pubDate>Thu, 02 Nov 2017 13:37:51 +0200</pubDate>
-      
-      <guid>http://www.romange.com/2017/11/02/implementing-cheap-and-precise-clock/</guid>
-      <description>&lt;p&gt;The posix API for querying high-precision hardware clocks is &lt;code&gt;clock_gettime&lt;/code&gt;. If one second precision is fine then &lt;code&gt;time(nullptr)&lt;/code&gt; is your friend. Unfortunately, using precice clocks takes its price - they are more expensive CPU-wise.&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>Reloading data structures under high throughput</title>
-      <link>http://www.romange.com/2017/09/29/reloading-data-structures-under-high-throughput/</link>
-      <pubDate>Fri, 29 Sep 2017 15:46:55 +0300</pubDate>
-      
-      <guid>http://www.romange.com/2017/09/29/reloading-data-structures-under-high-throughput/</guid>
-      <description>&lt;p&gt;Suppose you have a multi-threaded server that serves tens of thousands read queries per second. Those queries use a shared data-structure or index that is mostly immutable during the server run with the exception of periodic index reloads.  How do you implement data reloads in that server while keeping it live and kicking in production?&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>How to serialize integers into memory</title>
-      <link>http://www.romange.com/2017/09/26/how-to-serialize-integers-into-memory/</link>
-      <pubDate>Tue, 26 Sep 2017 22:46:30 +0300</pubDate>
-      
-      <guid>http://www.romange.com/2017/09/26/how-to-serialize-integers-into-memory/</guid>
-      <description>&lt;p&gt;Here is the analysis of a recent bug I&amp;rsquo;ve stumbled upon. My initial reaction was that
-the problem is in the compiler (or that &lt;a href=&#34;https://www.youtube.com/watch?v=PIuE5J9dfAo&#34;&gt;&amp;ldquo;These are wrong bees&amp;rdquo;&lt;/a&gt;). Consider the code below. We copy 64 integers into a properly allocated destination buffer and yet, if compiled with &lt;code&gt;-O3&lt;/code&gt; switch this code crashes with segfault!&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>My first post</title>
-      <link>http://www.romange.com/2017/09/26/my-first-post/</link>
-      <pubDate>Tue, 26 Sep 2017 16:16:40 +0300</pubDate>
-      
-      <guid>http://www.romange.com/2017/09/26/my-first-post/</guid>
-      <description>&lt;p&gt;Hi it&amp;rsquo;s my first attemp at blogging. I&amp;rsquo;ve chosen &lt;a href=&#34;https://gohugo.io/&#34;&gt;Hugo&lt;/a&gt; with
-&lt;a href=&#34;https://github.com/digitalcraftsman/hugo-icarus-theme&#34;&gt;Icarus theme&lt;/a&gt; for the content generation.
-This blog is going to be published vi my &lt;a href=&#34;https://github.com/romange/blog&#34;&gt;github repository&lt;/a&gt;.
-Stay tuned!&lt;/p&gt;</description>
-    </item>
-    
-  </channel>
-</rss>
+asynchronous programming in C++, the community introduced ad-hoc frameworks and libraries that allow writing asynchronous code in C++.&lt;/p>
+&lt;p>I would like to share my opinion on what I think will be the best direction for asynchronous models in C++ by reviewing two
+prominent frameworks: &lt;a href="http://seastar.io/">Seastar&lt;/a> and &lt;a href="https://boost.org/doc/libs/1_67_0/libs/fiber/doc/html/index.html">Boost.Fiber&lt;/a>. This (opinionated) post reviews Seastar.&lt;/p></description></item><item><title>Implementing cheap and precise clock</title><link>http://www.romange.com/2017/11/02/implementing-cheap-and-precise-clock/</link><pubDate>Thu, 02 Nov 2017 13:37:51 +0200</pubDate><guid>http://www.romange.com/2017/11/02/implementing-cheap-and-precise-clock/</guid><description>&lt;p>The posix API for querying high-precision hardware clocks is &lt;code>clock_gettime&lt;/code>. If one second precision is fine then &lt;code>time(nullptr)&lt;/code> is your friend. Unfortunately, using precice clocks takes its price - they are more expensive CPU-wise.&lt;/p></description></item><item><title>Reloading data structures under high throughput</title><link>http://www.romange.com/2017/09/29/reloading-data-structures-under-high-throughput/</link><pubDate>Fri, 29 Sep 2017 15:46:55 +0300</pubDate><guid>http://www.romange.com/2017/09/29/reloading-data-structures-under-high-throughput/</guid><description>&lt;p>Suppose you have a multi-threaded server that serves tens of thousands read queries per second. Those queries use a shared data-structure or index that is mostly immutable during the server run with the exception of periodic index reloads. How do you implement data reloads in that server while keeping it live and kicking in production?&lt;/p></description></item><item><title>How to serialize integers into memory</title><link>http://www.romange.com/2017/09/26/how-to-serialize-integers-into-memory/</link><pubDate>Tue, 26 Sep 2017 22:46:30 +0300</pubDate><guid>http://www.romange.com/2017/09/26/how-to-serialize-integers-into-memory/</guid><description>&lt;p>Here is the analysis of a recent bug I&amp;rsquo;ve stumbled upon. My initial reaction was that
+the problem is in the compiler (or that &lt;a href="https://www.youtube.com/watch?v=PIuE5J9dfAo">&amp;ldquo;These are wrong bees&amp;rdquo;&lt;/a>). Consider the code below. We copy 64 integers into a properly allocated destination buffer and yet, if compiled with &lt;code>-O3&lt;/code> switch this code crashes with segfault!&lt;/p></description></item><item><title>My first post</title><link>http://www.romange.com/2017/09/26/my-first-post/</link><pubDate>Tue, 26 Sep 2017 16:16:40 +0300</pubDate><guid>http://www.romange.com/2017/09/26/my-first-post/</guid><description>&lt;p>Hi it&amp;rsquo;s my first attemp at blogging. I&amp;rsquo;ve chosen &lt;a href="https://gohugo.io/">Hugo&lt;/a> with
+&lt;a href="https://github.com/digitalcraftsman/hugo-icarus-theme">Icarus theme&lt;/a> for the content generation.
+This blog is going to be published vi my &lt;a href="https://github.com/romange/blog">github repository&lt;/a>.
+Stay tuned!&lt;/p></description></item></channel></rss>
