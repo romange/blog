@@ -8,7 +8,7 @@ of numerous dev-ops and software engineers. Indeed, according to StackOverflow s
 2021, Redis is the most loved database for the 5th time in a row and is at the top of
 db-engines ranking, way before the next contestant.
 But how well does Redis utilizes modern hardware systems?
-Will it stay competitive in a few years without reinventing itself?"><meta itemprop=datePublished content="2021-11-28T17:46:19+03:00"><meta itemprop=dateModified content="2021-11-28T17:46:19+03:00"><meta itemprop=wordCount content="768"><meta itemprop=keywords content="redis,"><meta name=twitter:card content="summary"><meta name=twitter:title content="A prelude to analysis of Redis memory-store "><meta name=twitter:description content="During the last 13 years, Redis has become a truly ubiquitous memory store that has won the hearts
+Will it stay competitive in a few years without reinventing itself?"><meta itemprop=datePublished content="2021-11-28T17:46:19+03:00"><meta itemprop=dateModified content="2021-11-28T17:46:19+03:00"><meta itemprop=wordCount content="785"><meta itemprop=keywords content="redis,"><meta name=twitter:card content="summary"><meta name=twitter:title content="A prelude to analysis of Redis memory-store "><meta name=twitter:description content="During the last 13 years, Redis has become a truly ubiquitous memory store that has won the hearts
 of numerous dev-ops and software engineers. Indeed, according to StackOverflow survey in
 2021, Redis is the most loved database for the 5th time in a row and is at the top of
 db-engines ranking, way before the next contestant.
@@ -24,7 +24,7 @@ Will it stay competitive in a few years without reinventing itself?"><script src
 <span>Tags</span></div></div><div class="profile-block social-links"><table><tr><td><a href=//github.com/romange target=_blank title=GitHub><i class="fa fa-github"></i></a></td><td><a href=//linkedin.com/in/romange target=_blank title=LinkedIn><i class="fa fa-linkedin"></i></a></td><td><a href=//stackoverflow.com/users/romange target=_blank title="Stack Overflow"><i class="fa fa-stack-overflow"></i></a></td><td><a href=https://www.romange.com/index.xml target=_blank title=RSS><i class="fa fa-rss"></i></a></td></tr></table></div></div></aside><section id=main><article id=page-undefined class="article article-type-page" itemscope itemprop=blogPost><div class=article-inner><img src=https://www.romange.com/banners/1200px-Redis_Logo.svg.png class=article-banner><header class=article-header><a href=https://www.romange.com/2021/11/28/a-prelude-to-analysis-of-redis-memory-store/><h1 class=article-title itemprop=name>A prelude to analysis of Redis memory-store</h1></a><div class=article-meta><div class=article-date><i class="fa fa-calendar"></i>
 <time datetime="2021-11-28 17:46:19 +0300 +0300" itemprop=datePublished>Nov 28nd 2021</time>
 &#183;
-768
+785
 words
 &#183;
 4
@@ -56,11 +56,12 @@ or for strong consistency.</p><h2 id=retrospective>Retrospective</h2><p>I think 
 like its serialization algorithm, efficiency of its data structures, reliability and more.
 Even the choice of its threading model has been, in part, done because of simplicity reasons.
 And if Redis is the experiment on how far one can go nowdays by implementing relatively simple solutions, it without
-a question succeeded tremendously.</p><p>However, the question I am asking myself in 2021 when Redis is a mature system with relatively stable product core
-is <strong>how much better</strong> Redis could be if it would adopt state-of-the-art algorithms and datastructures and
-prefer system simplicity over simplicity of implementation.</p><p>In other words, if one would want to implement a drop-in replacement for Redis <strong>today</strong> by
-redesigning it from scratch, how well it would compare to Redis. I do not have a definite answer to this question today but hope to have one in few months.</p><p>I am not arguing with the tremendous popularity of the Redis memory store. It seems that Salvatore&rsquo;s
-decision to go for simplicity and deliver features quickly - paid off: today Memcached is a niche
+a question succeeded tremendously.</p><p>Redis in 2021 is a mature product with relatively stable feature set, and the questions I am asking myself
+today are:
+a) how more efficienty Redis could be today if it would adopt state-of-the-art algorithms and datastructures.
+b) how much simpler it would be for a user if it adopt product simplicity over simplicity of implementation.</p><p>In other words, if one would want to implement a drop-in replacement for Redis <strong>today</strong> by
+redesigning it from scratch, how it would compare to Redis. I do not have a definite answer to this question today but hope to have one in few months.</p><p>Again, I am not arguing with the tremendous popularity of the Redis memory store. It seems that Salvatore&rsquo;s
+decision to go for simplicity and deliver features quickly in Redis early days - paid off: today Memcached is a niche
 system, and the vast majority of software stacks use Redis. However, I do claim (currently without proof)
 that it is possible to <strong>vastly</strong> improve reliability, performance and cost-efficiency metrics of Redis-like memory store that follows similar design goals but with different architectural principles.</p><p>In my next posts, I am going to detail Redis specific design choices based on the principles state above
 and show how a different architecture, if aligned better with modern hardware systems, could provide, what I think
