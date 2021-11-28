@@ -8,7 +8,7 @@ of numerous dev-ops and software engineers. Indeed, according to StackOverflow s
 2021, Redis is the most loved database for the 5th time in a row and is at the top of
 db-engines ranking, way before the next contestant.
 But how well does Redis utilizes modern hardware systems?
-Will it stay competitive in a few years without reinventing itself?"><meta itemprop=datePublished content="2021-11-28T09:46:19+03:00"><meta itemprop=dateModified content="2021-11-28T09:46:19+03:00"><meta itemprop=wordCount content="680"><meta itemprop=keywords content="redis,"><meta name=twitter:card content="summary"><meta name=twitter:title content="A prelude to analysis of Redis memory-store "><meta name=twitter:description content="During the last 13 years, Redis has become a truly ubiquitous memory store that has won the hearts
+Will it stay competitive in a few years without reinventing itself?"><meta itemprop=datePublished content="2021-11-28T09:46:19+03:00"><meta itemprop=dateModified content="2021-11-28T09:46:19+03:00"><meta itemprop=wordCount content="679"><meta itemprop=keywords content="redis,"><meta name=twitter:card content="summary"><meta name=twitter:title content="A prelude to analysis of Redis memory-store "><meta name=twitter:description content="During the last 13 years, Redis has become a truly ubiquitous memory store that has won the hearts
 of numerous dev-ops and software engineers. Indeed, according to StackOverflow survey in
 2021, Redis is the most loved database for the 5th time in a row and is at the top of
 db-engines ranking, way before the next contestant.
@@ -24,7 +24,7 @@ Will it stay competitive in a few years without reinventing itself?"><script src
 <span>Tags</span></div></div><div class="profile-block social-links"><table><tr><td><a href=//github.com/romange target=_blank title=GitHub><i class="fa fa-github"></i></a></td><td><a href=//linkedin.com/in/romange target=_blank title=LinkedIn><i class="fa fa-linkedin"></i></a></td><td><a href=//stackoverflow.com/users/romange target=_blank title="Stack Overflow"><i class="fa fa-stack-overflow"></i></a></td><td><a href=https://www.romange.com/index.xml target=_blank title=RSS><i class="fa fa-rss"></i></a></td></tr></table></div></div></aside><section id=main><article id=page-undefined class="article article-type-page" itemscope itemprop=blogPost><div class=article-inner><img src=https://www.romange.com/banners/1200px-Redis_Logo.svg.png class=article-banner><header class=article-header><a href=https://www.romange.com/2021/11/28/a-prelude-to-analysis-of-redis-memory-store/><h1 class=article-title itemprop=name>A prelude to analysis of Redis memory-store</h1></a><div class=article-meta><div class=article-date><i class="fa fa-calendar"></i>
 <time datetime="2021-11-28 09:46:19 +0300 +0300" itemprop=datePublished>Nov 28nd 2021</time>
 &#183;
-680
+679
 words
 &#183;
 4
@@ -34,7 +34,7 @@ of numerous dev-ops and software engineers. Indeed, according to <a href=https:/
 2021</a>, Redis is the most loved database for the 5th time in a row and is at the top of
 <a href=https://db-engines.com/en/ranking/key-value+store>db-engines</a> ranking, way before the next contestant.
 But how well does Redis utilizes modern hardware systems?
-Will it stay competitive in a few years without reinventing itself?</p><p>To understand choices behind Redis design, I have been reading <a href=http://oldblog.antirez.com/>the old posts</a> of Salvatore @antirez - the creator of Redis. Before I begin, I want to add that I have tremendous respect for Salvatore and for how much he achieved by just being a talented and authentic software programmer
+Will it stay competitive in a few years without reinventing itself?</p><p>To understand choices behind Redis design, I have been reading <a href=http://oldblog.antirez.com/>the old posts</a> of Salvatore @antirez - the creator of Redis. Before I begin, I want to add that I have tremendous respect for Salvatore and for how much he achieved by being a talented and authentic software programmer
 (even though <a href=http://antirez.com/news/133>he does not want to be remembered as such</a>).</p><p>Based on his notes and GitHub discussions, I identified the following architectural principles in Redis:</p><ol><li><p><strong>Single-threaded architecture</strong><br>Redis development started a few years after Memcached. By that time, Memcached, the predecessor of Redis,
 has already been a mature system that has been used and supported by large, highly
 technological companies like Facebook and Twitter. It used multi-threaded architecture
