@@ -6,7 +6,7 @@ description = ""
 menu = ""
 banner = "banners/1200px-Redis_Logo.svg.png"
 images = []
-date = 2021-11-28T09:46:19+03:00
+date = 2021-11-28T17:46:19+03:00
 draft = false
 +++
 
@@ -19,12 +19,18 @@ Will it stay competitive in a few years without reinventing itself?
 
 <!--more-->
 
-To understand choices behind Redis design, I have been reading [the old posts](http://oldblog.antirez.com/) of Salvatore @antirez \- the creator of Redis. Before I begin, I want to add that I have tremendous respect for Salvatore and for how much he achieved by just being a talented and authentic software programmer
+To understand choices behind Redis design, I have been reading [the old posts](http://oldblog.antirez.com/) of Salvatore @antirez \- the creator of Redis. Before I begin, I want to add that I have tremendous respect for Salvatore and for how much he achieved by being a talented and authentic software programmer
 (even though [he does not want to be remembered as such](http://antirez.com/news/133)).
 
 Based on his notes and GitHub discussions, I identified the following architectural principles in Redis:
 
-1. **Single-threaded architecture**\
+1. **Simple is beautiful (and code is a poem)**\
+   Probably the strongest motive around Redis is simplicity. Salvatore's preference is towards simple solutions and he expressed his attitude to coding in his
+   [Redis manifesto](http://oldblog.antirez.com/post/redis-manifesto.html). As a consequence,
+   Redis resides in a single self-contained codebase without much reliance on third-party projects and is
+   functionality is implemented in plain C using posix API.
+
+2. **Single-threaded architecture**\
 Redis development started a few years after Memcached. By that time, Memcached, the predecessor of Redis,
 has already been a mature system that has been used and supported by large, highly
 technological companies like Facebook and Twitter. It used multi-threaded architecture
@@ -43,23 +49,6 @@ main in-memory dictionary. antirez has defended this approach many times with th
      * Vertical scale has physical limit anyway, therefore horizontal scaling (aka Redis cluster)
        is the way to scale.
 
-2. **Strong consistency guarantees when reading and writing from master node**\
-   Redis provides linearizability guarantees as long as you read and write to the same machine.
-   That means that all mutations appear to be executed atomically in a sequential order that
-   is consistent with a global order (wall-clock time) of non-overlapping operations.
-   In practice, this is a direct consequence of utilizing a single thread for applying
-   datastore operations atomically.
-
-3. **Simple is beautiful, code is a poem**\
-   Salvatore's preference is towards simple solutions. He expressed his attitude to coding in his
-   [Redis manifesto](http://oldblog.antirez.com/post/redis-manifesto.html). Redis resides in
-   a single coherent codebase without much reliance on third-party projects. One example of this principle
-   is that Salvatore crafted all Redis core data structures with the Redis dictionary being probably the most
-   prominent one. Redis dictionary powers the main hash table that stores
-   all the entries in the Redis datastore. It has been also used for some Redis value types like sets
-   and maps. Redis dictionary uses a classic chained hashtable implementation with
-   some improvements to allow dynamic rehashing.
-
 
 In addition to the principles above, Redis maintains unique design goals that differentiate it
 from, say, a disk-based database. I believe that if we list Redis design goals by priority, it will be:
@@ -70,13 +59,31 @@ from, say, a disk-based database. I believe that if we list Redis design goals b
 5. Strong consistency guarantees
 6. Durability
 
-## Retrospective
-I will not argue with the tremendous popularity of the Redis memory store. It seems that Salvatore's
-decision to go for simplicity and deliver features quickly - paid off: today Memcached is a niche
-system, and the vast majority of software stacks use Redis. However, I do claim that it is possible to
-**vastly** improve reliability, performance and cost-efficiency metrics of Redis-like memory store that
-follows similar design goals but with different architectural principles.
+Obviously, if one would want to implement an alternative memory store he would need to prioritize design goals
+similarly to Redis. In other words, the new store design should not sacrifice low latency for durability,
+or for strong consistency.
 
-In my next posts, I am going to go over Redis design principles described above and show how a different
-architecture, if aligned better with modern hardware systems, could provide, what I think
+## Retrospective
+
+I think that *simplicity* was the main guideline for Redis which heavily affected architectural decisions
+like its serialization algorithm, efficiency of its data structures, reliability and more.
+Even the choice of its threading model has been, in part, done because of simplicity reasons.
+And if Redis is the experiment on how far one can go nowdays by implementing relatively simple solutions, it without
+a question succeeded tremendously.
+
+Redis in 2021 is a mature product with relatively stable feature set, and the questions I am asking myself
+today are:
+a) how more efficienty Redis could be today if it would adopt state-of-the-art algorithms and datastructures.
+b) how much simpler it would be for a user if it adopt product simplicity over simplicity of implementation.
+
+In other words, if one would want to implement a drop-in replacement for Redis **today** by
+redesigning it from scratch, how it would compare to Redis. I do not have a definite answer to this question today but hope to have one in few months.
+
+Again, I am not arguing with the tremendous popularity of the Redis memory store. It seems that Salvatore's
+decision to go for simplicity and deliver features quickly in Redis early days - paid off: today Memcached is a niche
+system, and the vast majority of software stacks use Redis. However, I do claim (currently without proof)
+that it is possible to **vastly** improve reliability, performance and cost-efficiency metrics of Redis-like memory store that follows similar design goals but with different architectural principles.
+
+In my next posts, I am going to detail Redis specific design choices based on the principles state above
+and show how a different architecture, if aligned better with modern hardware systems, could provide, what I think
 a disruptive change to in-memory datastores.
