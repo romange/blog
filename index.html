@@ -88,7 +88,7 @@ Follow
 </div>
 <div class="article-info profile-block">
 <div class=article-info-block>
-10
+11
 <span>Posts</span>
 </div>
 <div class=article-info-block>
@@ -111,6 +111,57 @@ Tags
 </div>
 </aside>
 <section id=main>
+<article class="article article-type-post" itemscope itemprop=blogPost>
+<div class=article-inner>
+<a href=https://www.romange.com/2021/12/01/redis-analysis-part-1-threading-model/ itemprop=url>
+<img src=https://www.romange.com/banners/ class=article-banner>
+</a>
+<header class=article-header>
+<a href=https://www.romange.com/2021/12/01/redis-analysis-part-1-threading-model/>
+<h1 class=article-title itemprop=name>
+Redis Analysis - Part 1: Threading model
+</h1>
+</a>
+<div class=article-meta>
+<div class=article-date>
+<i class="fa fa-calendar"></i>
+<time datetime="2021-12-01 09:46:19 +0300 +0300" itemprop=datePublished>Dec 1nd 2021</time>
+&#183;
+1863
+words
+&#183;
+9
+minute read
+</div>
+<div class=article-category>
+<i class="fa fa-tags"></i>
+<a class=article-category-link href=https://www.romange.com/tags/redis>redis</a>
+</div>
+</div>
+</header>
+<div class=article-entry itemprop=articleBody>
+<p>
+<p>Following my previous post, we are going start with the &ldquo;hottest potato&rdquo; - single-threaded vs
+multi-threaded argument.</p>
+</p>
+<p class=article-more-link>
+<a href=https://www.romange.com/2021/12/01/redis-analysis-part-1-threading-model/>
+Read more
+</a>
+</p>
+</div>
+<footer class=article-footer>
+<a data-url=https://www.romange.com/2021/12/01/redis-analysis-part-1-threading-model/ data-id=e4af4bcd235220dfd2cb775d51d9216f class=article-share-link>
+<i class="fa fa-share"></i>
+Share
+</a>
+<a href=https://www.romange.com/2021/12/01/redis-analysis-part-1-threading-model/#disqus_thread class=article-comment-link>
+Comments
+</a>
+<script>(function(a){if(typeof __SHARE_BUTTON_BINDED__=='undefined'||!__SHARE_BUTTON_BINDED__)__SHARE_BUTTON_BINDED__=!0;else return;a('body').on('click',function(){a('.article-share-box.on').removeClass('on')}).on('click','.article-share-link',function(i){var d,f,c,e,g,b,h;if(i.stopPropagation(),d=a(this),f=d.attr('data-url'),c=encodeURIComponent(f),e='article-share-box-'+d.attr('data-id'),g=d.offset(),a('#'+e).length){if(b=a('#'+e),b.hasClass('on')){b.removeClass('on');return}}else h=['<div id="'+e+'" class="article-share-box">','<input class="article-share-input" value="'+f+'">','<div class="article-share-links">','<a href="https://twitter.com/intent/tweet?url='+c+'" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>','<a href="https://www.facebook.com/sharer.php?u='+c+'" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>','<a href="http://pinterest.com/pin/create/button/?url='+c+'" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>','<a href="https://plus.google.com/share?url='+c+'" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>','</div>','</div>'].join(''),b=a(h),a('body').append(b);a('.article-share-box.on').hide(),b.css({top:g.top+25,left:g.left}).addClass('on')}).on('click','.article-share-box',function(a){a.stopPropagation()}).on('click','.article-share-box-input',function(){a(this).select()}).on('click','.article-share-box-link',function(a){a.preventDefault(),a.stopPropagation(),window.open(this.href,'article-share-box-window-'+Date.now(),'width=500,height=450')})})(jQuery)</script>
+</footer>
+</div>
+</article>
 <article class="article article-type-post" itemscope itemprop=blogPost>
 <div class=article-inner>
 <a href=https://www.romange.com/2021/11/28/a-prelude-to-analysis-of-redis-memory-store/ itemprop=url>
@@ -604,58 +655,10 @@ Comments
 </footer>
 </div>
 </article>
-<article class="article article-type-post" itemscope itemprop=blogPost>
-<div class=article-inner>
-</a>
-<header class=article-header>
-<a href=https://www.romange.com/2017/09/26/my-first-post/>
-<h1 class=article-title itemprop=name>
-My first post
-</h1>
-</a>
-<div class=article-meta>
-<div class=article-date>
-<i class="fa fa-calendar"></i>
-<time datetime="2017-09-26 16:16:40 +0300 +0300" itemprop=datePublished>Sep 26nd 2017</time>
-&#183;
-30
-words
-&#183;
-1
-minute read
-</div>
-<div class=article-category>
-<i class="fa fa-tags"></i>
-<a class=article-category-link href=https://www.romange.com/tags/blogging>blogging</a>
-</div>
-</div>
-</header>
-<div class=article-entry itemprop=articleBody>
-<p>
-<p>Hi it&rsquo;s my first attemp at blogging. I&rsquo;ve chosen <a href=https://gohugo.io/>Hugo</a> with
-<a href=https://github.com/digitalcraftsman/hugo-icarus-theme>Icarus theme</a> for the content generation.
-This blog is going to be published vi my <a href=https://github.com/romange/blog>github repository</a>.
-Stay tuned!</p>
-</p>
-<p class=article-more-link>
-<a href=https://www.romange.com/2017/09/26/my-first-post/>
-Read more
-</a>
-</p>
-</div>
-<footer class=article-footer>
-<a data-url=https://www.romange.com/2017/09/26/my-first-post/ data-id=be3d5cf9cd6acbc273a36563933ffdd6 class=article-share-link>
-<i class="fa fa-share"></i>
-Share
-</a>
-<a href=https://www.romange.com/2017/09/26/my-first-post/#disqus_thread class=article-comment-link>
-Comments
-</a>
-<script>(function(a){if(typeof __SHARE_BUTTON_BINDED__=='undefined'||!__SHARE_BUTTON_BINDED__)__SHARE_BUTTON_BINDED__=!0;else return;a('body').on('click',function(){a('.article-share-box.on').removeClass('on')}).on('click','.article-share-link',function(i){var d,f,c,e,g,b,h;if(i.stopPropagation(),d=a(this),f=d.attr('data-url'),c=encodeURIComponent(f),e='article-share-box-'+d.attr('data-id'),g=d.offset(),a('#'+e).length){if(b=a('#'+e),b.hasClass('on')){b.removeClass('on');return}}else h=['<div id="'+e+'" class="article-share-box">','<input class="article-share-input" value="'+f+'">','<div class="article-share-links">','<a href="https://twitter.com/intent/tweet?url='+c+'" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>','<a href="https://www.facebook.com/sharer.php?u='+c+'" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>','<a href="http://pinterest.com/pin/create/button/?url='+c+'" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>','<a href="https://plus.google.com/share?url='+c+'" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>','</div>','</div>'].join(''),b=a(h),a('body').append(b);a('.article-share-box.on').hide(),b.css({top:g.top+25,left:g.left}).addClass('on')}).on('click','.article-share-box',function(a){a.stopPropagation()}).on('click','.article-share-box-input',function(){a(this).select()}).on('click','.article-share-box-link',function(a){a.preventDefault(),a.stopPropagation(),window.open(this.href,'article-share-box-window-'+Date.now(),'width=500,height=450')})})(jQuery)</script>
-</footer>
-</div>
-</article>
 <nav id=page-nav>
+<a class="extend next" rel=next href=https://www.romange.com/page/2/>
+Next »
+</a>
 </nav>
 </section>
 <aside id=sidebar>
@@ -665,6 +668,19 @@ Recents
 </h3>
 <div class=widget>
 <ul id=recent-post>
+<li>
+<div class=item-thumbnail>
+<a href=https://www.romange.com/2021/12/01/redis-analysis-part-1-threading-model/ class=thumbnail>
+<span style=background-image:url(https://www.romange.com/banners/) alt="Это неправильные пчелы" class=thumbnail-image></span>
+</a>
+</div>
+<div class=item-inner>
+<p class=item-title><a href=https://www.romange.com/2021/12/01/redis-analysis-part-1-threading-model/ class=title>Redis Analysis - Part 1: Threading model</a></p>
+<p class=item-date>
+<time datetime="2021-12-01 09:46:19 +0300 +0300" itemprop=datePublished>Dec 1nd 2021</time>
+</p>
+</div>
+</li>
 <li>
 <div class=item-thumbnail>
 <a href=https://www.romange.com/2021/11/28/a-prelude-to-analysis-of-redis-memory-store/ class=thumbnail>
@@ -714,19 +730,6 @@ Recents
 <p class=item-title><a href=https://www.romange.com/2019/07/15/gaia-mapreduce-tutorial-part1/ class=title>Gaia Mapreduce Tutorial - part1</a></p>
 <p class=item-date>
 <time datetime="2019-07-15 00:00:35 +0300 +0300" itemprop=datePublished>Jul 15nd 2019</time>
-</p>
-</div>
-</li>
-<li>
-<div class=item-thumbnail>
-<a href=https://www.romange.com/2018/12/15/introduction-to-fibers-in-c-/ class=thumbnail>
-<span style=background-image:url(https://www.romange.com/banners/fibers.png) alt="Это неправильные пчелы" class=thumbnail-image></span>
-</a>
-</div>
-<div class=item-inner>
-<p class=item-title><a href=https://www.romange.com/2018/12/15/introduction-to-fibers-in-c-/ class=title>Introduction to fibers in c++</a></p>
-<p class=item-date>
-<time datetime="2018-12-15 11:59:52 +0300 +0300" itemprop=datePublished>Dec 15nd 2018</time>
 </p>
 </div>
 </li>
@@ -821,7 +824,7 @@ reactive
 <a class=category-list-link href=https://www.romange.com/tags/redis>
 redis
 </a>
-<span class=category-list-count>1</span>
+<span class=category-list-count>2</span>
 </li>
 <li class=category-list-item>
 <a class=category-list-link href=https://www.romange.com/tags/seastar>
