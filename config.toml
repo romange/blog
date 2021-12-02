@@ -29,7 +29,7 @@ buildDrafts = false
     # will fallback to the avatar.
     gravatar = "romange@gmail.com"
     logo = "css/images/7.png"
-    disable_mathjax = true # set to true to disable MathJax
+    disable_mathjax = false # set to true to disable MathJax
 
     # define which types of pages should be shown. By default the type with the most regular pages
     mainSections = ["post"]

@@ -1,5 +1,5 @@
 +++
-title = "A prelude to analysis of Redis memory-store "
+title = "A prelude to analysis of Redis memory-store"
 tags = ["redis", ]
 categories = []
 description = ""
@@ -27,8 +27,8 @@ Based on his notes and GitHub discussions, I identified the following architectu
 1. **Simple is beautiful (and code is a poem)**\
    Probably the strongest motive around Redis is simplicity. Salvatore's preference is towards simple solutions and he expressed his attitude to coding in his
    [Redis manifesto](http://oldblog.antirez.com/post/redis-manifesto.html). As a consequence,
-   Redis resides in a single self-contained codebase without much reliance on third-party projects and is
-   functionality is implemented in plain C using posix API.
+   Redis resides in a single self-contained codebase without much reliance on third-party projects and
+   its functionality is implemented in plain C using posix API.
 
 2. **Single-threaded architecture**\
 Redis development started a few years after Memcached. By that time, Memcached, the predecessor of Redis,
