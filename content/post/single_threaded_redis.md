@@ -61,7 +61,7 @@ in the dictionary and it does not require coordination of other keys.
 A perfect use-case for horizontal scaling! And I still claim that for N in practical range of `[0, 100]`
 vertical systems are more efficient. So where is the catch?
 
-Imagine you are in business of selling sugar (or weed to make it more interesting).
+Imagine you are in business of selling sugar.
 You need to choose between renting a warehouse that can hold 10,000kg of sugar vs 10 warehouses
 that can hold 1000kg each. The price of smaller warehouses is exactly tenth of the bigger one.
 It seems that there is no difference, right? However, if you choose to rent 10 smaller warehouses,
@@ -90,14 +90,12 @@ These equations prove the so called `square root staffing law` in queueing theor
 explains why provisioning a bigger system is more efficient than provisioning few smaller ones
 with equivalent capacity.
 
-Indeed, when we provision a system that expects a load distributed as $(\mu, \sigma)$,
-we provision it with some additional margin, say, twice standard deviation to cover
-the intrinsic stochastic variability of that load. With $n$ independent warehouses we will need to
-staff $2 n \sigma$ additional resources. However, when we provision a single warehouse for a load $n$ times bigger,
-we in fact need to sustain a load that distributes as $(n \mu, \sqrt n \sigma)$. Now we need
-only $2 \sqrt n \sigma$ resources to cover the same margin.
+Indeed, when we provision a system that handles load distributed as $(\mu, \sigma)$,
+we usually take additional margin, say, twice standard deviation, to cope with
+the intrinsic stochastic variability of that load. With $n$ independent warehouses, we will need to
+staff $2 n \sigma$ additional resources. However, a single warehouse that handles the load $(n \mu, \sqrt n \sigma)$ needs only $2 \sqrt n \sigma$ resources to cover the same margin.
 
-There are quite a few articles on the internet and lots of academic research in this domain.
+There are quite a few articles on the internet and lots of academic research in this area.
 See [this post](https://www.networkpages.nl/the-golden-rule-of-staffing-in-contact-centers/), for example.
 
 Obviously, vertical scale is equivalent to renting a bigger warehouse and horizontal scale is
@@ -114,20 +112,16 @@ need to sustain load $L(\mu=1, \sigma=0.577)$, thus we would need to provision `
 which is 93% higher than the single server cost.
 
 So far I talked about economy of scale and why pooling of resources is more efficient than employing
-multiple independent capacities. The same economy of scale, btw, improves the efficiency of large retailors
-like amazon.com compared to flock of small independent shops.
-
-There are additional factors that make horizontal systems less efficient:
-I believe that any experienced devop would agree that managing a fleet of `N` servers
-is more complicated than managing a single server. Also, horizontally scalable system might impose
-additional restrictions on how the system is used. Specifically with Redis - Redis Cluster does not provide
-exactly the same semantics as a single node system: one can not use transactions or multi-key operations covering
-multiple nodes, it lacks multi-database support and can not issue consistent management operations
-like `flushdb`, `save` etc.
+multiple independent capacities. There are additional factors that increase the total cost of ownership
+for multi-node system: I believe that any experienced devop would agree that managing a fleet of `N` servers
+is more complicated than managing a single server just because of moving parts: The chance that at least one of the servers will fail is approximately `N` time bigger than for a single machine.
+In addition, horizontally scalable system might impose additional restrictions on how the system is used. Specifically, with Redis - Redis Cluster does not allow transactions or multi-key operations covering
+multiple nodes, it lacks multi-database support and it can not issue consistent management operations
+like `flushdb`, `save` across the cluster.
 
 The goal of this section is not to persuade you that vertical scale is strictly better than horizontal scale -
 obviously vertical scale is bounded by physical limits of its host and can not be always chosen.
-However, when there is a choice - it can be a simpler and most cost-efficient alternative to splitting
+However, when there is a choice - it can be much simpler and most cost-efficient alternative to splitting
 your workloads across separate nodes.
 
 ## Shared-nothing architecture
@@ -153,20 +147,17 @@ it achieves it by sending a message to the owner via a dedicated message bus.
 This architecture is not novel - it appears a lot in technical papers and became the mainstream
 thanks to ScyllaDb design.
 
-There is another significant benefit for shared-nothing architecture with thread-per-core threading model
-that is often neglected. Any mature database needs to perform operations equivalent to Redis `flushdb`,
-`save`, `load` etc. It also needs to periodically perform resize or compaction of its data structures.
-With single-threaded architecture it means that a single CPU is involved in processing
-all this data which makes it a significant bottleneck that reduces database resilience.
-Modern servers, on the other hand, maintain a bounded ratio of CPU vs memory.
+Any mature database needs to perform operations equivalent to Redis `flushdb`,
+`save`, `load` etc. It also needs to perform periodically resize or compaction operations for its data structures.
+With single-threaded architecture it means that a single CPU is involved in processing all this data which makes it a significant bottleneck that reduces database resilience. This brings us to another significant benefit for shared-nothing architecture with thread-per-core threading model
+that is often neglected. Modern servers maintain a bounded ratio of CPU vs memory.
 Say, in AWS, `r5` family has 1:8 ratio, `m5` family has 1:4. Similarly, in GCP `n2` family maintains
 ratios between 1-8 GB per vcpu. The point is that with thread-per-core model, each thread handles
-at most `K` GB of workloads, which means that a database stays resilient whether it's 8GB in size or
-860 GB monster.
-
+at most `K` GB of workload, which means that a database stays resilient whether it's 8GB or
+860 GB on a single machine.
 
 Now I would like to address concerns (3) and (4) at the start of the post,
 namely how much upside we can bring by employing shared-nothing philosophy over modern cloud
-servers by demonstating the potential throughput of such system for regular and pipelined requests.
+servers by showing the throughput potential of such system for regular and pipelined requests.
 
 ....
