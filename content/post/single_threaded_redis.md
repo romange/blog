@@ -79,8 +79,10 @@ $$ Var \biggl[ \sum_{i=1}^n X_i \biggr] = \sum_{i=1}^n {Var[X_i]} $$
 
 These formulas are basic rules in probility theory, see [here](https://en.wikipedia.org/wiki/Algebra_of_random_variables), for example. Specifically, for independent random variables with
 the same mean $E$ and standard deviation $\sigma$, we get:
-$$ \mathbb{E} \biggl[ \sum_{i=1}^n X_i \biggr] = \sum_{i=1}^n {E[X_i]} = \sum_{i=1}^n E = n*E$$
-$$ Var \biggl[ \sum_{i=1}^n X_i \biggr] = \sum_{i=1}^n {Var[X_i]} = \sum_{i=1}^n \sigma^2 = n*\sigma^2$$
+
+$$ \mathbb{E} \biggl[ \sum_{i=1}^n X_i \biggr] = \sum_{i=1}^n {E[X_i]} = \sum_{i=1}^n E = n*E $$
+
+$$ Var \biggl[ \sum_{i=1}^n X_i \biggr] = \sum_{i=1}^n {Var[X_i]} = \sum_{i=1}^n \sigma^2 = n*\sigma^2 $$
 
 The last equation can be rewritten as $ StdDev \biggl[\sum_{i=1}^n X_i \biggr] = \sqrt n * \sigma $.
 
@@ -98,11 +100,11 @@ only $2 \sqrt n \sigma$ resources to cover the same margin.
 There are quite a few articles on the internet and lots of academic research in this domain.
 See [this post](https://www.networkpages.nl/the-golden-rule-of-staffing-in-contact-centers/), for example.
 
-Obviously, vertical scale is equivalent to rending a bigger warehouse and horizontal scale is
+Obviously, vertical scale is equivalent to renting a bigger warehouse and horizontal scale is
 equivalent to provisioning multiple smaller places.
 
-Lets do some simulation for memory-store use-case. Suppose we provision 9 nodes that are expected to
-host 12GB of data on average with standard deviation of 2GB. We would rent servers with
+Lets switch back to memory-store example. Suppose we provision 9 nodes that are expected to
+host 12GB of data *on average* with standard deviation - 2GB. We would take servers with
 `12GB+2*2GB=16GB` capacity, in total `144GB` with `36GB` margin. With a single server,
 however, we would need `108 + sqrt(9) * 4 = 120GB`. We just reduced the overall cost of the system
 by 17%. And if 17% seems not much, we can compare a single server with arbitrary many `n` servers
@@ -112,15 +114,16 @@ need to sustain load $L(\mu=1, \sigma=0.577)$, thus we would need to provision `
 which is 93% higher than the single server cost.
 
 So far I talked about economy of scale and why pooling of resources is more efficient than employing
-multiple independent capacities. The same economy of scale makes amazon.com more efficient than
-multiple independent shops, for example.
+multiple independent capacities. The same economy of scale, btw, improves the efficiency of large retailors
+like amazon.com compared to flock of small independent shops.
 
-There are additional factors that make horizontal systems less efficient.
-I believe that any experienced DevOp will agree with me that managing a fleet of `N` servers
-is more complicated than managing a single server. Finally, horizontally scalable system might impose
-additional restrictions on specific api calls. Specifically with Redis, Redis Cluster does not provide
-the same semantics as a single node Redis: one can not use transactions or multi-key operations covering
-multiple nodes. In addition, Redis Cluster requires more memory per stored entry.
+There are additional factors that make horizontal systems less efficient:
+I believe that any experienced devop would agree that managing a fleet of `N` servers
+is more complicated than managing a single server. Also, horizontally scalable system might impose
+additional restrictions on how the system is used. Specifically with Redis - Redis Cluster does not provide
+exactly the same semantics as a single node system: one can not use transactions or multi-key operations covering
+multiple nodes, it lacks multi-database support and can not issue consistent management operations
+like `flushdb`, `save` etc.
 
 The goal of this section is not to persuade you that vertical scale is strictly better than horizontal scale -
 obviously vertical scale is bounded by physical limits of its host and can not be always chosen.
@@ -151,14 +154,14 @@ This architecture is not novel - it appears a lot in technical papers and became
 thanks to ScyllaDb design.
 
 There is another significant benefit for shared-nothing architecture with thread-per-core threading model
-that is often neglected. Any mature database need to perform operations equivalent to Redis `flushdb`,
+that is often neglected. Any mature database needs to perform operations equivalent to Redis `flushdb`,
 `save`, `load` etc. It also needs to periodically perform resize or compaction of its data structures.
 With single-threaded architecture it means that a single CPU is involved in processing
 all this data which makes it a significant bottleneck that reduces database resilience.
-Modern servers, on the other hand, maintain bounded ratio of the CPU count / memory capacity.
-Say, in AWS, `r5` family has 1:8 ratio, `m5` family has 1:4. Similarly in GCP `n2` family maintains
-ratios between 1-8 GB per vcpu. The point is that with thread per core model, each thread handles
-at most `K` GB of workloads, which means that database will stay resilient whether it's 8GB in size or
+Modern servers, on the other hand, maintain a bounded ratio of CPU vs memory.
+Say, in AWS, `r5` family has 1:8 ratio, `m5` family has 1:4. Similarly, in GCP `n2` family maintains
+ratios between 1-8 GB per vcpu. The point is that with thread-per-core model, each thread handles
+at most `K` GB of workloads, which means that a database stays resilient whether it's 8GB in size or
 860 GB monster.
 
 
