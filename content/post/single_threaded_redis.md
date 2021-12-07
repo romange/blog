@@ -27,16 +27,17 @@ KeyDb allows multiple threads to access the Redis dictionary by protecting it wi
 See their [introductionary post]( https://medium.com/@john_63123/redis-should-be-multi-threaded-e28319cab744)
 about this.
 
-In the previous post I mentioned the following reasons why Redis core is single-threaded:
+In the previous post I mentioned the following arguments why Redis was designed as single-threaded:
 1. It preserves low tail latency by avoiding contention on locks.
-2. Horizontal scale is at least as good as vertical scale: N single-core machines are equivalent
-   to a single process spanning N cores.
-3. A redis client can pipeline requests reaching ~1M rps, which is an order of magnitude higher
-   than the regular traffic throughput.
+2. Redis Cluster provides horizontal scale, which should be as good
+   as vertical scale if not better: N single-core machines are equivalent to a single process spanning N cores.
+3. Pipelining gives you more throughput. A redis client can pipeline requests reaching ~1M qps,
+   which is an order of magnitude higher than the regular traffic throughput.
 4. Room for the upside on a single machine is limited anyway.
 5. Single-threaded is simple, multi-threaded is complicated.
 
-Before we continue forward, lets agree on few terms:
+I think that there are great benefits for having multi-threaded databases, so I am going
+to challenge these arguments.  But before we continue forward, lets agree on few terms:
 *A vertically scalable system* is a system that can scale *almost* linearly with its performance metrics
 (aka requests per seconds) as a function of available CPUs on a single server.
 
@@ -47,7 +48,7 @@ I  would like to assert the following claims:
 1. A vertically scalable system is more cost-efficient than its equivalent horizontally
    scalable configuration until it reaches its physical limits on a single server.
 2. In order to benefit from the full potential of the underlying modern hardware, and to preserve
-   the low latency property, a system should be designed as shared-nothing architecture, i.e. to avoid
+   the low latency property, a system should be designed as a shared-nothing architecture, i.e. to avoid
    locking and contention along the original philosophy of Redis.
 
 I will try to prove (1). I base (2) on the empirical evidence gathered in the
@@ -90,10 +91,15 @@ These equations prove the so called `square root staffing law` in queueing theor
 explains why provisioning a bigger system is more efficient than provisioning few smaller ones
 with equivalent capacity.
 
-Indeed, when we provision a system that handles load distributed as $(\mu, \sigma)$,
-we usually take additional margin, say, twice standard deviation, to cope with
-the intrinsic stochastic variability of that load. With $n$ independent warehouses, we will need to
-staff $2 n \sigma$ additional resources. However, a single warehouse that handles the load $(n \mu, \sqrt n \sigma)$ needs only $2 \sqrt n \sigma$ resources to cover the same margin.
+Indeed, when we provision a system that handles the load distributed as $(\mu, \sigma)$,
+we usually take an additional margin, say, twice the standard deviation, to cope with
+the intrinsic stochastic variability of that load. With $n$ warehouses, we can model
+their load as $n$ independent variables distributing as $(\mu, \sigma)$,
+therefore in order to cope with $n * \mu$ effective load,
+we will need to staff $2 n \sigma$ additional resources.
+However, a single warehouse that handles the load $(n \mu, \sqrt n \sigma)$ needs
+only $2 \sqrt n \sigma$ resources to cover the same margin. The bigger warehouse is, the larger
+the difference between $\sqrt n \sigma$ and $n \sigma$.
 
 There are quite a few articles on the internet and lots of academic research in this area.
 See [this post](https://www.networkpages.nl/the-golden-rule-of-staffing-in-contact-centers/), for example.
@@ -158,7 +164,7 @@ at most `K` GB of workload, which means that a database stays resilient whether 
 860 GB on a single machine.
 
 ## Benchmarks
-Now I would like to address concerns (3) and (4) from the beginning of the post,
+I would like to address concerns (3) and (4) from the beginning of the post,
 namely how much upside we can bring by employing shared-nothing architecture using modern cloud
 servers. For that, I will use a toy redis-like memory store called [midi-redis](https://github.com/romange/midi-redis). [midi-redis](https://github.com/romange/mini-redis) is similar to rust tokio [mini-redis](https://github.com/tokio-rs/mini-redis) - i.e. it's built to demonstrate the capabilities of the underlying IO library
 by implementing a subset of redis/memcached commands.
@@ -173,14 +179,14 @@ shared nothing architectures and it is the evolution of my previous library [GAI
 I performed benchmarking of `midi-redis` on variety of instances on AWS cloud.
 The point is not to evaluate `midi-redis` but to show the true potential of the hardware vs what
 Redis gives us on this hardware. Please, treat these numbers as directional only - I run each loadtest only once,
-so I believe there is some variance that could affect numbers in +-15% range. Each graph has
-bar `redis-1` representing Redis 6 with io-threads=1 and `redis-8` representing `io-threads=8`.
-Redis benchmarks were similar on all instance types therefore I used `redis-1` run on
-`c5.9xlarge` as my baseline for all other runs.
+so I believe there is some variance that could affect numbers in +-15% range. `redis-1` bar in the graph
+represent Redis 6 with `io-threads=1` configuration, and `redis-8` denotes
+`io-threads=8` configuration. Redis results were similar on all instance types,
+ therefore I used the `redis-1` run on `c5.9xlarge` as my relative baseline for all other runs.
 
-I used read-only traffic for all the runs to minimize the influence of memory allocations and
+I used read-only traffic to minimize the influence of memory allocations and
 database resizes on the results. Also, I run "debug populate 10000000" command before each run in order to fill
-server under test with data.
+a server under test with data.
 
 Finally, I run [memtier_benchmark](https://github.com/RedisLabs/memtier_benchmark) from 3 client
 machines in the same zone with the following configuration:
@@ -188,8 +194,7 @@ machines in the same zone with the following configuration:
 for `memtier_benchmark` were chosen to maximize the throughput of server under test and were different
 for each instance type.
 
-My first graph shows throughput for regular traffic
-without pipelined requests:
+My first graph shows throughput for regular traffic without pipelined requests:
 ![no-pipeline](/img/throughput-p1.png)
 
 You can see that midi-redis running most network-capable AWS instance c6gn.16xlarge has throughput
@@ -198,7 +203,7 @@ that is >20 times higher than `redis-1` and >10 times higher than `redis-8`.
 My next graph shows throughput of instances with pipeline mode, when `memtier_benchmark` sends bursts
 of 10 requests at once (`--pipeline 10`): ![pipeline-10](/img/throughput-p10.png)
 Here, `c6gn.16xlarge` has 7 times more throughput reaching stagerring 7.4M qps. Interestingly,
-`redis-8` is a bit slower than `redis-1` because Redis main thread becones the bottleneck for pipelined traffic.
+`redis-8` is a bit slower than `redis-1` because Redis main thread becomes the bottleneck for pipelined traffic.
 And `redis-8` spends additional cpu for coordination with its io-threads. `midi-redis` on the other hand,
 splits its dictionary between all its threads, reduces their communication to minimum
 and scales its performance much better.
