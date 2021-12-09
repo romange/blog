@@ -40,40 +40,33 @@ In the previous post I mentioned the following arguments why Redis was built as 
 
 I think there are great benefits of having multi-threaded databases, and I will try to
 challenge these arguments.  But before we continue forward, let's agree on a few terms:
+
 *A vertically scalable system* is a system that can scale *almost* linearly with its performance metrics
 (aka requests per second) as a function of available CPUs on a single server.
-
 *Horizontally scalable system* is a distributed system that can run on multiple nodes/processes
 and scale *almost* linearly with a number of nodes.
 
-I  would like to assert the following claims:
+I assert the following claims:
 1. A vertically scalable system is more cost-efficient than its equivalent horizontally
    scalable configuration until it reaches its physical limits on a single server.
-2. In order to benefit from the full potential of the underlying modern hardware, and to preserve
-   the low latency property, a system should be designed as a shared-nothing architecture, i.e. to avoid
-   locking and contention along the original philosophy of Redis.
+2. In order to reach the full potential of the modern hardware, and preserve
+   the low latency property, a system should be designed as a shared-nothing architecture, i.e. avoid
+   locking and contention, along with the original philosophy of Redis.
 
 I will try to prove (1). I base (2) on the empirical evidence gathered in the
 research community and on lessons learned from other well-designed systems like [ScyllaDb](https://www.scylladb.com/product/technology/shard-per-core-architecture/) or [Twitter's Pelikan](http://twitter.github.io/pelikan/2016/separation-concerns.html).
 
 ## Vertical scale vs Horizontal scale
-It seems reasonable to assume that N independent single cpu redis servers will behave at least as good
-as a single Redis server with N cores. Indeed, if we zoom-in into a flow of a simple single-key request,
-like `GET` we see it requires a constant CPU time to be parsed and processed, it touches a single entry
-in the dictionary and it does not require coordination of other keys.
-A perfect use-case for horizontal scaling! And I still claim that for N in a practical range
-of `[0, 100]`, vertical systems are more efficient. So, where is the catch?
-
 Imagine you are in the business of selling sugar.
 You need to choose between renting a warehouse that can hold 10,000kg of sugar vs 10 warehouses
-that can hold 1000kg each. The price of smaller warehouses is exactly a tenth of the bigger one.
+that can hold 1000kg each. The price of smaller warehouses is precisely a tenth of the bigger one.
 It seems that there is no difference, right? However, if you choose to rent 10 smaller warehouses,
 you will see that after some time, some, but not all of them, will be nearly empty, and you need to send trucks to fill them up. Why? Because the randomness of nature dictates that
-you have almost zero chance that all warehouses will be depleted at exactly the same rate.
+you have almost zero chance that all warehouses are depleted at precisely the same rate.
 So you need to spend resources to fill some of the warehouses. Then you will spend resources to fill others and so on. Moreover, you need to staff those warehouses: you might need 2.5 people
 per place on average, but you will need to round it up and hire 3 folks in every place.
 There will be high-pressure days when your workers will work like crazy,
-while during other days they will do nothing. Let's do some math to understand how to model those inefficiencies.
+while during other days, they will do nothing. Let's do some math to understand how to model those inefficiencies.
 
 Let's assume that $X_1...X_n$ are independent random variables. Then the expected mean and variance
 of their sum is the sum of their means and variances:
@@ -98,7 +91,7 @@ Indeed, when we provision a system that handles the load distributed as $(\mu, \
 we usually take an additional margin, say, twice the standard deviation, to cope with
 the intrinsic stochastic variability of that load. With $n$ warehouses, we can model
 their load as $n$ independent variables distributing as $(\mu, \sigma)$,
-therefore in order to cope with $n * \mu$ effective load,
+therefore, in order to cope with $n * \mu$ effective load,
 we will need to staff $2 n \sigma$ additional resources.
 However, a single warehouse that handles the load $(n \mu, \sqrt n \sigma)$ needs
 only $2 \sqrt n \sigma$ resources to cover the same margin. The bigger warehouse is, the larger
@@ -107,7 +100,7 @@ the difference between $\sqrt n \sigma$ and $n \sigma$.
 There are quite a few articles on the internet and lots of academic research in this area.
 See [this post](https://www.networkpages.nl/the-golden-rule-of-staffing-in-contact-centers/), for example.
 
-Obviously, the vertical scale is equivalent to renting a bigger warehouse and the horizontal scale is
+Obviously, the vertical scale is equivalent to renting a bigger warehouse, and the horizontal scale is
 equivalent to provisioning multiple smaller places.
 
 Let's switch back to the memory-store example. Suppose we provision 9 nodes that are expected to
