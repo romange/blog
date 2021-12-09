@@ -26,7 +26,7 @@ multi-threaded argument.">
 <meta itemprop=description content="Following my previous post, we are going start with the &ldquo;hottest potato&rdquo; - single-threaded vs
 multi-threaded argument."><meta itemprop=datePublished content="2021-12-09T11:00:00+03:00">
 <meta itemprop=dateModified content="2021-12-09T11:00:00+03:00">
-<meta itemprop=wordCount content="2378">
+<meta itemprop=wordCount content="2271">
 <meta itemprop=keywords content="redis,">
 <meta name=twitter:card content="summary">
 <meta name=twitter:title content="Redis Analysis - Part 1: Threading model">
@@ -131,10 +131,10 @@ Redis Analysis - Part 1: Threading model
 <i class="fa fa-calendar"></i>
 <time datetime="2021-12-09 11:00:00 +0300 +0300" itemprop=datePublished>Dec 9nd 2021</time>
 &#183;
-2378
+2271
 words
 &#183;
-12
+11
 minute read
 </div>
 <div class=article-category>
@@ -169,38 +169,32 @@ which is an order of magnitude higher than the regular traffic throughput.</li>
 <li>Single-threaded is simple, multi-threaded is complicated.</li>
 </ol>
 <p>I think there are great benefits of having multi-threaded databases, and I will try to
-challenge these arguments. But before we continue forward, let&rsquo;s agree on a few terms:
-<em>A vertically scalable system</em> is a system that can scale <em>almost</em> linearly with its performance metrics
-(aka requests per second) as a function of available CPUs on a single server.</p>
-<p><em>Horizontally scalable system</em> is a distributed system that can run on multiple nodes/processes
+challenge these arguments. But before we continue forward, let&rsquo;s agree on a few terms:</p>
+<p><em>A vertically scalable system</em> is a system that can scale <em>almost</em> linearly with its performance metrics
+(aka requests per second) as a function of available CPUs on a single server.
+<em>Horizontally scalable system</em> is a distributed system that can run on multiple nodes/processes
 and scale <em>almost</em> linearly with a number of nodes.</p>
-<p>I would like to assert the following claims:</p>
+<p>I assert the following claims:</p>
 <ol>
 <li>A vertically scalable system is more cost-efficient than its equivalent horizontally
 scalable configuration until it reaches its physical limits on a single server.</li>
-<li>In order to benefit from the full potential of the underlying modern hardware, and to preserve
-the low latency property, a system should be designed as a shared-nothing architecture, i.e. to avoid
-locking and contention along the original philosophy of Redis.</li>
+<li>In order to reach the full potential of the modern hardware, and preserve
+the low latency property, a system should be designed as a shared-nothing architecture, i.e. avoid
+locking and contention, along with the original philosophy of Redis.</li>
 </ol>
 <p>I will try to prove (1). I base (2) on the empirical evidence gathered in the
 research community and on lessons learned from other well-designed systems like <a href=https://www.scylladb.com/product/technology/shard-per-core-architecture/>ScyllaDb</a> or <a href=http://twitter.github.io/pelikan/2016/separation-concerns.html>Twitter&rsquo;s Pelikan</a>.</p>
 <h2 id=vertical-scale-vs-horizontal-scale>Vertical scale vs Horizontal scale</h2>
-<p>It seems reasonable to assume that N independent single cpu redis servers will behave at least as good
-as a single Redis server with N cores. Indeed, if we zoom-in into a flow of a simple single-key request,
-like <code>GET</code> we see it requires a constant CPU time to be parsed and processed, it touches a single entry
-in the dictionary and it does not require coordination of other keys.
-A perfect use-case for horizontal scaling! And I still claim that for N in a practical range
-of <code>[0, 100]</code>, vertical systems are more efficient. So, where is the catch?</p>
 <p>Imagine you are in the business of selling sugar.
 You need to choose between renting a warehouse that can hold 10,000kg of sugar vs 10 warehouses
-that can hold 1000kg each. The price of smaller warehouses is exactly a tenth of the bigger one.
+that can hold 1000kg each. The price of smaller warehouses is precisely a tenth of the bigger one.
 It seems that there is no difference, right? However, if you choose to rent 10 smaller warehouses,
 you will see that after some time, some, but not all of them, will be nearly empty, and you need to send trucks to fill them up. Why? Because the randomness of nature dictates that
-you have almost zero chance that all warehouses will be depleted at exactly the same rate.
+you have almost zero chance that all warehouses are depleted at precisely the same rate.
 So you need to spend resources to fill some of the warehouses. Then you will spend resources to fill others and so on. Moreover, you need to staff those warehouses: you might need 2.5 people
 per place on average, but you will need to round it up and hire 3 folks in every place.
 There will be high-pressure days when your workers will work like crazy,
-while during other days they will do nothing. Let&rsquo;s do some math to understand how to model those inefficiencies.</p>
+while during other days, they will do nothing. Let&rsquo;s do some math to understand how to model those inefficiencies.</p>
 <p>Let&rsquo;s assume that $X_1&mldr;X_n$ are independent random variables. Then the expected mean and variance
 of their sum is the sum of their means and variances:</p>
 <p>$$ \mathbb{E} \biggl[ \sum_{i=1}^n X_i \biggr] = \sum_{i=1}^n {E[X_i]}$$
@@ -217,14 +211,14 @@ with equivalent capacity.</p>
 we usually take an additional margin, say, twice the standard deviation, to cope with
 the intrinsic stochastic variability of that load. With $n$ warehouses, we can model
 their load as $n$ independent variables distributing as $(\mu, \sigma)$,
-therefore in order to cope with $n * \mu$ effective load,
+therefore, in order to cope with $n * \mu$ effective load,
 we will need to staff $2 n \sigma$ additional resources.
 However, a single warehouse that handles the load $(n \mu, \sqrt n \sigma)$ needs
 only $2 \sqrt n \sigma$ resources to cover the same margin. The bigger warehouse is, the larger
 the difference between $\sqrt n \sigma$ and $n \sigma$.</p>
 <p>There are quite a few articles on the internet and lots of academic research in this area.
 See <a href=https://www.networkpages.nl/the-golden-rule-of-staffing-in-contact-centers/>this post</a>, for example.</p>
-<p>Obviously, the vertical scale is equivalent to renting a bigger warehouse and the horizontal scale is
+<p>Obviously, the vertical scale is equivalent to renting a bigger warehouse, and the horizontal scale is
 equivalent to provisioning multiple smaller places.</p>
 <p>Let&rsquo;s switch back to the memory-store example. Suppose we provision 9 nodes that are expected to
 host 12GB of data <em>on average</em> with the standard deviation - 2GB. We would take servers with
