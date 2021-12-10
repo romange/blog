@@ -74,7 +74,7 @@ of their sum is the sum of their means and variances:
 $$ \mathbb{E} \biggl[ \sum_{i=1}^n X_i \biggr] = \sum_{i=1}^n {E[X_i]}$$
 $$ Var \biggl[ \sum_{i=1}^n X_i \biggr] = \sum_{i=1}^n {Var[X_i]} $$
 
-These formulas are basic rules in probility theory, see [here](https://en.wikipedia.org/wiki/Algebra_of_random_variables), for example. Specifically, for independent random variables with
+These formulas are basic rules in probability theory, see [here](https://en.wikipedia.org/wiki/Algebra_of_random_variables), for example. Specifically, for independent random variables with
 the same mean $\mu$ and standard deviation $\sigma$, we get:
 
 $$ \mathbb{E} \biggl[ \sum_{i=1}^n X_i \biggr] = \sum_{i=1}^n {E[X_i]} = \sum_{i=1}^n \mu = n* \mu $$
@@ -207,4 +207,4 @@ tailwinds from hardware advancements - with better networking and more cpus we w
 even higher rates.
 
 The speed of a car is 140 km/h, the speed of a jet plane is 950 km/h and the speed of sound is 1235 km/h.
-If Redis is a fast car, then we could fly instead on a hypersonic plane.
+If Redis is a fast car, then we could fly instead on a supersonic plane.
