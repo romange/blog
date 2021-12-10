@@ -1,7 +1,7 @@
 <!doctype html><html lang=en-us>
 <head>
 <title>Redis Analysis - Part 1: Threading model &#183; Это неправильные пчелы</title>
-<meta name=generator content="Hugo 0.89.4">
+<meta name=generator content="Hugo 0.90.0">
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1">
 <meta name=author content="Roman Gershman">
@@ -199,7 +199,7 @@ while during other days, they will do nothing. Let&rsquo;s do some math to under
 of their sum is the sum of their means and variances:</p>
 <p>$$ \mathbb{E} \biggl[ \sum_{i=1}^n X_i \biggr] = \sum_{i=1}^n {E[X_i]}$$
 $$ Var \biggl[ \sum_{i=1}^n X_i \biggr] = \sum_{i=1}^n {Var[X_i]} $$</p>
-<p>These formulas are basic rules in probility theory, see <a href=https://en.wikipedia.org/wiki/Algebra_of_random_variables>here</a>, for example. Specifically, for independent random variables with
+<p>These formulas are basic rules in probability theory, see <a href=https://en.wikipedia.org/wiki/Algebra_of_random_variables>here</a>, for example. Specifically, for independent random variables with
 the same mean $\mu$ and standard deviation $\sigma$, we get:</p>
 <p>$$ \mathbb{E} \biggl[ \sum_{i=1}^n X_i \biggr] = \sum_{i=1}^n {E[X_i]} = \sum_{i=1}^n \mu = n* \mu $$</p>
 <p>$$ Var \biggl[ \sum_{i=1}^n X_i \biggr] = \sum_{i=1}^n {Var[X_i]} = \sum_{i=1}^n \sigma^2 = n*\sigma^2 $$</p>
@@ -306,7 +306,7 @@ Redis 6 is the product of a decade of development and optimizations. Even 5%, 10
 tailwinds from hardware advancements - with better networking and more cpus we will see
 even higher rates.</p>
 <p>The speed of a car is 140 km/h, the speed of a jet plane is 950 km/h and the speed of sound is 1235 km/h.
-If Redis is a fast car, then we could fly instead on a hypersonic plane.</p>
+If Redis is a fast car, then we could fly instead on a supersonic plane.</p>
 </div>
 <footer class=article-footer>
 <a data-url=https://www.romange.com/2021/12/09/redis-analysis-part-1-threading-model/ data-id=e4af4bcd235220dfd2cb775d51d9216f class=article-share-link>
