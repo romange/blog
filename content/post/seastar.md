@@ -14,10 +14,10 @@ Lately, there are many discussions in the programming community in general and i
 committee but not much progress was made besides very minimal support of C++11 futures.
 
 On the other hand, many mainstream programming languages progressed quicker and adopted asynchronous models
-either into a core language or popularized it via standard libraries. For example, coroutines are used in Python (yield) and Lua.
-Continuations and futures are used extensively in Java. Golang and Erlang are using green threads.
-Callback based actor models are used in C and Javascript. Due to a lack of official support for
-asynchronous programming in C++, the community introduced ad-hoc frameworks and libraries that allow writing asynchronous code in C++.
+either into a core language or popularized it via standard libraries.
+For example, Python (yield) and Lua use coroutines to achieve asynchronisity, java uses continuations and futures,  golang and Erlang use green threads, and C and Javascript use callback based actor models.
+However, C++ historically lacked the official support for asynchronous programming, which forced
+the community to introduce ad-hoc frameworks and libraries that provided this functionality.
 
 I would like to share my opinion on what I think will be the best direction for asynchronous models in C++ by reviewing two
 prominent frameworks: [Seastar](http://seastar.io/) and [Boost.Fiber](https://boost.org/doc/libs/1_67_0/libs/fiber/doc/html/index.html). This (opinionated) post reviews Seastar.
@@ -36,19 +36,17 @@ won't sleep as long as there are any (CPU) tasks that could be performed.
 Please note that asynchronous programming is not the same as multi-threading even though
 multi-threading might provide a workaround to a similar problem: **Given a single CPU core** how can we
 write a program that fully utilizes this CPU. Asynchronous programming here is discussed only in
-the context of a single thread even though many models provide a complete solution for both asynchronous
+the context of a single thread, even though many models provide a complete solution for both asynchronous
 programming and multi-threaded environments.
 
 Seastar is a power-horse behind a very efficient Nosql database [ScyllaDB](https://scylladb.com) and
 is developed by a very talented team of world-class developers. Seastar is a framework that adopts [continuation-passing style](https://en.wikipedia.org/wiki/Continuation-passing_style) (CSP) of writing fully asynchronous code.
 
 CSP programming solves asynchronous programming by breaking the program flow into CPU-only tasks
-that should not block and IO requests. Each io request returns a future object describing the result.
+that should not block any IO requests. Each IO request returns a future object describing the result.
 Program flow is extended by appending to a future a possible continuation - either a cpu-task or another io-request.
-The goal of this post is not to review or explain CSP but to check whether CSP can be applied naturally inside C++
-based on my experience with Seastar.
 
-Seastar framework itself has proven to be very efficient. In fact, it allows responding to requests
+The Seastar framework itself has proven to be very efficient. In fact, it allows responding to requests
 with sub-millisecond latencies (even at 99nth percentile) and scale linearly in the number of cores.
 It has been used already in [a few projects](http://seastar.io/seastar-applications/) and
 gave consistently superior performance compared to the existing alternatives.
@@ -63,7 +61,7 @@ The problem is common to Java futures as well, not just to C++ or Seastar.
 
 Consider, for example, the following code taken from Seastar's wiki page.
 It starts a listener loop on port 1234 that accepts server connections.
-For each accepted connection it writes a response into its socket and then closes it.
+For each accepted connection, it writes a response into the socket and then closes it.
 
 ```cpp
 seastar::future<> service_loop() {
@@ -89,13 +87,14 @@ seastar::future<> service_loop() {
 ```
 
 The code has a notable flow that is common to all continuation-passing frameworks.
-It indents to right with each continuation or lambda. There are lots of lambda functions
-and it's very hard to follow which block can access what variables.
-Every continuation or asynchronous function breaks the execution context and it becomes non-trivial effort
+It indents to the right with each continuation or lambda function. There are lots of lambdas involved,
+which makes it very hard to follow after scope limits.
+
+Every continuation or asynchronous function breaks the execution context, and it becomes a non-trivial effort
 to reason about the flow of the program.
 
 Now consider `seastar::keep_doing`. It is a pre-built routine that accepts an (a)synchronous function
-as an argument and it allows running this function in the infinite but preemptable loop.
+as an argument, and allows running this function in the infinite but preemptable loop.
 Why do we need such a function?  Suppose our goal is to schedule `do_smthing_async()` time after time
 sequentially. The function itself might block due to I/O, but we do not want to stall the execution thread.
 Since we want to write fully asynchronous code, we can not just write `while (true) { do_smthing_async(); }`
@@ -121,12 +120,12 @@ As a result, C++ language is used to create and connect Seastar data-structures 
 how to run functions instead of actually running them. Such style differs greatly from classic C++ programming.
 Some native C++ constructs work differently with such flow. For example, if exceptions are thrown
 in CSP code it's not immediately clear where to put the catch handler:
-it can be thrown from the code currently scheduling the io request, or alternatively,
-it might be thrown from the continuation lambda when it runs. Both cases require different handling. As a result continuation chaining has implicit interactions that are not tracked via core language.
+exceptions can be thrown from the code currently scheduling the io request, or alternatively,
+they might be thrown from the continuation lambda when it runs. Both cases require different handling.
+As a result, continuation chaining has implicit interactions that are not tracked via core language.
 
 ## Object life management.
-If following the execution context or changing the mindset for scheduling asynchronous dependencies
-can be hard in C++, then tracking object lifecycles can be a real hell.
+If following the execution context can be hard in C++, then tracking object lifecycles can be a real hell.
 
 Unlike in Python, Java, Go, a c++ programmer is required to think about object lifecycle and with CSP
 it's much harder even with naive looking cases. Consider the following code:
@@ -165,7 +164,7 @@ future<> (pipe p) {
 ```
 
 Unfortunately, this code causes "undefined behavior" and most likely will crash because C++ does
-not define the order evaluation of lambda capture and function call inside the same execution statement.
+not specify correct order for evaluating lambda capture and a function call inside the same execution statement.
 So what may (and does) happen is that the compiler first moves the object `p` into the lambda and
 then calls `p.read(..)` on already undefined object `p`.
 The workaround to this problem is to use `shared_ptr` to allow copy semantics and pay attention to captures that move objects.
@@ -187,7 +186,7 @@ It allows you to describe fully asynchronous flows but requires lots of attentio
 If you decide using it, you probably won't be able to integrate it well with other open-source libraries,
 especially with those that use synchronous system-calls, synchronization mechanisms, and multi-threading.
 Despite the fact that having the CSP style of writing asynchronous code can be very tedious in C++,
-hard to reason and error-prone it's still possible.
+hard to reason and error-prone, it's still possible.
 
 In my next post I will go over [Boost.Fiber](https://boost.org/doc/libs/1_67_0/libs/fiber/doc/html/index.html)
 framework and will explain how it solves asynchronous programming but retains the original style of writing C++ programs.
