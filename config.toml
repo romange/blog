@@ -1,6 +1,6 @@
 baseurl = "https://www.romange.com/"
 languageCode = "en-us"
-title = "Это неправильные пчелы"
+title = "These are the wrong sort of bees"
 
 # Enable comments by entering your Disqus shortname
 disqusShortname = "romange"
@@ -19,7 +19,7 @@ buildDrafts = false
 [params]
     # Tell me who you are
     author = "Roman Gershman"
-    bio = "Programmer"
+    bio = "Software Engineer"
     location = "Tel Aviv"
     site_description = "The wrong sort of bees"
     copyright  = "Roman Gershman"
