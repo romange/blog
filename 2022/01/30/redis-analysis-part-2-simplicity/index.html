@@ -30,7 +30,7 @@ Redis was initially designed as a simple store, and it seems that its APIs achie
 Unfortunately, Redis&rsquo;s simple design makes it unreliable and difficult to manage in production.
 So the question is - what simplicity means to you as a datastore user?"><meta itemprop=datePublished content="2022-01-30T20:00:00+02:00">
 <meta itemprop=dateModified content="2022-01-30T20:00:00+02:00">
-<meta itemprop=wordCount content="1540">
+<meta itemprop=wordCount content="1519">
 <meta itemprop=keywords content="redis,backend,">
 <meta name=twitter:card content="summary">
 <meta name=twitter:title content="Redis Analysis - Part 2: Simplicity ">
@@ -137,7 +137,7 @@ Redis Analysis - Part 2: Simplicity
 <i class="fa fa-calendar"></i>
 <time datetime="2022-01-30 20:00:00 +0200 +0200" itemprop=datePublished>Jan 30nd 2022</time>
 &#183;
-1540
+1519
 words
 &#183;
 8
@@ -229,14 +229,13 @@ Moreover, even good scripts may cause significant delays to other concurrent req
 </ul>
 <h2 id=fight-against-complexity>Fight against complexity</h2>
 <p>I think it&rsquo;s time to redesign the system that once challenged traditional databases but nowadays suffers
-from complexity itself. I am sure, it is possible to close the gap between the simplicity of usage
-and the shortcomings of technology that powers it.</p>
+from complexity itself.</p>
 <p>Lately, I&rsquo;ve been working on a novel design of a cache and dictionary
 data structures that could be the foundation stones for the next-generation memory store.
 The work is still in progress, but it already shows some promising results.
 The cache design is so novel that I think it deserves a blog post of its own. Therefore, today I will share just the basic characteristics of the underlying dictionary.</p>
 <p>Below you can see a Redis 6.2 vs my experimental store (POC), both running on a dedicated 64-cpu n2d instance in GCP.</p>
-<p>I run the same three commands on both servers: <code>debug populate</code>, <code>save</code> and <code>flushdb</code>. <code>populate</code> is interestingbecause it demonstrates raw efficiency of the underlying engine,
+<p>I run the same three commands on both servers: <code>debug populate</code>, <code>save</code> and <code>flushdb</code>. <code>populate</code> is interesting because it demonstrates the raw efficiency of the underlying engine,
 without bottlenecks like networking. <code>save</code> and <code>flushdb</code> are interesting because both
 are &ldquo;stop the world&rdquo; commands that must process the whole database and their performance directly affects
 database robustness.</p>
