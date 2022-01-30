@@ -88,7 +88,7 @@ Follow
 </div>
 <div class="article-info profile-block">
 <div class=article-info-block>
-11
+12
 <span>Posts</span>
 </div>
 <div class=article-info-block>
@@ -111,6 +111,59 @@ Tags
 </div>
 </aside>
 <section id=main>
+<article class="article article-type-post" itemscope itemprop=blogPost>
+<div class=article-inner>
+</a>
+<header class=article-header>
+<a href=https://www.romange.com/2017/09/26/how-to-serialize-integers-into-memory/>
+<h1 class=article-title itemprop=name>
+How to serialize integers into memory
+</h1>
+</a>
+<div class=article-meta>
+<div class=article-date>
+<i class="fa fa-calendar"></i>
+<time datetime="2017-09-26 22:46:30 +0300 +0300" itemprop=datePublished>Sep 26nd 2017</time>
+&#183;
+508
+words
+&#183;
+3
+minute read
+</div>
+<div class=article-category>
+<i class="fa fa-tags"></i>
+<a class=article-category-link href=https://www.romange.com/tags/c++>c++</a>
+&#183;
+<a class=article-category-link href=https://www.romange.com/tags/code-generation>code generation</a>
+&#183;
+<a class=article-category-link href=https://www.romange.com/tags/programming>programming</a>
+</div>
+</div>
+</header>
+<div class=article-entry itemprop=articleBody>
+<p>
+<p>Here is the analysis of a recent bug I&rsquo;ve stumbled upon. My initial reaction was that
+the problem is in the compiler (or that <a href="https://www.youtube.com/watch?v=PIuE5J9dfAo">&ldquo;These are wrong bees&rdquo;</a>). Consider the code below. We copy 64 integers into a properly allocated destination buffer and yet, if compiled with <code>-O3</code> switch this code crashes with segfault!</p>
+</p>
+<p class=article-more-link>
+<a href=https://www.romange.com/2017/09/26/how-to-serialize-integers-into-memory/>
+Read more
+</a>
+</p>
+</div>
+<footer class=article-footer>
+<a data-url=https://www.romange.com/2017/09/26/how-to-serialize-integers-into-memory/ data-id=c995a164608cdde5b3c54dc7769cb485 class=article-share-link>
+<i class="fa fa-share"></i>
+Share
+</a>
+<a href=https://www.romange.com/2017/09/26/how-to-serialize-integers-into-memory/#disqus_thread class=article-comment-link>
+Comments
+</a>
+<script>(function(a){if(typeof __SHARE_BUTTON_BINDED__=='undefined'||!__SHARE_BUTTON_BINDED__)__SHARE_BUTTON_BINDED__=!0;else return;a('body').on('click',function(){a('.article-share-box.on').removeClass('on')}).on('click','.article-share-link',function(i){var d,f,c,e,g,b,h;if(i.stopPropagation(),d=a(this),f=d.attr('data-url'),c=encodeURIComponent(f),e='article-share-box-'+d.attr('data-id'),g=d.offset(),a('#'+e).length){if(b=a('#'+e),b.hasClass('on')){b.removeClass('on');return}}else h=['<div id="'+e+'" class="article-share-box">','<input class="article-share-input" value="'+f+'">','<div class="article-share-links">','<a href="https://twitter.com/intent/tweet?url='+c+'" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>','<a href="https://www.facebook.com/sharer.php?u='+c+'" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>','<a href="http://pinterest.com/pin/create/button/?url='+c+'" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>','<a href="https://plus.google.com/share?url='+c+'" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>','</div>','</div>'].join(''),b=a(h),a('body').append(b);a('.article-share-box.on').hide(),b.css({top:g.top+25,left:g.left}).addClass('on')}).on('click','.article-share-box',function(a){a.stopPropagation()}).on('click','.article-share-box-input',function(){a(this).select()}).on('click','.article-share-box-link',function(a){a.preventDefault(),a.stopPropagation(),window.open(this.href,'article-share-box-window-'+Date.now(),'width=500,height=450')})})(jQuery)</script>
+</footer>
+</div>
+</article>
 <article class="article article-type-post" itemscope itemprop=blogPost>
 <div class=article-inner>
 </a>
@@ -177,6 +230,24 @@ Recents
 <ul id=recent-post>
 <li>
 <div class=item-thumbnail>
+<a href=https://www.romange.com/2022/01/30/redis-analysis-part-2-simplicity/ class=thumbnail>
+<span style=background-image:url(https://www.romange.com/banners/simple.jpg) alt="These are the wrong sort of bees" class=thumbnail-image></span>
+</a>
+</div>
+<div class=item-inner>
+<p class=item-category>
+<a class=article-category-link href=https://www.romange.com/categories/redis>
+redis
+</a>
+</p>
+<p class=item-title><a href=https://www.romange.com/2022/01/30/redis-analysis-part-2-simplicity/ class=title>Redis Analysis - Part 2: Simplicity </a></p>
+<p class=item-date>
+<time datetime="2022-01-30 20:00:00 +0200 +0200" itemprop=datePublished>Jan 30nd 2022</time>
+</p>
+</div>
+</li>
+<li>
+<div class=item-thumbnail>
 <a href=https://www.romange.com/2021/12/09/redis-analysis-part-1-threading-model/ class=thumbnail>
 <span style=background-image:url(https://www.romange.com/banners/jet.jpg) alt="These are the wrong sort of bees" class=thumbnail-image></span>
 </a>
@@ -227,18 +298,24 @@ Recents
 </p>
 </div>
 </li>
-<li>
-<div class=item-thumbnail>
-<a href=https://www.romange.com/2019/07/15/gaia-mapreduce-tutorial-part1/ class=thumbnail>
-<span class="thumbnail-image thumbnail-none"></span>
+</ul>
+</div>
+</div>
+<div class=widget-wrap>
+<h3 class=widget-title>Categories</h3>
+<div class=widget>
+<ul class=category-list>
+<li class=category-list-item>
+<a class=category-list-link href=https://www.romange.com/categories/backend>
+backend
 </a>
-</div>
-<div class=item-inner>
-<p class=item-title><a href=https://www.romange.com/2019/07/15/gaia-mapreduce-tutorial-part1/ class=title>Gaia Mapreduce Tutorial - part1</a></p>
-<p class=item-date>
-<time datetime="2019-07-15 00:00:35 +0300 +0300" itemprop=datePublished>Jul 15nd 2019</time>
-</p>
-</div>
+<span class=category-list-count>1</span>
+</li>
+<li class=category-list-item>
+<a class=category-list-link href=https://www.romange.com/categories/redis>
+redis
+</a>
+<span class=category-list-count>1</span>
 </li>
 </ul>
 </div>
