@@ -30,7 +30,7 @@ Redis was initially designed as a simple store, and it seems that its APIs achie
 Unfortunately, Redis&rsquo;s simple design makes it unreliable and difficult to manage in production.
 So the question is - what simplicity means to you as a datastore user?"><meta itemprop=datePublished content="2022-01-30T20:00:00+02:00">
 <meta itemprop=dateModified content="2022-01-30T20:00:00+02:00">
-<meta itemprop=wordCount content="1539">
+<meta itemprop=wordCount content="1540">
 <meta itemprop=keywords content>
 <meta name=twitter:card content="summary">
 <meta name=twitter:title content="Redis Analysis - Part 2: Simplicity ">
@@ -137,7 +137,7 @@ Redis Analysis - Part 2: Simplicity
 <i class="fa fa-calendar"></i>
 <time datetime="2022-01-30 20:00:00 +0200 +0200" itemprop=datePublished>Jan 30nd 2022</time>
 &#183;
-1539
+1540
 words
 &#183;
 8
@@ -257,8 +257,9 @@ You can see that the same commands run an order of magnitude faster. The result 
 because of the <a href=https://www.romange.com/2021/12/09/redis-analysis-part-1-threading-model/>shared-nothing architecture</a> that distributes operations across cpus but also due to novel
 dictionary design. Btw, you can see that <code>flushdb</code> operation was not timed - <code>redis-cli</code> does not show
 latencies of &ldquo;fast&rdquo; operations below 500ms. Hence, we can conclude that <code>flushdb</code> was at least 350 times faster in this case. If you compare <code>used_memory_human</code> metric, you can see that Redis
-required almost twice more RAM than the POC (16.9GB vs 9.5GB). There is a lot more to cover. For example, <code>SAVE</code> stalls the processing of all requests, similarly to <code>FLUSHDB</code> .
-In contrast, the new store runs it concurrently with the rest of the traffic while still producing a consistent point-in-time snapshot. In other words, it provides <code>BGSAVE</code> product experience with the reliability of <code>SAVE</code>.</p>
+required almost twice more RAM than the POC (16.9GB vs 9.5GB).</p>
+<p>There is a lot more to cover. For example, Redis <code>SAVE</code> stalls the processing of all requests,
+similarly to <code>FLUSHDB</code> . In contrast, the new store runs it concurrently with the rest of the traffic while still producing a consistent point-in-time snapshot. In other words, it provides <code>BGSAVE</code> product experience with the reliability of <code>SAVE</code>.</p>
 <p>If we combine the long tail of improvements that come from a new design, we will get a product
 that redefines what simplicity and ease of use mean for an in-memory database world.</p>
 </div>
