@@ -251,7 +251,7 @@ Finally, <code>flushdb</code> demonstrates that a simple &ldquo;empty my store&r
 operation may be cpu-intensive, and completely stall other requests for almost 3 minutes!
 Not so simple anymore.</p>
 <p>This snapshot below is the POC store under development.
-<figure><img src=/img/df_table2.png alt=POC width=400px>
+<figure><img src=/img/df_table2.png alt=POC width=500px>
 </figure>
 You can see that the same commands run an order of magnitude faster. The result is achieved in part
 because of the <a href=https://www.romange.com/2021/12/09/redis-analysis-part-1-threading-model/>shared-nothing architecture</a> that distributes operations across cpus but also due to novel
