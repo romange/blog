@@ -6,8 +6,8 @@ description = ""
 menu = ""
 banner = ""
 images = []
-date = 2022-06-14T09:53:03+03:00
-draft = true
+date = 2022-06-23T12:00:00+03:00
+draft = false
 +++
 
 I talked in my [previous post]({{< ref "simple_is_beatiful.md" >}}) about Redis eviction policies.
@@ -61,41 +61,43 @@ Only if a probationary item was accessed at least once, will it be proven as *wo
 
 2Q improves LRU by acknowledging that just because a new item was added to the cache - does not mean it's useful. 2Q requires an to have been accessed at least once before to be considered as a high quality item. In this way, 2Q cache has been proven to be more robust and to achieve a higher hit rate than LRU policy.
 
-### Dashtable in 30 seconds
-I suggest to read [the original paper](https://arxiv.org/abs/2003.07302) about Dashtable, or at least to go over my [overview in github](https://github.com/dragonflydb/dragonfly/blob/main/docs/dashtable.md).
+### Dashtable in 60 seconds
+For a deep dive on Dashtable’s use in Dragonfly, I recommend you reading this [post](https://github.com/dragonflydb/dragonfly/blob/main/docs/dashtable.md) or [the original paper](https://arxiv.org/abs/2003.07302).
 
-What we need to know here is several facts about Dashtable in Dragonfly implementation:
+For our purposes today, we need to know the following facts about Dashtable in Dragonfly implementation:
 
 1. It's comprised of segments of constant size. Each segment holds 56 regular buckets with multiple slots. Each slot has space for a single item.
-2. Dashtable routing algorithm uses item's hash value to compute its segment id. In addition, it predefines 2 out of 56 buckets where the item can reside within the segment. The item can reside in any free slot in those two buckets.
-3. In addition to regular buckets, a Dashtable segment manages 4 stash buckets that may gather overflow items that do not have space in their assigned buckets. The routing algorithm never assigns stash buckets directly. Instead, only if its two home buckets are full, the item is allowed to reside in any of 4 stash buckets. This greatly increases segment's utilization.
-4. Once segment becomes full and there is no free place for a new item in its home buckets nor in stash buckets, the Dashtable grows by adding a new segment and splitting the contents of the full segment roughly in half.
+2. Dashtable's routing algorithm uses item's hash value to compute its segment id. In addition, it predefines 2 out of 56 buckets where the item can reside within the segment. The item can reside in any free slot in those two buckets.
+3. In addition to regular buckets, a Dashtable segment manages 4 stash buckets that may gather overflow items that do not have space in their assigned buckets. The routing algorithm never assigns stash buckets directly. Instead, only if its 2 home buckets are full, the item is allowed to reside in any of 4 stash buckets. This greatly increases segment's utilization.
+4. Once a segment becomes full, and there is no free place for a new item in its home buckets nor in stash buckets, the Dashtable grows by adding a new segment and splitting the contents of the full segment roughly in half.
 
 {{< figure src="/img/segment.svg">}}
 
-So, this point in time, when segment is full is a convenient point to add any type of eviction policy to Dashtable because this is when Dashtable grows. Moreover, in order to prevent growth of Dashtable we can only evict items from that full segment. Hence, we got ourselves very precise eviction framework that operates in `O(1)` run-time complexity.
+The point at which a segment becomes full is a convenient time to add any type of eviction policy to Dashtable, because this is when Dashtable grows. Moreover, in order to prevent growth of Dashtable, we can only evict items from a full segment. This constitutes a very precise eviction framework that operates in `O(1)` run-time complexity.
 
 ### 2Q implementation
 
-A naive solution could be - to divide Dragonfly entries into two buffers and use a FIFO ordering for a probationary buffer and an LRU linked-list for the protected buffer.
-Obviosly, it would require using additional metadata and waste precious memory.
+Dragonfly expands on the ideas above. A naive solution would be to divide hashtable entries into two buffers: a probationary buffer with FIFO ordering, and the protected buffer employing LRU linked-list. That would work but it would require using additional metadata and waste precious memory.
 
-Instead, Dragonfly leverages the unique design of [Dashtable](https://github.com/dragonflydb/dragonfly/blob/main/doc/dashtable.md) and uses its weak ordering characteristics to its advantage.
+Instead, Dragonfly leverages the unique design of [Dashtable](https://github.com/dragonflydb/dragonfly/blob/main/doc/dashtable.md) and uses its weak ordering characteristics for its advantage.
 
-To implement 2Q we need to explain how we define probationary and protected buffers in Dashtable, how we promote a probationary item into protected buffer and how we evict items from the cache.
+To explain how 2Q works with Dashtable, we need to explain how we define probationary and protected buffers there, how we promote a probationary item into protected buffer and how we evict items from the cache.
 
 {{< figure src="/img/dash-cache.svg">}}
 
-We overlay the following semantics on the original Dashtable:
-1. Slots within a bucket now have rank or precedence. A slot on the left has the highest rank - `0`, and the last slot on the right has the lowest rank.
-2. Stash buckets within a segment serve as probationary buffer. When a new item is added to the full segment, it's been added into a stash bucket at slot 0. All other items in the bucket are shifted right, and the last item in the bucket is evicted. This way the bucket serves as FIFO queue for probationary items.
-3. Every cache hit "promotes" its item: a) if the item was in a stash bucket, it's been moved immediately into its home bucket to the last slot; b) if it was in a home bucket at slot `i`, it's been swapped out with item at slot `i-1`. c) item at slot `0` stays in the same place.
-4. When a probationary item is promoted to the protected bucket, it's been moved to the last slot there. The item that was there before is being demoted back into the probationary bucket.
+We overlaid the following semantics on the original Dashtable:
+1. Slots within a bucket now have rank or precedence. A slot on the left has the highest rank `(0)`, and the last slot on the right has the lowest rank `(9)`.
+2. Stash buckets within a segment serve as a probationary buffer. When a new item is added to the full segment, it's been added into a stash bucket at slot 0. All other items in the bucket are shifted right, and the last item in the bucket is evicted. This way the bucket serves as a FIFO queue for probationary items.
+3. Every cache hit "promotes" its item:
+   * if the item was in a stash bucket, it's moved immediately into its home bucket to the last slot.
+   * if it was in a home bucket at slot `i`, it's swapped out with an item at slot `i-1`.
+   * an item at slot `0` stays in the same place.
+4. When a probationary item is promoted to the protected bucket, it's moved to the last slot there. The item that was there before is demoted back into the probationary bucket.
 
-So basically, Dash-Cache eviction policy is comprised of an "eviction" step described by (2) and the positive reinforcement step described by (3).
+Basically, Dash-Cache eviction policy is comprised of an "eviction" step described by (2) and the positive reinforcement step described by (3).
 
-That's it. No additional metadata is needed. Very quickly high quality items will reside at lower slot indices in their home buckets. Newly added items will compete with each other within stash/probationary buckets. In our implementation each bucket has 14 slots, hence each probationary item can be shifted 14 times before being evicted from the cache, unless it proves its usefulness and be promoted. Each segment has 56 regular buckets and 4 stash buckets, therefore we have `6.7%` space allocated for probationary buffer. It's enough to catch high quality items before they are evicted.
+That's it. No additional metadata is needed. High quality items will come to reside at high rank slots in their home buckets very quickly, while newly added items compete with each other within stash/probationary buckets. In our implementation each bucket has 14 slots, meaning that each probationary item can be shifted 14 times before being evicted from the cache, unless it proves its usefulness and is promoted. Each segment has 56 regular buckets and 4 stash buckets; therefore we have `6.7%` of total space allocated for a probationary buffer. It's enough to catch high quality items before they are evicted.
 
-I hope you enjoyed to see how Dragonfly utilizes seemingly unrelated concepts together to its advantage.
+I hope you enjoyed reading how Dragonfly cache design utilizes seemingly unrelated concepts together to its advantage.
 
 *I want to thank [Ben Manes](https://twitter.com/benmanes), the author of wonderful [caffeine package](https://github.com/ben-manes/caffeine) for early comments and the guidance on how to use caffeine simulator in order to compare Dragonfly Cache to other caches.*
