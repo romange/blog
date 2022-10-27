@@ -72,7 +72,7 @@ buildDrafts = false
     slideshare      = ""
     stackoverflow   = "romange"
     twitter_domain  = ""
-    twitter         = ""
+    twitter         = "romanger"
 
 # Enable and disable widgets for the right sidebar
 [params.widgets]
