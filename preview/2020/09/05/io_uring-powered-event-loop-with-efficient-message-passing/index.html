@@ -1,0 +1,203 @@
+<!doctype html><html lang=en-us><head><title>IO_URING powered event-loop with efficient message passing &#183; These are the wrong sort of bees</title><meta name=generator content="Hugo 0.105.0"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><meta name=author content="Roman Gershman"><meta name=description content="The wrong sort of bees"><link rel=canonical href=https://romange.github.io/blog/preview/2020/09/05/io_uring-powered-event-loop-with-efficient-message-passing/><link rel=icon href=https://romange.github.io/blog/preview/favicon.ico><link rel=apple-touch-icon href=https://romange.github.io/blog/preview/apple-touch-icon.png><link rel=stylesheet href=https://romange.github.io/blog/preview/css/style.css><link rel=stylesheet href=https://romange.github.io/blog/preview/css/font-awesome.min.css><link rel=stylesheet href=https://romange.github.io/blog/preview/css/monokai.css><link rel=stylesheet href=https://romange.github.io/blog/preview/fancybox/jquery.fancybox.css><link href='https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600' rel=stylesheet type=text/css><link href='https://fonts.googleapis.com/css?family=Source+Code+Pro' rel=stylesheet type=text/css><meta property="og:title" content="IO_URING powered event-loop with efficient message passing"><meta property="og:description" content="IO_URING is the new API that provides an efficient communication channel with the kernel via shared ring-buffer. It has been specially designed for handling all types of Linux I/O requests and it finally unifies file and networking calls into the same API. This article covers an experimental layer in GAIA that allows building an efficient backend server using IO_URING api. This layer   shows an order of magnitude better throughput on a single server compared to epoll-based approaches. Also, it demonstrates a flexible inter-thread message passing mechanism specially designed for reactive systems."><meta property="og:type" content="article"><meta property="og:url" content="https://romange.github.io/blog/preview/2020/09/05/io_uring-powered-event-loop-with-efficient-message-passing/"><meta property="article:section" content="post"><meta property="article:published_time" content="2020-09-05T20:30:11+03:00"><meta property="article:modified_time" content="2020-09-05T20:30:11+03:00"><meta itemprop=name content="IO_URING powered event-loop with efficient message passing"><meta itemprop=description content="IO_URING is the new API that provides an efficient communication channel with the kernel via shared ring-buffer. It has been specially designed for handling all types of Linux I/O requests and it finally unifies file and networking calls into the same API. This article covers an experimental layer in GAIA that allows building an efficient backend server using IO_URING api. This layer   shows an order of magnitude better throughput on a single server compared to epoll-based approaches. Also, it demonstrates a flexible inter-thread message passing mechanism specially designed for reactive systems."><meta itemprop=datePublished content="2020-09-05T20:30:11+03:00"><meta itemprop=dateModified content="2020-09-05T20:30:11+03:00"><meta itemprop=wordCount content="1188"><meta itemprop=keywords content="io_uring,fibers,c++,"><meta name=twitter:card content="summary"><meta name=twitter:title content="IO_URING powered event-loop with efficient message passing"><meta name=twitter:description content="IO_URING is the new API that provides an efficient communication channel with the kernel via shared ring-buffer. It has been specially designed for handling all types of Linux I/O requests and it finally unifies file and networking calls into the same API. This article covers an experimental layer in GAIA that allows building an efficient backend server using IO_URING api. This layer   shows an order of magnitude better throughput on a single server compared to epoll-based approaches. Also, it demonstrates a flexible inter-thread message passing mechanism specially designed for reactive systems."><meta name=twitter:site content="@romanger"><script src=https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js></script></head><body><div class=container><div id=container><header id=header><div id=header-main class=header-inner><div class=outer><a href=https://romange.github.io/blog/preview/ id=logo><i class=logo style=background-image:url(https://romange.github.io/blog/preview/css/images/7.png)></i>
+<span class=site-title>These are the wrong sort of bees</span></a><nav id=main-nav><a class=main-nav-link href=https://romange.github.io/blog/preview/tags/>Tags</a>
+<a class=main-nav-link href=https://romange.github.io/blog/preview/about/>About</a></nav><nav id=sub-nav><div class=profile id=profile-nav><a id=profile-anchor href=javascript:;><img class=avatar src=https://romange.github.io/blog/preview/css/images/avatar.png><i class="fa fa-caret-down"></i></a></div></nav><div id=search-form-wrap><form action=//google.com/search method=get accept-charset=utf-8 class=search-form><input type=search name=q class=search-form-input placeholder=Search>
+<button type=submit class=search-form-submit></button>
+<input type=hidden name=sitesearch value=https://romange.github.io/blog/preview/></form></div></div></div><div id=main-nav-mobile class="header-sub header-inner"><table class="menu outer"><tbody><tr><td><a class=main-nav-link href=https://romange.github.io/blog/preview/tags/>Tags</a></td><td><a class=main-nav-link href=https://romange.github.io/blog/preview/about/>About</a></td><td><form action=//google.com/search method=get accept-charset=utf-8 class=search-form><input type=search name=q class=search-form-input placeholder=Search>
+<input type=hidden name=sitesearch value=https://romange.github.io/blog/preview/></form></td></tr></tbody></table></div></header><div class=outer><aside id=profile><div class="inner profile-inner"><div class="base-info profile-block"><img id=avatar src="https://www.gravatar.com/avatar/4a203a48eb1cdb1b8c47d008f0c139c9?s=100&d=identicon"><h2 id=name>Roman Gershman</h2><h3 id=title>Software Engineer</h3><span id=location><i class="fa fa-map-marker"></i>Tel Aviv</span>
+<a id=follow href=https://github.com/romange>Follow</a></div><div class="article-info profile-block"><div class=article-info-block>15
+<span>Posts</span></div><div class=article-info-block>17
+<span>Tags</span></div></div><div class="profile-block social-links"><table><tr><td><a href=//github.com/romange target=_blank title=GitHub><i class="fa fa-github"></i></a></td><td><a href=//linkedin.com/in/romange target=_blank title=LinkedIn><i class="fa fa-linkedin"></i></a></td><td><a href=//stackoverflow.com/users/romange target=_blank title="Stack Overflow"><i class="fa fa-stack-overflow"></i></a></td><td><a href=//twitter.com/romanger target=_blank title=Twitter><i class="fa fa-twitter"></i></a></td><td><a href=https://romange.github.io/blog/preview/index.xml target=_blank title=RSS><i class="fa fa-rss"></i></a></td></tr></table></div></div></aside><section id=main><article id=page-undefined class="article article-type-page" itemscope itemprop=blogPost><div class=article-inner><header class=article-header><a href=https://romange.github.io/blog/preview/2020/09/05/io_uring-powered-event-loop-with-efficient-message-passing/><h1 class=article-title itemprop=name>IO_URING powered event-loop with efficient message passing</h1></a><div class=article-meta><div class=article-date><i class="fa fa-calendar"></i>
+<time datetime="2020-09-05 20:30:11 +0300 +0300" itemprop=datePublished>Sep 5nd 2020</time>
+&#183;
+1188
+words
+&#183;
+6
+minute read</div><div class=article-category><i class="fa fa-tags"></i>
+<a class=article-category-link href=https://romange.github.io/blog/preview/tags/io_uring>io_uring</a>
+&#183;
+<a class=article-category-link href=https://romange.github.io/blog/preview/tags/fibers>fibers</a>
+&#183;
+<a class=article-category-link href=https://romange.github.io/blog/preview/tags/c++>c++</a></div></div></header><div class=article-entry itemprop=articleBody><p>IO_URING is the new API that provides an efficient communication channel with the kernel via shared ring-buffer. It has been specially designed for handling all types of Linux I/O requests and it finally unifies file and networking calls into the same API. This article covers an experimental layer in GAIA that allows building an efficient backend server using IO_URING api. This layer shows an order of magnitude better throughput on a single server compared to epoll-based approaches. Also, it demonstrates a flexible inter-thread message passing mechanism specially designed for reactive systems.</p><p><a href=https://kernel.dk/io_uring.pdf>IO_URING</a> is going to revolutinize how linux-based reactive systems are built. It drastically reduces the number of system calls needed to maintain an I/O communication. In addition, it provides an asynchronous API for file operations, call batching, operations chaining and timeout control. I am not going to explain in depth about the API and instead suggest reading the <a href=(https://kernel.dk/io_uring.pdf)>IO_URING paper</a>.</p><p>There are only few examples in the internet that demonstrate how IO_URING can be used, let alone used with Boost.Fibers. In order to test the interactions between IO_URING and Boost.Fibers I&rsquo;ve built an experimental layer that allows running share-nothing systems on multi-core systems. The architechture that I adopted uses the following principles:</p><ol><li><p>IO_URING powered event-loop per each core. These even-loops are designed to act independently from each other and handle most of their interactions locally inside their threads. The loop is represented by <code>Proactor</code> class.</p></li><li><p><code>ProactorPool</code> class that owns and manages all Proactors running in the system. It provides message passing interfaces to run a custom code on any of the Proactor threads.</p></li><li><p>Each server connection is handled by a dedicated fiber. By default all fibers are pinned to their threads and all server connections are randomly distributed between Proactor-threads.</p></li><li><p>There are no locks or mutexes that manage inter-thread communications. At least not on the critical path.</p></li></ol><p>In this post we will cover the basics of I/O event loop powered by IO_Uring and dive in into how we can build an efficient message passing mechanism. Our goal is to build a reactive thread manager that will support the following scenario:</p><pre tabindex=0><code>thread_local int val = 0;
+Proactor p;
+....
+p.AsyncRun([] { val = 1});
+</code></pre><p>And at some point in time, <code>val</code> will be equal to <code>1</code> in the proactor thread and <code>0</code> in the calling thread. Please note that the whole operation will be done without mutexes or other locks and will
+require just few dozens of cpu cycles in both threads. The latency of this asynchronous operation can be as low as few micros - subject to the destination thread availability.</p><h2 id=eventloop>EventLoop</h2><p>Below you may find a typical implementation of EventLoop using IO_URING interface. IO_URING serves very similar function to <code>epoll</code>, i.e. it allows to harvest incoming event notifications that it has been configured to monitor. Unlike <code>epoll</code> interface, however, it provides an additional functionality via <code>io_uring_submit</code> call. This call flushes all the outgoing I/O requests from the userland (ring) buffer into kernel. This buffer allows issuing and batching multiple I/O requests without system calls. So, instead of calling <code>write(fd...)</code> or <code>send(socket_fd...)</code> we fill equivalent structures that are IO_URING specific and write them into a dedicated buffer. This part is out of context of this post, therefore we assume that other parts of our application fill this buffer but this loop makes sure that the IO_URING records are correctly passed to the kernel threads.</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">25
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span>  Task task;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>while</span>(true) {
+</span></span><span style=display:flex><span>     io_uring_submit(<span style=color:#f92672>&amp;</span>ring, <span style=color:#f92672>&amp;</span>pending_requests);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>     <span style=color:#66d9ef>bool</span> noop_loop <span style=color:#f92672>=</span> true;
+</span></span><span style=display:flex><span>     <span style=color:#75715e>// Process message passing tasks
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>     <span style=color:#66d9ef>while</span> (task_queue_.try_pop(<span style=color:#f92672>&amp;</span>task)) {
+</span></span><span style=display:flex><span>       task.Run();
+</span></span><span style=display:flex><span>       noop_loop <span style=color:#f92672>=</span> false;
+</span></span><span style=display:flex><span>     }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>     <span style=color:#75715e>// like epoll_wait(timeout=0).
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>     io_uring_peek_batch_cqe(<span style=color:#f92672>&amp;</span>ring, <span style=color:#f92672>&amp;</span>completions);
+</span></span><span style=display:flex><span>     <span style=color:#66d9ef>if</span> (completions.empty()) {
+</span></span><span style=display:flex><span>       switch_to_other_fibers_if_needed();
+</span></span><span style=display:flex><span>     } <span style=color:#66d9ef>else</span> {
+</span></span><span style=display:flex><span>       noop_loop <span style=color:#f92672>=</span> false;
+</span></span><span style=display:flex><span>       dispatch_completions();
+</span></span><span style=display:flex><span>     }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>     <span style=color:#66d9ef>if</span> (noop_loop) {
+</span></span><span style=display:flex><span>      io_uring_wait_cqe(<span style=color:#f92672>&amp;</span>ring);   <span style=color:#75715e>// epoll_wait(timeout=-1).
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>     }
+</span></span><span style=display:flex><span>  };</span></span></code></pre></td></tr></table></div></div><p>The part that is in the focus of this post is</p><pre tabindex=0><code>while (task_queue_.try_pop(&amp;task)) {  // Process message passing tasks
+  task.Run();
+  noop_loop = false;
+}
+</code></pre><p>that allows mixing CPU tasks with I/O management. Our CPU may come from the other threads and are queued using the lock-free MPSC queue. By modeling our messages as generic functions we achieve maximum flexibility in our framework and we do not need to know in advance what type of messages are passed between threads. Consequently, our <code>AsyncRun</code> might look like</p><pre tabindex=0><code>template&lt;typename Func&gt; bool Proactor::AsyncRun(Func&amp;&amp; func) {
+  return que_.try_push(std::move(func));  // may fail on overflow.
+}
+</code></pre><p>The problem with this approach, well, besides the obvious queue overflow problem, is that our event-loop may block on I/O inside <code>io_uring_wait_cqe</code> call after the loop processed all the CPU tasks and no new I/O has arrived. In that case it just waits for event notifications similarly to <code>epoll_wait(timeout=-1)</code>. If a mesage is sent from another thread it might deadlock since the I/O event may never come and the loop will never process the new tasks.</p><p>We could remove the blocking call, of course, and use <code>io_uring_peek_batch_cqe</code> that just reaps whatever I/O events are ready but then we would have to poll constantly. Constant polling burns our CPU, messes with metrics, affects our ability to profile and optimize our server. Is there a more intelligent solution to that?</p><p>Luckily, we can use <a href=https://www.man7.org/linux/man-pages/man2/eventfd.2.html>eventfd</a> to signal IO_URING/Epoll loops and wake the <code>io_uring_wait_cqe()</code> call. Here, we can register <code>event_fd</code> descriptor with IO_URING via <code>io_uring_prep_poll_add(sqe, event_fd, POLLIN);</code> we may wake our loop by writing an arbitrary <code>uint64_t</code> value into it.</p><p>For example,</p><pre tabindex=0><code>template&lt;typename Func&gt; bool Proactor::AsyncRun(Func&amp;&amp; func) {
+  bool res = que_.try_push(std::move(func));  // may fail on overflow.
+  if (res) {
+    uint64_t val = 1;
+    write(event_fd_, &amp;val, sizeof(val));
+  }
+  return res;
+}
+</code></pre><p>This will solve the issue with deadlocks but now we have another problem - performance.
+You can usually make order of hundreds of thousands systems calls per second on a single server.
+We want to build a system that fully utilizes its hardware specifically we prefer to have message passing mechanism as lightweight as possible. Can we reduce number of system calls?
+One thing to notice is that we write into <code>event_fd_</code> unconditionally, event when Proactor thread is not waiting for I/O. We can reduce number of irrelevant system calls using an atomic variable that will synchronize between Proactor and producer threads.</p><p>Assuming that <code>std::atomic_uint32_t seq_num_</code> is a member variable of Proactor class we can write the following.</p><pre tabindex=0><code>const uint32_t WAIT_SECTION_STATE = 1UL &lt;&lt; 31;
+
+template&lt;typename Func&gt; bool Proactor::AsyncRun(Func&amp;&amp; func) {
+  bool res = que_.try_push(std::move(func));  // may fail on overflow.
+  if (res) {
+    if (seq_num_.fetch_add(1, std::memory_order_relaxed) == WAIT_SECTION_STATE) {
+      uint64_t val = 1;
+      write(event_fd_, &amp;val, sizeof(val));
+    }
+  }
+  return res;
+}
+</code></pre><p>And in proactor thread:</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">27
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span>  Task task;
+</span></span><span style=display:flex><span>  seq_num_ <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>while</span>(true) {
+</span></span><span style=display:flex><span>     io_uring_submit(<span style=color:#f92672>&amp;</span>ring, <span style=color:#f92672>&amp;</span>pending_requests);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>     <span style=color:#66d9ef>bool</span> noop_loop <span style=color:#f92672>=</span> true;
+</span></span><span style=display:flex><span>     <span style=color:#66d9ef>uint32_t</span> seq_num <span style=color:#f92672>=</span> seq_num_.load(std<span style=color:#f92672>::</span>memory_order_acquire);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>     <span style=color:#66d9ef>while</span> (task_queue_.try_pop(<span style=color:#f92672>&amp;</span>task)) {  <span style=color:#75715e>// Process message passing tasks
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>       task.Run();
+</span></span><span style=display:flex><span>       noop_loop <span style=color:#f92672>=</span> false;
+</span></span><span style=display:flex><span>     }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>     io_uring_peek_batch_cqe(<span style=color:#f92672>&amp;</span>ring, <span style=color:#f92672>&amp;</span>completions);  <span style=color:#75715e>// like epoll_wait(timeout=0).
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>     <span style=color:#66d9ef>if</span> (completions.empty()) {
+</span></span><span style=display:flex><span>       switch_to_other_fibers_if_needed();
+</span></span><span style=display:flex><span>     } <span style=color:#66d9ef>else</span> {
+</span></span><span style=display:flex><span>       noop_loop <span style=color:#f92672>=</span> false;
+</span></span><span style=display:flex><span>       dispatch_completions();
+</span></span><span style=display:flex><span>     }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>     <span style=color:#66d9ef>if</span> (noop_loop <span style=color:#f92672>&amp;&amp;</span> seq_num_.compare_and_exchange(seq_num, WAIT_SECTION_STATE, std<span style=color:#f92672>::</span>memory_order_ack_rel)) {
+</span></span><span style=display:flex><span>      io_uring_wait_cqe(<span style=color:#f92672>&amp;</span>ring);   <span style=color:#75715e>// epoll_wait(timeout=-1).
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>      seq_num_.store(<span style=color:#ae81ff>0</span>, std<span style=color:#f92672>::</span>memory_order_release);
+</span></span><span style=display:flex><span>     }
+</span></span><span style=display:flex><span>  };</span></span></code></pre></td></tr></table></div></div></div><footer class=article-footer><a data-url=https://romange.github.io/blog/preview/2020/09/05/io_uring-powered-event-loop-with-efficient-message-passing/ data-id=f98a47d8cbc612575d15c1f0b34b9e99 class=article-share-link><i class="fa fa-share"></i>
+Share</a>
+<a href=https://romange.github.io/blog/preview/2020/09/05/io_uring-powered-event-loop-with-efficient-message-passing/#disqus_thread class=article-comment-link>Comments</a>
+<script>(function(e){if(typeof __SHARE_BUTTON_BINDED__=="undefined"||!__SHARE_BUTTON_BINDED__)__SHARE_BUTTON_BINDED__=!0;else return;e("body").on("click",function(){e(".article-share-box.on").removeClass("on")}).on("click",".article-share-link",function(t){t.stopPropagation();var n,c,o=e(this),a=o.attr("data-url"),s=encodeURIComponent(a),i="article-share-box-"+o.attr("data-id"),r=o.offset();if(e("#"+i).length){if(n=e("#"+i),n.hasClass("on")){n.removeClass("on");return}}else c=['<div id="'+i+'" class="article-share-box">','<input class="article-share-input" value="'+a+'">','<div class="article-share-links">','<a href="https://twitter.com/intent/tweet?url='+s+'" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>','<a href="https://www.facebook.com/sharer.php?u='+s+'" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>','<a href="http://pinterest.com/pin/create/button/?url='+s+'" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>','<a href="https://plus.google.com/share?url='+s+'" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',"</div>","</div>"].join(""),n=e(c),e("body").append(n);e(".article-share-box.on").hide(),n.css({top:r.top+25,left:r.left}).addClass("on")}).on("click",".article-share-box",function(e){e.stopPropagation()}).on("click",".article-share-box-input",function(){e(this).select()}).on("click",".article-share-box-link",function(e){e.preventDefault(),e.stopPropagation(),window.open(this.href,"article-share-box-window-"+Date.now(),"width=500,height=450")})})(jQuery)</script></footer></div><nav id=article-nav><a href=https://romange.github.io/blog/preview/2019/11/01/gaia-mapreduce-tutorial-part2/ id=article-nav-older class=article-nav-link-wrap><strong class=article-nav-caption>Older</strong><div class=article-nav-title>Gaia Mapreduce Tutorial - part2</div></a><a href=https://romange.github.io/blog/preview/2021/11/28/a-prelude-to-analysis-of-redis-memory-store/ id=article-nav-newer class=article-nav-link-wrap><strong class=article-nav-caption>Newer</strong><div class=article-nav-title>A prelude to analysis of Redis memory-store</div></a></nav></article><section id=comments><div id=disqus_thread><div id=disqus_thread></div><script type=application/javascript>window.disqus_config=function(){},function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById("disqus_thread").innerHTML="Disqus comments not available by default when the website is previewed locally.";return}var t=document,e=t.createElement("script");e.async=!0,e.src="//romange.disqus.com/embed.js",e.setAttribute("data-timestamp",+new Date),(t.head||t.body).appendChild(e)}()</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></div></section></section><aside id=sidebar><div class=widget-wrap><h3 class=widget-title>Recents</h3><div class=widget><ul id=recent-post><li><div class=item-thumbnail><a href=https://romange.github.io/blog/preview/2022/10/26/balanced-vs-unbalanced/ class=thumbnail><span style=background-image:url(https://romange.github.io/blog/preview/banners/floaty-jerry.png) alt="IO_URING powered event-loop with efficient message passing" class=thumbnail-image></span></a></div><div class=item-inner><p class=item-title><a href=https://romange.github.io/blog/preview/2022/10/26/balanced-vs-unbalanced/ class=title>balanced vs unbalanced</a></p><p class=item-date><time datetime="2022-10-26 09:24:23 +0300 +0300" itemprop=datePublished>Oct 26nd 2022</time></p></div></li><li><div class=item-thumbnail><a href=https://romange.github.io/blog/preview/2022/06/23/dragonfly-cache-design/ class=thumbnail><span class="thumbnail-image thumbnail-none"></span></a></div><div class=item-inner><p class=item-title><a href=https://romange.github.io/blog/preview/2022/06/23/dragonfly-cache-design/ class=title>Dragonfly Cache Design</a></p><p class=item-date><time datetime="2022-06-23 12:00:00 +0300 +0300" itemprop=datePublished>Jun 23nd 2022</time></p></div></li><li><div class=item-thumbnail><a href=https://romange.github.io/blog/preview/2022/01/30/redis-analysis-part-2-simplicity/ class=thumbnail><span style=background-image:url(https://romange.github.io/blog/preview/banners/simple.jpg) alt="IO_URING powered event-loop with efficient message passing" class=thumbnail-image></span></a></div><div class=item-inner><p class=item-title><a href=https://romange.github.io/blog/preview/2022/01/30/redis-analysis-part-2-simplicity/ class=title>Redis Analysis - Part 2: Simplicity</a></p><p class=item-date><time datetime="2022-01-30 20:00:00 +0200 +0200" itemprop=datePublished>Jan 30nd 2022</time></p></div></li><li><div class=item-thumbnail><a href=https://romange.github.io/blog/preview/2021/12/09/redis-analysis-part-1-threading-model/ class=thumbnail><span style=background-image:url(https://romange.github.io/blog/preview/banners/jet.jpg) alt="IO_URING powered event-loop with efficient message passing" class=thumbnail-image></span></a></div><div class=item-inner><p class=item-title><a href=https://romange.github.io/blog/preview/2021/12/09/redis-analysis-part-1-threading-model/ class=title>Redis Analysis - Part 1: Threading model</a></p><p class=item-date><time datetime="2021-12-09 11:00:00 +0300 +0300" itemprop=datePublished>Dec 9nd 2021</time></p></div></li><li><div class=item-thumbnail><a href=https://romange.github.io/blog/preview/2021/11/28/a-prelude-to-analysis-of-redis-memory-store/ class=thumbnail><span style=background-image:url(https://romange.github.io/blog/preview/banners/1200px-Redis_Logo.svg.png) alt="IO_URING powered event-loop with efficient message passing" class=thumbnail-image></span></a></div><div class=item-inner><p class=item-title><a href=https://romange.github.io/blog/preview/2021/11/28/a-prelude-to-analysis-of-redis-memory-store/ class=title>A prelude to analysis of Redis memory-store</a></p><p class=item-date><time datetime="2021-11-28 17:46:19 +0300 +0300" itemprop=datePublished>Nov 28nd 2021</time></p></div></li></ul></div></div><div class=widget-wrap><h3 class=widget-title>Tags</h3><div class=widget><ul class=category-list><li class=category-list-item><a class=category-list-link href=https://romange.github.io/blog/preview/tags/asynchronous>asynchronous</a>
+<span class=category-list-count>2</span></li><li class=category-list-item><a class=category-list-link href=https://romange.github.io/blog/preview/tags/backend>backend</a>
+<span class=category-list-count>2</span></li><li class=category-list-item><a class=category-list-link href=https://romange.github.io/blog/preview/tags/blogging>blogging</a>
+<span class=category-list-count>1</span></li><li class=category-list-item><a class=category-list-link href=https://romange.github.io/blog/preview/tags/c++>c++</a>
+<span class=category-list-count>8</span></li><li class=category-list-item><a class=category-list-link href=https://romange.github.io/blog/preview/tags/code-generation>code-generation</a>
+<span class=category-list-count>1</span></li><li class=category-list-item><a class=category-list-link href=https://romange.github.io/blog/preview/tags/concurrency>concurrency</a>
+<span class=category-list-count>2</span></li><li class=category-list-item><a class=category-list-link href=https://romange.github.io/blog/preview/tags/dragonfly>dragonfly</a>
+<span class=category-list-count>2</span></li><li class=category-list-item><a class=category-list-link href=https://romange.github.io/blog/preview/tags/fibers>fibers</a>
+<span class=category-list-count>2</span></li><li class=category-list-item><a class=category-list-link href=https://romange.github.io/blog/preview/tags/gaia>gaia</a>
+<span class=category-list-count>3</span></li><li class=category-list-item><a class=category-list-link href=https://romange.github.io/blog/preview/tags/io_uring>io_uring</a>
+<span class=category-list-count>1</span></li><li class=category-list-item><a class=category-list-link href=https://romange.github.io/blog/preview/tags/linux>linux</a>
+<span class=category-list-count>1</span></li><li class=category-list-item><a class=category-list-link href=https://romange.github.io/blog/preview/tags/mapreduce>mapreduce</a>
+<span class=category-list-count>3</span></li><li class=category-list-item><a class=category-list-link href=https://romange.github.io/blog/preview/tags/posix>posix</a>
+<span class=category-list-count>1</span></li><li class=category-list-item><a class=category-list-link href=https://romange.github.io/blog/preview/tags/programming>programming</a>
+<span class=category-list-count>1</span></li><li class=category-list-item><a class=category-list-link href=https://romange.github.io/blog/preview/tags/reactive>reactive</a>
+<span class=category-list-count>1</span></li><li class=category-list-item><a class=category-list-link href=https://romange.github.io/blog/preview/tags/redis>redis</a>
+<span class=category-list-count>5</span></li><li class=category-list-item><a class=category-list-link href=https://romange.github.io/blog/preview/tags/seastar>seastar</a>
+<span class=category-list-count>1</span></li></ul></div></div><div class=widget-wrap><h3 class=widget-title>Tag cloud</h3><div class="widget tagcloud"><a href=https://romange.github.io/blog/preview/tags/asynchronous style=font-size:12px>asynchronous</a>
+<a href=https://romange.github.io/blog/preview/tags/backend style=font-size:12px>backend</a>
+<a href=https://romange.github.io/blog/preview/tags/blogging style=font-size:12px>blogging</a>
+<a href=https://romange.github.io/blog/preview/tags/c++ style=font-size:12px>c++</a>
+<a href=https://romange.github.io/blog/preview/tags/code-generation style=font-size:12px>code-generation</a>
+<a href=https://romange.github.io/blog/preview/tags/concurrency style=font-size:12px>concurrency</a>
+<a href=https://romange.github.io/blog/preview/tags/dragonfly style=font-size:12px>dragonfly</a>
+<a href=https://romange.github.io/blog/preview/tags/fibers style=font-size:12px>fibers</a>
+<a href=https://romange.github.io/blog/preview/tags/gaia style=font-size:12px>gaia</a>
+<a href=https://romange.github.io/blog/preview/tags/io_uring style=font-size:12px>io_uring</a>
+<a href=https://romange.github.io/blog/preview/tags/linux style=font-size:12px>linux</a>
+<a href=https://romange.github.io/blog/preview/tags/mapreduce style=font-size:12px>mapreduce</a>
+<a href=https://romange.github.io/blog/preview/tags/posix style=font-size:12px>posix</a>
+<a href=https://romange.github.io/blog/preview/tags/programming style=font-size:12px>programming</a>
+<a href=https://romange.github.io/blog/preview/tags/reactive style=font-size:12px>reactive</a>
+<a href=https://romange.github.io/blog/preview/tags/redis style=font-size:12px>redis</a>
+<a href=https://romange.github.io/blog/preview/tags/seastar style=font-size:12px>seastar</a></div></div><div id=toTop class="fa fa-angle-up"></div></aside></div></div><footer id=footer><div class=outer><div id=footer-info class=inner>&copy; 2022
+Roman Gershman</div></div></footer><script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,i=t.createElement(n),a=t.getElementsByTagName(n)[0],i.async=1,i.src=s,a.parentNode.insertBefore(i,a)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-107146718-1","auto"),ga("send","pageview"))</script><script src=https://romange.github.io/blog/preview/fancybox/jquery.fancybox.pack.js></script>
+<script src=https://romange.github.io/blog/preview/js/script.js></script>
+<script src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js></script>
+<script>hljs.initHighlightingOnLoad()</script><script type=text/x-mathjax-config>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+</script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script></body></html>
