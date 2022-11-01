@@ -6,8 +6,8 @@ description = ""
 menu = ""
 banner = "banners/floaty-jerry.png"
 images = []
-date = 2022-10-26T09:24:23+03:00
-draft = true
+date = 2022-10-30T09:31:00+03:00
+draft = false
 +++
 
 Or why [Dragonfly](http://dragonflydb.io) is winning hearts of developers...
